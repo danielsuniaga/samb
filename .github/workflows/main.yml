@@ -1,0 +1,19 @@
+name: Despliegue automático en push a main
+
+on:
+  push:
+    branches:
+      - analized-secrets
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Desplegar
+        run: |
+          export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+      

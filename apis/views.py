@@ -32,7 +32,17 @@ import time
 
 import pytz
 
+import os
+
 class TestEndPoint(APIView):
+
+     def get(self, request, format=None):
+
+          email_password = os.environ.get('EMAIL_PASSWORD')
+          
+          return Response({'status':True,'message':str(email_password)})
+     
+class TestEndSecrets(APIView):
 
      def get(self, request, format=None):
           
