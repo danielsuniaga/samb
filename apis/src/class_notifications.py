@@ -66,7 +66,7 @@ class class_smtp(class_notifications):
 
         self.subject = "Notificaciones de excepciones | SAMB | TRADING "
 
-        self.from_email = "Notificaciones SAMB <notificacionesinternas@guardcontrol.co>"
+        self.from_email = "Notificaciones  SAMB <notificacionesinternas@guardcontrol.co>"
 
         self.destinatario = "danieldsuniaga@gmail.com"
 
