@@ -40,7 +40,7 @@ class TestEndPoint(APIView):
 
           email_password = os.environ.get('EMAIL_PASSWORD')
           
-          return Response({'status':True,'message':str(email_password)})
+          return Response({'status':False,'message':str(email_password)})
      
 class TestEndSecrets(APIView):
 

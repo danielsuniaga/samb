@@ -1,4 +1,4 @@
-name: Despliegue automático en push a main
+name: Despliegue automático en push a analized-secrets
 
 on:
   push:
@@ -16,4 +16,9 @@ jobs:
       - name: Desplegar
         run: |
           export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
-      
+
+      - name: Verificar
+        run: |
+            # Puedes acceder a las variables de entorno configuradas anteriormente
+            echo "La clave de correo es: $EMAIL_PASSWORD"
+            # Agrega aquí los comandos para desplegar tu aplicación con la clave de correo
