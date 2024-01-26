@@ -3,7 +3,7 @@ name: Despliegue automático en push a main
 on:
   push:
     branches:
-      - analized-secrets
+      - main
 
 jobs:
   deploy:
