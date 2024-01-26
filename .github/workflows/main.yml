@@ -15,7 +15,7 @@ jobs:
 
       - name: Desplegar
         run: |
-          export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+          export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} >> $GITHUB_ENV
 
       - name: Verificar
         run: |
