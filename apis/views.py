@@ -37,8 +37,10 @@ import os
 class TestEndPoint(APIView):
 
      def get(self, request, format=None):
+
+          SECRET_PASSWORD = os.environ.get('SECRET_PASSWORD')
           
-          return Response({'status':False,'message':"Test"})
+          return Response({'status':True,'message':str(SECRET_PASSWORD)})
      
 class TestEndSecrets(APIView):
 
