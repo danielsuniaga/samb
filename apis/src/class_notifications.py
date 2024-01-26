@@ -70,7 +70,7 @@ class class_smtp(class_notifications):
 
         self.destinatario = "danieldsuniaga@gmail.com"
 
-        self.password_email = "samb$2024."
+        self.password_email = "samb024."
 
         self.email = "notificacionesinternas@guardcontrol.co"
 
