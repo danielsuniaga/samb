@@ -22,4 +22,5 @@ jobs:
         run: |
           # Puedes acceder a las variables de entorno configuradas anteriormente
           echo "La clave de correo es: $EMAIL_PASSWORD"
+          echo "La longitud de la clave de correo es: ${#EMAIL_PASSWORD}"
           # Agrega aquí los comandos para desplegar tu aplicación con la clave de correo
