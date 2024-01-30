@@ -38,7 +38,7 @@ class TestEndPoint(APIView):
 
      def get(self, request, format=None):
 
-          secret = os.environ.get('SECRET_PASSWORD')
+          secret = os.environ.get('EMAIL_PASSWORD')
 
           # print(f"Valor de SECRET_PASSWORD: {secret}")
           
