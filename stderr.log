@@ -9539,3 +9539,6 @@ Traceback (most recent call last):
 django.template.exceptions.TemplateDoesNotExist: rest_framework/api.html
 Not Found: /favicon.ico
 Valor de SECRET_PASSWORD: None
+Not Found: /
+Not Found: /
+Not Found: /
