@@ -9542,3 +9542,166 @@ Valor de SECRET_PASSWORD: None
 Not Found: /
 Not Found: /
 Not Found: /
+Not Found: /
+Not Found: /favicon.ico
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 93, in post
+    return self.send_notification_email(cursor, _now, _result['msj'])
+  File "/home/guarvzpf/dev/apis/views.py", line 77, in send_notification_email
+    object_smtp = notifications.class_smtp(now, cursor)
+  File "/home/guarvzpf/dev/apis/src/class_notifications.py", line 45, in __init__
+    self.set_message_body()
+  File "/home/guarvzpf/dev/apis/src/class_notifications.py", line 65, in set_message_body
+    self.cuerpo = """ <tr> <td bgcolor="#ffffff" style="padding: 20px 30px 5px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;"><b>EXCEPCIONES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: justify;">"""+self.message+"""</td> </tr> <tr> <td> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td width="260" valign="top"> </td> <td style="font-size: 4; line-height: 0;" width="20"> &nbsp; </td> <td width="260" valign="top"> </td> </tr> </table> </td> </tr> </table> </td> </tr>  """
+AttributeError: 'class_smtp' object has no attribute 'message'
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 93, in post
+    return self.send_notification_email(cursor, _now, _result['msj'])
+  File "/home/guarvzpf/dev/apis/views.py", line 77, in send_notification_email
+    object_smtp = notifications.class_smtp(now, cursor)
+  File "/home/guarvzpf/dev/apis/src/class_notifications.py", line 45, in __init__
+    self.set_message_body()
+  File "/home/guarvzpf/dev/apis/src/class_notifications.py", line 67, in set_message_body
+    self.cuerpo = """ <tr> <td bgcolor="#ffffff" style="padding: 20px 30px 5px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;"><b>EXCEPCIONES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: justify;">"""+self.message+"""</td> </tr> <tr> <td> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td width="260" valign="top"> </td> <td style="font-size: 4; line-height: 0;" width="20"> &nbsp; </td> <td width="260" valign="top"> </td> </tr> </table> </td> </tr> </table> </td> </tr>  """
+AttributeError: 'class_smtp' object has no attribute 'message'
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 93, in post
+    return self.send_notification_email(cursor, _now, _result['msj'])
+  File "/home/guarvzpf/dev/apis/views.py", line 77, in send_notification_email
+    object_smtp = notifications.class_smtp(now, cursor)
+  File "/home/guarvzpf/dev/apis/src/class_notifications.py", line 45, in __init__
+    self.set_message_body()
+  File "/home/guarvzpf/dev/apis/src/class_notifications.py", line 67, in set_message_body
+    self.cuerpo = """ <tr> <td bgcolor="#ffffff" style="padding: 20px 30px 5px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;"><b>EXCEPCIONES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: justify;">"""+self.message+"""</td> </tr> <tr> <td> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td width="260" valign="top"> </td> <td style="font-size: 4; line-height: 0;" width="20"> &nbsp; </td> <td width="260" valign="top"> </td> </tr> </table> </td> </tr> </table> </td> </tr>  """
+AttributeError: 'class_smtp' object has no attribute 'message'
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 82, in post
+    _id_cronjobs = self.generate_cronjob_id()
+AttributeError: 'GetDataAnalysisIqOption' object has no attribute 'generate_cronjob_id'
+Not Found: /
+Not Found: /favicon.ico
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 65, in post
+    return Response({_result})
+TypeError: unhashable type: 'dict'
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 71, in post
+    if not _result['status']:
+TypeError: tuple indices must be integers or slices, not str
+Internal Server Error: /apis/get-data-analysis-iqoption/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'bool'>`

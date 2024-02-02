@@ -8,8 +8,6 @@ import pytz
 
 class class_date:
 
-    current_date = ""
-
     def get_utc5(self):
 
         # Obtén la fecha y hora actual en UTC

@@ -1,5 +1,7 @@
 from email import message
 
+from decouple import config
+
 import smtplib
 
 import email.message
@@ -8,17 +10,13 @@ import uuid
 
 class class_notifications():
 
-    fecha = ""
-
-    cursor_db = ""
-
-    id_exceptions_api = '2be31b6ea99b4e3aa2011a95e45af005'
-
     def __init__(self,fecha,cursor):
 
         self.fecha = fecha
 
         self.cursor_db = cursor
+
+        self.id_exceptions_api = config("ID_EXCEPTIONS_API")
 
     def get(self):
 
@@ -40,39 +38,27 @@ class class_notifications():
 
 class class_smtp(class_notifications):
 
-    encabezado = ''
-
-    cuerpo = ''
-
-    pie = ''
-
-    message = ''
-
-    subject = ''
-
-    from_email = ''
-
-    destinatario = ''
-
-    password_email = ''
-
-    email = ''
-
     def __init__(self,fecha,cursor): 
 
         super().__init__(fecha,cursor)
+
+        self.message = ""
 
         self.set_message_body()
 
         self.subject = "Notificaciones de excepciones | SAMB | TRADING "
 
-        self.from_email = "Notificaciones  SAMB <notificacionesinternas@guardcontrol.co>"
+        self.destinatario = config("EMAIL_RECIPIENT")
 
-        self.destinatario = "danieldsuniaga@gmail.com"
+        self.password_email = config("SECRET_EMAIL")
 
-        self.password_email = "samb024."
+        self.email = config("EMAIL_SEND")
 
-        self.email = "notificacionesinternas@guardcontrol.co"
+        self.from_email = "Notificaciones  SAMB <"+self.email+">"
+
+        self.server = config("SERVER_SMTP")
+
+        self.port = config("PORT_SMTP")
 
     def set_message_body(self):
 
@@ -108,7 +94,7 @@ class class_smtp(class_notifications):
             
             _msg.set_payload(self.set_message_body())
             
-            _s = smtplib.SMTP("mail.guardcontrol.co: 26")
+            _s = smtplib.SMTP(self.server+": "+self.port)
             
             _s.starttls()
             

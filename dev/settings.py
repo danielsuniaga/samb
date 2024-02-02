@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from decouple import config,Csv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9lc1so_$vl!icas7+#w@mvzex^p+vs7&@7lx8r5=r97oh3s8%)'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["dev.guardcontrol.co","www.dev.guardcontrol.co"]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -77,11 +79,11 @@ WSGI_APPLICATION = 'dev.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST':'localhost',
-        'PORT':'3306',
-        'USER':'guarvzpf_samb_dev',
-        'PASSWORD':'7CXIxo7b2MGC',
-        'NAME':'guarvzpf_dev',
+        'HOST':config("DB_HOST"),
+        'PORT':config("DB_PORT"),
+        'USER':config("DB_USER"),
+        'PASSWORD':config("DB_PASSWORD"),
+        'NAME':config("DB_NAME"),
         'OPTIONS': {
             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",
             'charset' : 'utf8',
@@ -120,9 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config("LANGUAGE_CODE")
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config("TIME_ZONE")
 
 USE_I18N = True
 
@@ -141,5 +143,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [BASE_DIR,'static']
-MEDIA_ROOT = '/home/guarvzpf/dev.guardcontrol.co/media'
-STATIC_ROOT = '/home/guarvzpf/dev.guardcontrol.co/static'
+MEDIA_ROOT = config("MEDIA_ROOT")
+STATIC_ROOT = config("STATIC_ROOT")

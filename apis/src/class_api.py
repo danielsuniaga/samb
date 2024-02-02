@@ -1,9 +1,5 @@
 class class_apis:
 
-    api_description = ""
-
-    cursor_db = ""
-
     def __init__(self,api,cursor):
 
         self.api_description = api

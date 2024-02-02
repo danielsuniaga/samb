@@ -393,3 +393,37 @@ class samb_notifications_exceptions_apis_independient(models.Model):
     def __str__(self):
 
         return self.get_samb_notifications_exceptions_api_independient()
+    
+class samb_shedule(models.Model):
+
+    """ REGISTRAMOS TODAS LOS HORARIOS REGISTRADOS """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    description = models.CharField(max_length=200, verbose_name="Description")
+
+    start_date = models.CharField(max_length=14, verbose_name="Start Date")
+
+    end_date = models.CharField(max_length=255, verbose_name="End Date")
+    
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+
+    class Meta: 
+
+        verbose_name = "samb_shedule"
+
+        verbose_name_plural = "samb_shedule"
+
+        db_table = "samb_shedule"
+
+    def get_samb_shedule(self):
+
+        return "{} - {} - {} - {}".format(self.id,self.description,self.start_date, self.end_date)
+
+    def __str__(self):
+
+        return self.get_samb_shedule()

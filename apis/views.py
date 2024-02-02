@@ -1,54 +1,38 @@
+# Django imports
 from django.shortcuts import render
-
-from rest_framework.views import APIView
-
-from rest_framework.response import Response
-
-from rest_framework import status, filters
-
-from rest_framework import viewsets
-
-from rest_framework.authentication import TokenAuthentication
-
-from rest_framework.authtoken.views import ObtainAuthToken
-
-from rest_framework.settings import api_settings
-
-from rest_framework.permissions import IsAuthenticated# Create your views here.
-
 from django.db import connection
 
-import apis.src.class_api as api
+# Rest Framework imports
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, filters, viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 
-import apis.src.class_cronjobs as cronjobs
+# Third-party imports
+from decouple import config
 
-import apis.src.class_notifications as notifications
-
-import apis.src.class_date as custom_date
+# Your own imports
+import apis.cases as cases
 
 import uuid
-
 import time
-
 import pytz
-
 import os
 
 class TestEndPoint(APIView):
 
      def get(self, request, format=None):
 
-          secret = os.environ.get('EMAIL_PASSWORD')
+          SECRET_KEY = config("SECRET_KEY")
 
-          # print(f"Valor de SECRET_PASSWORD: {secret}")
-          
-          return Response({'status':True,'message':secret})
+          return Response({'status':False,'message':SECRET_KEY})
      
 class TestEndSecrets(APIView):
 
      def get(self, request, format=None):
-
-          # email_password = os.environ.get('EMAIL_PASSWORD')
           
           return Response({'status':True,'message':"Test"})
      
@@ -56,34 +40,35 @@ class GetDataAnalysisIqOption(APIView):
      
      """API que va a extraer y procesar la data escrita por la interacción de IqOption"""
 
-     cursor = connection.cursor()
-
-     api_description='get-data-analysis-iqoption'
-
-     par='EURUSD'
-
      def post(self, request, format=None):
 
-          _id_cronjobs =  uuid.uuid4().hex
+          with connection.cursor() as cursor:
 
-          _object_date = custom_date.class_date()
+               _object_cases = cases.class_cases(cursor)
 
-          _now = _object_date.get_utc5()
+               _id_cronjobs = _object_cases.generate_cronjob_id()
+               
+               _now = _object_cases.get_current_utc5()
 
-          _object_api = api.class_apis(self.api_description,self.cursor)
+               _hour = _object_cases.get_current_hour(_now)
 
-          _object_smtp = notifications.class_smtp(_now,self.cursor)
+               _result = _object_cases.get_shedule_result(_hour)
 
-          _result = _object_api.get()
+               if not _result['status']:
 
-          if not _result['status']:
+                    return _object_cases.send_notification_email(_now, _result['msj'])
 
-               return Response(_object_smtp.send(_result['msj']))
+               _result = _object_cases.get_api_result()
 
-               # return Response(_result)
-          
-          
-          _object_cronjobs = cronjobs.class_cronjobs(self.api_description,self.cursor,self.par,_id_cronjobs,_now,'2')
-     
-          return Response(_object_cronjobs.write())
+               if not _result['status']:
+
+                    return _object_cases.send_notification_email(_now, _result['msj'])
+               
+               _result = _object_cases.write_cronjobs(_id_cronjobs,_now)
+
+               if not _result['status']:
+
+                    return _object_cases.send_notification_email(_now, _result['msj'])
+
+               return Response(False)
           
