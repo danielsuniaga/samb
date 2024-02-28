@@ -136,7 +136,7 @@ class samb_cronjobs(models.Model):
 
     start_date = models.CharField(max_length=14, verbose_name='Start Date')
 
-    end_date = models.CharField(max_length=255, verbose_name='End Date')
+    end_date = models.CharField(max_length=14, verbose_name='End Date')
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -144,11 +144,13 @@ class samb_cronjobs(models.Model):
 
     id_samb_financial_asset = models.ForeignKey(samb_financial_asset, null=True, blank=True, on_delete=models.CASCADE)
 
+    execution_time = models.CharField(max_length=110, verbose_name='execution_time',default='0')
+
     def __str__(self):
 
         texto = "{0} - {1}"
 
-        return texto.format(self.id, self.start_date)
+        return texto.format(self.id, self.start_date,self.execution_time)
 
     class Meta: 
 
@@ -219,80 +221,6 @@ class samb_send_message_api_whatsapp(models.Model):
         verbose_name_plural = 'samb_send_message_api_whatsapp'
 
         db_table = 'samb_send_message_api_whatsapp'
-
-class samb_movements(models.Model):
-
-    """ REGISTRAMOS TODOS LOS MOVIMIENTOS QUE EXTRAEMOS """
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    id_entity = models.CharField(max_length=100, verbose_name='Id entity', default='111111111')
-
-    open = models.CharField(max_length=10, verbose_name='Open')
-
-    close = models.CharField(max_length=10, verbose_name='Close')
-
-    min = models.CharField(max_length=10, verbose_name='Min')
-
-    max = models.CharField(max_length=10, verbose_name='Max')
-
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
-
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
-
-    condition = models.CharField(max_length=1, verbose_name='Condition')
-
-    id_financial_asset = models.ForeignKey(samb_financial_asset, null=True, blank=True, on_delete=models.CASCADE)
-
-    id_cronjobs = models.ForeignKey(samb_cronjobs, null=True, blank=True, on_delete=models.CASCADE)
-
-    class Meta: 
-
-        verbose_name = 'samb_movements'
-
-        verbose_name_plural = 'samb_movements'
-
-        db_table = 'samb_movements'
-
-    def get_samb_movements(self):
-
-        return "{} - Aper({}) - Cie({}) - Min({}) - Max({})".format(self.id,self.open,self.close, self.min, self.max)
-
-    def __str__(self):
-
-        return self.get_samb_movements()
-    
-class samb_movements_analysis(models.Model):
-
-    """ REGISTRAMOS TODAS LOS MOVIMIENTOS QUE ANALIZAMOS POSTERIOR A SU ESCRITURA"""
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
-
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
-
-    condition = models.CharField(max_length=1, verbose_name='Condition')
-
-    id_cronjobs = models.ForeignKey(samb_cronjobs, null=True, blank=True, on_delete=models.CASCADE)
-    
-    id_movements = models.ForeignKey(samb_movements, null=True, blank=True, on_delete=models.CASCADE)
-
-    class Meta: 
-
-        verbose_name = 'samb_movements_analysis'
-
-        verbose_name_plural = 'samb_movements_analysis'
-
-        db_table = 'samb_movements_analysis'
-
-    def get_samb_movements_analysis(self):
-
-        return "{} - Fec({})".format(self.id,self.registration_date)
-
-    def __str__(self):
-
-        return self.get_samb_movements_analysis()
     
 class samb_exceptions_apis(models.Model):
 
@@ -427,3 +355,284 @@ class samb_shedule(models.Model):
     def __str__(self):
 
         return self.get_samb_shedule()
+    
+class samb_entrys(models.Model):
+
+    """ REGISTRAMOS TODAS LAS ENTRADAS REGISTRADAS """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    id_entry_platform = models.CharField(max_length=20, verbose_name="Entry Platform", default="11111111")
+
+    type = models.CharField(max_length=14, verbose_name="Type")
+
+    type_account = models.CharField(max_length=14, verbose_name="Type Account",default="PRACTICE")
+
+    number_candle = models.CharField(max_length=1, verbose_name="Number Candle",default="5")
+
+    condition_entry = models.CharField(max_length=10, verbose_name="Contition Entry",default="CLOSE")
+
+    amount = models.CharField(max_length=14, verbose_name="Amount")
+
+    result_platform = models.CharField(max_length=14, verbose_name="Results Platform",default="NONE")
+    
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+
+    id_samb_cronjobs = models.ForeignKey(samb_cronjobs, null=True, blank=True, on_delete=models.CASCADE)
+
+    class Meta: 
+
+        verbose_name = "samb_entrys"
+
+        verbose_name_plural = "samb_entrys"
+
+        db_table = "samb_entrys"
+
+    def get_samb_entrys(self):
+
+        return "{} - {} - {} - {}".format(self.id,self.type,self.amount, self.result)
+
+    def __str__(self):
+
+        return self.get_samb_entrys()
+    
+class samb_framework(models.Model):
+
+    """ REGISTRAMOS TESTING MANUALES DE STRESS """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    description = models.CharField(max_length=14, verbose_name="Description",default="Test")
+    
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+
+    class Meta: 
+
+        verbose_name = "samb_framework"
+
+        verbose_name_plural = "samb_framework"
+
+        db_table = "samb_framework"
+
+    def get_samb_framework(self):
+
+        return "{} - {} - {} - {}".format(self.id,self.description)
+
+    def __str__(self):
+
+        return self.get_samb_framework()
+    
+class samb_config(models.Model):
+
+    """ REGISTRAMOS CONFIG BASIC SAMB """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    key = models.CharField(max_length=10, verbose_name="key",default="api-key")
+    
+    value = models.CharField(max_length=100, verbose_name="Value")
+
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+
+    class Meta: 
+
+        verbose_name = "samb_config"
+
+        verbose_name_plural = "samb_config"
+
+        db_table = "samb_config"
+
+    def get_samb_config(self):
+
+        return "{} - {} ".format(self.id,self.key)
+
+    def __str__(self):
+
+        return self.get_samb_config()
+    
+class samb_indicators(models.Model):
+
+    """ REGISTRAMOS INDICATORS """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    description = models.CharField(max_length=100, verbose_name="Description")
+
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+
+    class Meta: 
+
+        verbose_name = "samb_indicators"
+
+        verbose_name_plural = "samb_indicators"
+
+        db_table = "samb_indicators"
+
+    def get_samb_indicators(self):
+
+        return "{} - {} ".format(self.id,self.description)
+
+    def __str__(self):
+
+        return self.get_samb_indicators()
+    
+class samb_indicators_entrys(models.Model):
+
+    """ REGISTRAMOS INDICATORS ASOCIATED WITH ENTRYS"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    id_entry = models.ForeignKey(samb_entrys, null=True, blank=True, on_delete=models.CASCADE)
+
+    id_indicators = models.ForeignKey(samb_indicators, null=True, blank=True, on_delete=models.CASCADE)
+
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+
+    value = models.CharField(max_length=20, verbose_name="Value",default="0")
+
+    class Meta: 
+
+        verbose_name = "samb_indicators_entrys"
+
+        verbose_name_plural = "samb_indicators_entrys"
+
+        db_table = "samb_indicators_entrys"
+
+    def get_samb_indicators_entrys(self):
+
+        return "{} - {} ".format(self.id)
+
+    def __str__(self):
+
+        return self.samb_indicators_entrys()
+    
+class samb_movements(models.Model):
+
+    """ REGISTRAMOS TODOS LOS MOVIMIENTOS QUE EXTRAEMOS """
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    id_entity_candle = models.CharField(max_length=20, verbose_name='Id entity', default='0')
+
+    from_candle = models.CharField(max_length=20, verbose_name='Open', default='0')
+
+    at_candle = models.CharField(max_length=20, verbose_name='Open', default='0')
+
+    to_candle = models.CharField(max_length=20, verbose_name='Open', default='0')
+
+    open_candle = models.CharField(max_length=20, verbose_name='Open', default='0')
+
+    close_candle = models.CharField(max_length=20, verbose_name='Close', default='0')
+
+    min_candle = models.CharField(max_length=20, verbose_name='Min', default='0')
+
+    max_candle = models.CharField(max_length=20, verbose_name='Max', default='0')
+
+    volume_candle = models.CharField(max_length=20, verbose_name='Max', default='0')
+
+    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+
+    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+
+    condition = models.CharField(max_length=1, verbose_name='Condition')
+
+    id_entry = models.ForeignKey(samb_entrys, null=True, blank=True, on_delete=models.CASCADE)
+
+    class Meta: 
+
+        verbose_name = 'samb_movements'
+
+        verbose_name_plural = 'samb_movements'
+
+        db_table = 'samb_movements'
+
+    def get_samb_movements(self):
+
+        return "{}".format(self.id)
+
+    def __str__(self):
+
+        return self.get_samb_movements()
+    
+class samb_movements_analysis(models.Model):
+
+    """ REGISTRAMOS TODAS LOS MOVIMIENTOS QUE ANALIZAMOS POSTERIOR A SU ESCRITURA"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+
+    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+
+    condition = models.CharField(max_length=1, verbose_name='Condition')
+
+    id_cronjobs = models.ForeignKey(samb_cronjobs, null=True, blank=True, on_delete=models.CASCADE)
+    
+    id_movements = models.ForeignKey(samb_movements, null=True, blank=True, on_delete=models.CASCADE)
+
+    class Meta: 
+
+        verbose_name = 'samb_movements_analysis'
+
+        verbose_name_plural = 'samb_movements_analysis'
+
+        db_table = 'samb_movements_analysis'
+
+    def get_samb_movements_analysis(self):
+
+        return "{} - Fec({})".format(self.id,self.registration_date)
+
+    def __str__(self):
+
+        return self.get_samb_movements_analysis()
+    
+class samb_send_message_api_telegram(models.Model):
+
+    """ REGISTRAMOS TODAS LOS ENVIOS DE MENSAJES UTILIZANDO TELEGRAM"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    type = models.CharField(max_length=14, verbose_name='Type')
+
+    message = models.CharField(max_length=100, verbose_name='Message')
+
+    chat = models.CharField(max_length=20, verbose_name='Chat')
+
+    response_method = models.CharField(max_length=100, verbose_name='Response Method')
+
+    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+
+    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+
+    condition = models.CharField(max_length=1, verbose_name='Condition')
+
+    id_cronjobs = models.ForeignKey(samb_cronjobs, null=True, blank=True, on_delete=models.CASCADE)
+
+    class Meta: 
+
+        verbose_name = 'samb_send_message_api_telegram'
+
+        verbose_name_plural = 'samb_send_message_api_telegram'
+
+        db_table = 'samb_send_message_api_telegram'
+
+    def get_samb_send_message_api_telegram(self):
+
+        return "{} - Fec({})".format(self.id,self.message)
+
+    def __str__(self):
+
+        return self.get_samb_send_message_api_telegram()
+
