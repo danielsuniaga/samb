@@ -8,6 +8,14 @@ urlpatterns = [
 
     path('test-endpoint/', views.TestEndPoint.as_view()),
 
-    path('get-data-analysis-iqoption/', views.GetDataAnalysisIqOption.as_view())
+    path('get-day-week/', views.GetDayWeek.as_view()),
+
+    path('test-iq/', views.TestIq.as_view()),
+
+    path('get-data-analysis-iqoption/', views.GetDataAnalysisIqOption.as_view()),
+
+    path('get-data-analysis-iqoption-clean/', views.GetDataAnalysisIqOptionClean.as_view()),
+
+    path("test-view-connection-telegram/", views.TestConnectionTelegram.as_view()),
 
 ]
