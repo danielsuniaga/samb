@@ -155,7 +155,7 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
           
-          result = self.cronjobs.add(id_cronjobs,date,self.dates)
+          result = self.cronjobs.add(id_cronjobs,date)
 
           if not result['status']:
 

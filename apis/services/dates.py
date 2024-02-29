@@ -65,4 +65,6 @@ class cases_dates:
 
         now = self.get_current_utc5()
 
+        # basico
+
         return now.weekday()
