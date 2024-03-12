@@ -34,7 +34,7 @@ class cases_dates:
         now_utc = datetime.utcnow()
 
         # Define la zona horaria deseada (UTC-5)
-        tz = pytz.timezone('America/New_York')  # Puedes cambiar 'America/New_York' por la zona horaria deseada
+        tz = pytz.timezone('America/Bogota')  # Puedes cambiar 'America/New_York' por la zona horaria deseada
 
         # Ajusta la fecha y hora a la zona horaria deseada
         return now_utc.replace(tzinfo=pytz.utc).astimezone(tz)

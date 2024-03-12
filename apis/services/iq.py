@@ -207,7 +207,7 @@ class cases_iq:
 
         # candles[0]=1.05
 
-        # candles[1]=1.09
+        # candles[1]=1.04
 
         # candles[2]=1.03
 
