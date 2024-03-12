@@ -24826,3 +24826,62 @@ Traceback (most recent call last):
 TypeError: add() takes 3 positional arguments but 4 were given
 Not Found: /apis/
 Not Found: /favicon.ico
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /wp-json/
+Not Found: /wp-json/
+Not Found: /
+Not Found: //wp-includes/wlwmanifest.xml
+Not Found: //xmlrpc.php
+Not Found: /
+Not Found: //blog/wp-includes/wlwmanifest.xml
+Not Found: //web/wp-includes/wlwmanifest.xml
+Not Found: //wordpress/wp-includes/wlwmanifest.xml
+Not Found: //website/wp-includes/wlwmanifest.xml
+Not Found: //wp/wp-includes/wlwmanifest.xml
+Not Found: //news/wp-includes/wlwmanifest.xml
+Not Found: //2020/wp-includes/wlwmanifest.xml
+Not Found: //2019/wp-includes/wlwmanifest.xml
+Not Found: //shop/wp-includes/wlwmanifest.xml
+Not Found: //wp1/wp-includes/wlwmanifest.xml
+Not Found: //test/wp-includes/wlwmanifest.xml
+Not Found: //wp2/wp-includes/wlwmanifest.xml
+Not Found: //site/wp-includes/wlwmanifest.xml
+Not Found: //cms/wp-includes/wlwmanifest.xml
+Not Found: //sito/wp-includes/wlwmanifest.xml
+Not Found: /
+Not Found: /
+Internal Server Error: /apis/get-data-analysis-iqoption-clean/
+Traceback (most recent call last):
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/guarvzpf/virtualenv/dev/3.8/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/guarvzpf/dev/apis/views.py", line 176, in post
+    result = self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
+  File "/home/guarvzpf/dev/apis/services/iq.py", line 469, in get_loops
+    result = self.get_indicators(result,result_candles)
+  File "/home/guarvzpf/dev/apis/services/iq.py", line 352, in get_indicators
+    if not self.analized_rsi(candles):
+  File "/home/guarvzpf/dev/apis/services/iq.py", line 308, in analized_rsi
+    result = self.get_rsi(local_candles,self.type_rsi)
+  File "/home/guarvzpf/dev/apis/services/iq.py", line 298, in get_rsi
+    rs = avg_gain / avg_loss
+TypeError: unsupported operand type(s) for /: 'float' and 'decimal.Decimal'
+Not Found: /
+Not Found: /
+Not Found: /
+Not Found: /
+Not Found: /
