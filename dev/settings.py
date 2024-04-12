@@ -85,13 +85,7 @@ DATABASES = {
         'PASSWORD':config("DB_PASSWORD"),
         'NAME':config("DB_NAME"),
         'OPTIONS': {
-            'init_command':"SET sql_mode='STRICT_TRANS_TABLES'",
-            'charset' : 'utf8',
-            'use_unicode' : True,
-            'init_command': 'SET '
-            'storage_engine=INNODB,'
-            'character_set_connection=utf8,'
-            'collation_connection=utf8_bin'
+            'init_command':"SET sql_mode='STRICT_TRANS_TABLES'"
         },
         'TEST_CHARSET': 'utf8',
         'TEST_COLLATION': 'utf8_general_ci',
@@ -141,7 +135,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-STATICFILES_DIRS = [BASE_DIR,'static']
-MEDIA_ROOT = config("MEDIA_ROOT")
-STATIC_ROOT = config("STATIC_ROOT")
