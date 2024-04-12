@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: ${PROJECT_NAME}
+    build: .
+    working_dir: /code
+    command: python manage.py runserver 0.0.0.0:${PROJECT_PORT_INTERNAL}
+    volumes:
+      - .:/code
+    ports:
+      - '${PROJECT_PORT_EXTERNAL}:${PROJECT_PORT_INTERNAL}'
+    expose:
+      - ${PROJECT_PORT_EXTERNAL}
+    networks:
+      - default
+  database:
+    image: mysql
+    ports:
+      - "${DB_PORT_EXTERNAL}:${DB_PORT}"
+    expose:
+      - ${DB_PORT_EXTERNAL}
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+      - ./conf:/etc/mysql/conf.d
+      - persistent:/var/lib/mysql
+    networks:
+      - default
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: ${DB_HOST}
+      PMA_PORT: ${DB_PORT}
+    ports:
+      - '${PHPMYADMIN_PORT_EXTERNAL}:${PHPMYADMIN_PORT_INTERNAL}'
+    networks:
+      - default
+networks:
+  default:
+volumes:
+  persistent:
