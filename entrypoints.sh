@@ -26,4 +26,4 @@ fi
 
 exec "$@"
 
-echo "FINALLY .SH"
+echo "END .SH"

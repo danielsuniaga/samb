@@ -99,6 +99,14 @@ class cases_iq:
 
         self.sleep = int(config("SLEEP"))
 
+        self.active_rsi = int(config("ACTIVE_RSI"))
+
+        self.active_sma = int(config("ACTIVE_SMA"))
+
+        self.profit = int(config("PROFIT"))
+
+        self.loss = int(config("LOSS"))
+
     def set_message(self,valor):
 
         self.message = valor
@@ -349,23 +357,25 @@ class cases_iq:
 
         if result:
 
-            if not self.analized_rsi(candles):
+            result_rsi = self.analized_rsi(candles)
 
-                return False
+            result_sma = self.analized_sma(candles)
+
+            if not result_rsi:
+
+                return True if not self.active_rsi else False
             
-            if not self.analized_sma(candles):
+            if not result_sma:
 
-                return True #CAMBIAR A FALSE
+                return True if not self.active_sma else False
             
             return True
         
         return False
-    
+
     def add_entry_platform(self, result):
 
         if(result):
-
-            # return str(self.money) +" | "+str(self.par)+" | "+str(self.type) + " | " + str(self.expirations_mode)
 
             check,id_entry=self.API.buy(self.money,self.par,self.type,self.expirations_mode)
 
@@ -381,6 +391,8 @@ class cases_iq:
 
             self.iq.set_id_entry(id_entry)
 
+            self.iq.set_result_entry(self.add_result_entry_platform_v3(result))
+
             result=self.iq.add_entrys(self.current_date_general,id_cronjobs,self.type,result)
 
             if not result['status']:
@@ -389,13 +401,13 @@ class cases_iq:
 
                 return False
             
-            # id_entry=self.generate_id()
-            
             return self.add_indicators(smtp,result_candles)
 
         return False
     
     def add_indicators(self,smtp,result_candles):
+
+        # return str(self.rsi_id) +" | "+str(self.rsi)+" | "+str(self.type) + " | " + str(self.sma10_id)+ " | " + str(self.sma10)+ " | " + str(self.sma30_id)+ " | " + str(self.sma30)
 
         result=self.iq.add_indicators(self.generate_id(),self.current_date_general,self.rsi_id,self.rsi)
 
@@ -404,7 +416,7 @@ class cases_iq:
             smtp.send_notification_email(self.current_date_general, result['msj'])
 
             return False
-        
+                    
         result=self.iq.add_indicators(self.generate_id(),self.current_date_general,self.sma10_id,self.sma10)
 
         if not result['status']:
@@ -436,6 +448,20 @@ class cases_iq:
 
             return False
         
+        return self.add_result_entry(smtp)
+    
+    def add_result_entry(self,smtp):
+
+        id_entry_result=self.generate_id()
+
+        result=self.iq.add_entrys_result(id_entry_result,self.current_date_general)
+
+        if not result['status']:
+
+            smtp.send_notification_email(self.current_date_general, result['msj'])
+
+            return False
+        
         return True
     
     def send_notification_telegram(self,result,telegram,id_cronjobs):
@@ -443,6 +469,46 @@ class cases_iq:
         if(result):
 
             return telegram.send(self.message,id_cronjobs,self.current_date_general)
+        
+        return False
+    
+    def add_result_entry_platform_v3(self,result):
+
+        return self.API.check_win_v3(result)
+    
+    def add_result_entry_platform_v2(self,result):
+
+        polling_time=3
+
+        return self.API.check_win_v2(result,polling_time)
+    
+    def add_result_entry_platform_v1(self,result):
+
+        return self.API.check_win(result)
+    
+    def add_result_entry_traceability(self, result):
+    
+        if(result):
+
+            result = self.add_result_entry_v3(result)
+        
+    def get_monetary_filter(self,result,smtp):
+
+        if(result):
+        
+            result = self.iq.get_sum_entrys_date(self.current_date)
+
+            if not result['status']:
+
+                smtp.send_notification_email(self.current_date_general, result['msj'])
+
+            # return str(self.profit)+" | "+str(self.loss) +" | "+ str(result['data'])
+
+            if(result['data'] >= self.profit) or (result['data'] <= self.loss):
+
+                return False
+
+            return True
         
         return False
     
@@ -467,6 +533,8 @@ class cases_iq:
             result = self.get_current_entrys(result,smtp)
 
             result = self.get_indicators(result,result_candles)
+
+            result = self.get_monetary_filter(result,smtp)
 
             result = self.add_entry_platform(result)
 

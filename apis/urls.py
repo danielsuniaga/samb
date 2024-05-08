@@ -12,6 +12,8 @@ urlpatterns = [
 
     path('test-iq/', views.TestIq.as_view()),
 
+    path('test-mail-smtp/', views.TestMailSmtp.as_view()),
+
     path('get-data-analysis-iqoption/', views.GetDataAnalysisIqOption.as_view()),
 
     path('get-data-analysis-iqoption-clean/', views.GetDataAnalysisIqOptionClean.as_view()),

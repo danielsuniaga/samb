@@ -13,7 +13,9 @@ services:
     expose:
       - ${PROJECT_PORT_EXTERNAL}
     networks:
-      - default
+      my_network:
+        ipv4_address: 10.10.10.10
+
   database:
     image: mysql
     ports:
@@ -28,9 +30,9 @@ services:
       - ./conf:/etc/mysql/conf.d
       - persistent:/var/lib/mysql
     networks:
-      - default
+      - my_network
+
   phpmyadmin:
-    container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: ${DB_HOST}
@@ -38,8 +40,14 @@ services:
     ports:
       - '${PHPMYADMIN_PORT_EXTERNAL}:${PHPMYADMIN_PORT_INTERNAL}'
     networks:
-      - default
+      - my_network
+
 networks:
-  default:
+  my_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.10.0/24
+
 volumes:
   persistent:
