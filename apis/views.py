@@ -95,7 +95,9 @@ class TestEndPoint(APIView):
 
           now = self.dates.get_current_utc5()
 
-          api_key = request.headers.get('X-API-Key')
+          # api_key = request.headers.get('X-API-Key')
+
+          api_key="Test"
 
           return Response(self.framework.add(self.framework.generate_id(),self.dates.get_current_date(now),api_key))
      
@@ -104,6 +106,28 @@ class TestIq(APIView):
      def get(self, request, format=None):
           
           return Response({'status':True,'message':"Test"})
+     
+class TestMailSmtp(APIView):
+
+     def __init__(self):
+
+          cursor = connection.cursor()
+
+          self.dates = case_dates.cases_dates()
+
+          self.smtp = case_smtps.cases_smtp(cursor)
+
+     def get(self, request, format=None):
+
+          now = self.dates.get_current_utc5()
+
+          self.dates.set_start_date()
+
+          date = self.dates.get_current_date(now)
+
+          return Response(self.smtp.send_notification_email(date, 'TEST ENVIO'))
+          
+          # return Response({'status':True,'message':"Test"})
      
 class GetDataAnalysisIqOptionClean(APIView):
 
