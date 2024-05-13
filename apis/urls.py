@@ -10,6 +10,8 @@ urlpatterns = [
 
     path('get-day-week/', views.GetDayWeek.as_view()),
 
+    path('get-reports/', views.GetReports.as_view()),
+
     path('test-iq/', views.TestIq.as_view()),
 
     path('test-mail-smtp/', views.TestMailSmtp.as_view()),
