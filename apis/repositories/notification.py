@@ -38,6 +38,18 @@ class repositories_notifications:
 
         return True  
     
+    def add_reports(self):
+
+        try:
+
+            self.cursor_db.execute("INSERT INTO samb_reports(samb_reports.id,samb_reports.description,samb_reports.registration_date,samb_reports.update_date,samb_reports.state)VALUES(%s,%s,%s,%s,%s)",[uuid.uuid4().hex, "SEND REPORTS", self.fecha, self.fecha, "1"])
+
+        except Exception as err:
+
+            return False
+
+        return True  
+    
     def removed_special_characters(self,value):
 
         return str(value.replace("'", '').replace('"', ''))
@@ -62,6 +74,55 @@ class repositories_notifications:
         
         return True
     
+    def get_data_reporting_day(self,mode,day):
+
+        try:
+
+            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND DAYOFWEEK(samb_entrys_results.registration_date) = %s"
+
+            self.cursor_db.execute(query, (mode, day))
+
+            result = self.cursor_db.fetchone() 
+            
+        except Exception as err:
+
+            return "NULL"
+        
+        return result[0]
+
+    def get_data_reporting_curdate(self,mode):
+
+        try:
+
+            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND DATE(samb_entrys_results.registration_date) = CURDATE()"
+
+            self.cursor_db.execute(query, (mode))
+
+            result = self.cursor_db.fetchone() 
+            
+        except Exception as err:
+
+            return "NULL"
+        
+        return result[0]
+
+    def get_data_reporting_total(self,mode):
+
+        try:
+
+            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s"
+
+            self.cursor_db.execute(query, (mode))
+
+            result = self.cursor_db.fetchone() 
+            
+        except Exception as err:
+
+            return "NULL"
+        
+        return result[0]
+
+
 class repositories_smtp(repositories_notifications):
 
     def __init__(self,cursor):
@@ -73,6 +134,8 @@ class repositories_smtp(repositories_notifications):
         self.set_message_body()
 
         self.subject = "Notificaciones de excepciones | SAMB | TRADING "
+
+        self.subject_reports = "Management report ("+config("PROJECT_NAME")+") | SAMB | TRADING "
 
         self.destinatario = config("EMAIL_RECIPIENT")
 
@@ -86,20 +149,34 @@ class repositories_smtp(repositories_notifications):
 
         self.port = config("PORT_SMTP")
 
+        self.messsage_report=""
+
+    def set_message_report(self,valor):
+
+        self.messsage_report=valor
+
+    def get_structura_reporte(self,mensaje):
+
+        return """  <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;" align="center" ><b>REPORTES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: left;"> <table width="60%" align="center" border="1"><thead><tr align="center"><td>DAY</td><td>DEMO</td><td>REAL</td></tr></thead><tbody align="center">"""+mensaje+"""</tbody></table> </td></tr></table> """
+        
+    def get_encabezado(self): 
+
+        return """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	<title>".$msj_titulo."</title> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> </head> <body style="margin: 0; padding: 0;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="padding: 10px 0 30px 0;"> <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">	<tr> <td align="center" bgcolor="#ffffff" style="padding: 5px 5px 5px 5px;"> """
+    
+    def get_pie(self):
+
+        return """</td> </tr> <tr> <td bgcolor="#340049" style="padding: 30px 30px 30px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="100%"><font color="#ffffff"></font><i>Esta es una cuenta de correo solo informativa, por favor no responder este correo.</i></td> </tr> </table>	</td> </tr>	</table> </td> </tr> </table> </body> </html>"""
+
     def set_message(self,mensaje):
 
         self.message = mensaje
 
     def set_message_body(self):
 
-        self.encabezado="""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	<title>".$msj_titulo."</title> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> </head> <body style="margin: 0; padding: 0;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="padding: 10px 0 30px 0;"> <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">	<tr> <td align="center" bgcolor="#ffffff" style="padding: 5px 5px 5px 5px;"> """
-
         self.cuerpo = """ <tr> <td bgcolor="#ffffff" style="padding: 20px 30px 5px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;"><b>EXCEPCIONES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: justify;">"""+self.message+"""</td> </tr> <tr> <td> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td width="260" valign="top"> </td> <td style="font-size: 4; line-height: 0;" width="20"> &nbsp; </td> <td width="260" valign="top"> </td> </tr> </table> </td> </tr> </table> </td> </tr>  """
 
-        self.pie= """</td> </tr> <tr> <td bgcolor="#340049" style="padding: 30px 30px 30px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="100%"><font color="#ffffff"></font><i>Esta es una cuenta de correo solo informativa, por favor no responder este correo.</i></td> </tr> </table>	</td> </tr>	</table> </td> </tr> </table> </body> </html>"""
-
-        return self.encabezado+self.cuerpo+self.pie
-
+        return self.get_encabezado()+self.cuerpo+self.get_pie()
+    
     def get(self):
 
         return False
@@ -146,7 +223,62 @@ class repositories_smtp(repositories_notifications):
             return {"status": False, "message":"Hubo una incidencia en el envio del mensaje SMTP: "+str(err)}
         
         return True
- 
+    
+    def send_reports(self,fecha,mensaje):
+
+        self.set_fecha(fecha)
+
+        self.set_message_report(self.get_structura_reporte(mensaje))
+
+        self.add_reports()
+
+        try:
+        
+            _msg = email.message.Message()
+
+            _msg["Subject"] = self.subject_reports
+
+            _msg["From"] = self.from_email
+
+            _msg["To"] = self.destinatario
+
+            _password = self.password_email
+
+            _correo = self.email
+            
+            _msg.add_header("Content-Type", "text/html")
+
+            _msg.set_payload(self.messsage_report)
+            
+            _s = smtplib.SMTP(self.server+": "+self.port)
+            
+            _s.starttls()
+            
+            # Login Credentials for sending the mail
+            _s.login(_correo, _password)
+            
+            _s.sendmail(_msg["From"], [_msg["To"]], _msg.as_string())
+
+            _s.quit()
+
+        except Exception as err:
+
+            return {"status": False, "message":"Hubo una incidencia en el envio del mensaje SMTP: "+str(err)}
+        
+        return True
+
+    def get_data_reporting(self,mode,day):
+
+        return self.get_data_reporting_day(mode,day)
+    
+    def get_data_reporting_cur(self,mode):
+
+        return self.get_data_reporting_curdate(mode)
+    
+    def get_data_reporting_tot(self, mode):
+
+        return self.get_data_reporting_total(mode)
+
 class repositories_telegram(repositories_notifications):
 
     def __init__(self,cursor):

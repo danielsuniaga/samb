@@ -636,3 +636,31 @@ class samb_send_message_api_telegram(models.Model):
 
         return self.get_samb_send_message_api_telegram()
 
+class samb_reports(models.Model):
+
+    """ REGISTRAMOS TODAS LOS ENVIOS DE REPORTES POR CORREOS"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    description = models.CharField(max_length=200, verbose_name="Description")
+
+    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+
+    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+
+    condition = models.CharField(max_length=1, verbose_name="Condition")
+    class Meta: 
+
+        verbose_name = "samb_reports"
+
+        verbose_name_plural = "samb_reports"
+
+        db_table = "samb_reports"
+
+    def get_samb_reports(self):
+
+        return "{} - {}".format(self.id)
+
+    def __str__(self):
+
+        return self.get_samb_notifications_exceptions_api_independient()
