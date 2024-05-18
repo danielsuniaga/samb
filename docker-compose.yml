@@ -12,9 +12,6 @@ services:
       - '${PROJECT_PORT_EXTERNAL}:${PROJECT_PORT_INTERNAL}'
     expose:
       - ${PROJECT_PORT_EXTERNAL}
-    networks:
-      my_network:
-        ipv4_address: 10.10.10.10
 
   database:
     image: mysql
@@ -29,8 +26,6 @@ services:
       - ./dump:/docker-entrypoint-initdb.d
       - ./conf:/etc/mysql/conf.d
       - persistent:/var/lib/mysql
-    networks:
-      - my_network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -40,14 +35,8 @@ services:
     ports:
       - '${PHPMYADMIN_PORT_EXTERNAL}:${PHPMYADMIN_PORT_INTERNAL}'
     networks:
-      - my_network
-
+      - default
 networks:
-  my_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.10.10.0/24
-
+  default:
 volumes:
   persistent:
