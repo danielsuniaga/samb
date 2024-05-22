@@ -367,14 +367,18 @@ class cases_iq:
 
             result_sma = self.analized_sma(candles)
 
-            if not result_rsi:
+            if self.active_rsi and self.active_sma: 
 
-                return True if not self.active_rsi else False
+                return True if result_rsi and result_sma else False
             
-            if not result_sma:
+            if self.active_rsi:
 
-                return True if not self.active_sma else False
+                return True if result_rsi else False
             
+            if self.active_sma:
+
+                return True if result_sma else False
+
             return True
         
         return False
