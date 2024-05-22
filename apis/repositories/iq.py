@@ -36,6 +36,10 @@ class repositories_iq:
 
         self.result_entry = valor
 
+    def get_result_entry(self):
+
+        return self.result_entry
+
     def get_id_entry(self):
 
         return self.id_entry
