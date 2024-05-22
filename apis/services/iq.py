@@ -107,9 +107,15 @@ class cases_iq:
 
         self.loss = int(config("LOSS"))
 
+        self.project_name = config("PROJECT_NAME")
+
     def set_message(self,valor):
 
         self.message = valor
+
+    def add_message_text(self,valor):
+
+        self.message = self.message + " - "+valor
 
     def set_value_rsi(self,valor):
 
@@ -213,19 +219,19 @@ class cases_iq:
 
         candles = self.removed_candle_close(candles,self.candle_removed)
 
-        # candles[0]=1.05
+        candles[0]=1.05
 
-        # candles[1]=1.04
+        candles[1]=1.04
 
-        # candles[2]=1.03
+        candles[2]=1.03
 
-        # candles[3]=1.02
+        candles[3]=1.02
 
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
             self.set_type(self.type_entry_long)
 
-            self.set_message(self.message_entry_long+"-"+self.par)
+            self.set_message(self.mode+" - "+self.project_name+" - "+self.message_entry_long+" - "+self.par)
 
             # ALCISTA
             return self.type_entry_long
@@ -234,7 +240,7 @@ class cases_iq:
 
             self.set_type(self.type_entry_short)
 
-            self.set_message(self.message_entry_short+"-"+self.par)
+            self.set_message(self.mode+" - "+self.project_name+" - "+self.message_entry_short+" - "+self.par)
 
             # BAJISTA
             return self.type_entry_short
@@ -391,7 +397,13 @@ class cases_iq:
 
             self.iq.set_id_entry(id_entry)
 
-            self.iq.set_result_entry(self.add_result_entry_platform_v3(result))
+            result_entry = self.add_result_entry_platform_v3(result)
+
+            self.iq.set_result_entry(result_entry)
+
+            result_entry = "("+str(result_entry)+")"
+
+            self.add_message_text(result_entry)
 
             result=self.iq.add_entrys(self.current_date_general,id_cronjobs,self.type,result)
 
