@@ -32,7 +32,7 @@ class repositories_notifications:
 
             self.cursor_db.execute("INSERT INTO samb_notifications_exceptions_apis_independient(samb_notifications_exceptions_apis_independient.id,samb_notifications_exceptions_apis_independient.description, samb_notifications_exceptions_apis_independient.registration_date,samb_notifications_exceptions_apis_independient.update_date,samb_notifications_exceptions_apis_independient.condition, samb_notifications_exceptions_apis_independient.id_exceptions_api_id)VALUES(%s,%s,%s,%s,%s,%s)",[uuid.uuid4().hex, mensaje, self.fecha, self.fecha, "1", self.id_exceptions_api])
 
-        except Exception as err:
+        except Exception:
 
             return False
 
@@ -44,7 +44,7 @@ class repositories_notifications:
 
             self.cursor_db.execute("INSERT INTO samb_reports(samb_reports.id,samb_reports.description,samb_reports.registration_date,samb_reports.update_date,samb_reports.state)VALUES(%s,%s,%s,%s,%s)",[uuid.uuid4().hex, "SEND REPORTS", self.fecha, self.fecha, "1"])
 
-        except Exception as err:
+        except Exception:
 
             return False
 
@@ -70,7 +70,7 @@ class repositories_notifications:
 
         self.fecha = fecha
 
-    def get(self,date,mensaje):
+    def get(self):
         
         return True
     
@@ -84,7 +84,7 @@ class repositories_notifications:
 
             result = self.cursor_db.fetchone() 
             
-        except Exception as err:
+        except Exception:
 
             return "NULL"
         
@@ -100,7 +100,7 @@ class repositories_notifications:
 
             result = self.cursor_db.fetchone() 
             
-        except Exception as err:
+        except Exception:
 
             return "NULL"
         
@@ -116,7 +116,7 @@ class repositories_notifications:
 
             result = self.cursor_db.fetchone() 
             
-        except Exception as err:
+        except Exception:
 
             return "NULL"
         
@@ -176,10 +176,6 @@ class repositories_smtp(repositories_notifications):
         self.cuerpo = """ <tr> <td bgcolor="#ffffff" style="padding: 20px 30px 5px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;"><b>EXCEPCIONES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: justify;">"""+self.message+"""</td> </tr> <tr> <td> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td width="260" valign="top"> </td> <td style="font-size: 4; line-height: 0;" width="20"> &nbsp; </td> <td width="260" valign="top"> </td> </tr> </table> </td> </tr> </table> </td> </tr>  """
 
         return self.get_encabezado()+self.cuerpo+self.get_pie()
-    
-    def get(self):
-
-        return False
     
     def send(self,fecha,mensaje):
 

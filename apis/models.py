@@ -2,6 +2,10 @@ from django.db import models
 
 import uuid
 
+UPDATE_DATE_VERBOSE_NAME = 'Update Date'
+
+REGISTRATION_DATE_VERBOSE_NAME = 'Registration Date'
+
 class samb_apis(models.Model):
 
     """ REGISTRAMOS TODAS LAS APIS QUE SE GESTIONEN """
@@ -10,9 +14,9 @@ class samb_apis(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -40,9 +44,9 @@ class samb_platform(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -70,9 +74,9 @@ class samb_financial_asset(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -102,9 +106,9 @@ class samb_api_financial_asset(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description', default='EURUSD')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition', default='1')
 
@@ -150,7 +154,7 @@ class samb_cronjobs(models.Model):
 
         texto = "{0} - {1}"
 
-        return texto.format(self.id, self.start_date,self.execution_time)
+        return texto.format(self.id, self.start_date)
 
     class Meta: 
 
@@ -168,9 +172,9 @@ class samb_notification_conditions(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -202,7 +206,7 @@ class samb_send_message_api_whatsapp(models.Model):
 
     start_date = models.CharField(max_length=14, verbose_name='Start Date')
 
-    udpate_date = models.CharField(max_length=14, verbose_name='Update Date')
+    udpate_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -230,9 +234,9 @@ class samb_exceptions_apis(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -264,9 +268,9 @@ class samb_notifications_exceptions_apis(models.Model):
 
     description = models.CharField(max_length=100, verbose_name='Description')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -298,9 +302,9 @@ class samb_notifications_exceptions_apis_independient(models.Model):
 
     description = models.CharField(max_length=200, verbose_name="Description")
 
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -334,9 +338,9 @@ class samb_shedule(models.Model):
 
     end_date = models.CharField(max_length=255, verbose_name="End Date")
     
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -376,9 +380,9 @@ class samb_entrys(models.Model):
 
     result_platform = models.CharField(max_length=14, verbose_name="Results Platform",default="NONE")
     
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -408,7 +412,7 @@ class samb_framework(models.Model):
 
     description = models.CharField(max_length=14, verbose_name="Description",default="Test")
     
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -422,7 +426,7 @@ class samb_framework(models.Model):
 
     def get_samb_framework(self):
 
-        return "{} - {} - {} - {}".format(self.id,self.description)
+        return "{} - {} ".format(self.id,self.description)
 
     def __str__(self):
 
@@ -438,7 +442,7 @@ class samb_config(models.Model):
     
     value = models.CharField(max_length=100, verbose_name="Value")
 
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -466,7 +470,7 @@ class samb_indicators(models.Model):
     
     description = models.CharField(max_length=100, verbose_name="Description")
 
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -496,7 +500,7 @@ class samb_indicators_entrys(models.Model):
 
     id_indicators = models.ForeignKey(samb_indicators, null=True, blank=True, on_delete=models.CASCADE)
 
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
 
@@ -512,7 +516,7 @@ class samb_indicators_entrys(models.Model):
 
     def get_samb_indicators_entrys(self):
 
-        return "{} - {} ".format(self.id)
+        return "{}".format(self.id)
 
     def __str__(self):
 
@@ -542,9 +546,9 @@ class samb_movements(models.Model):
 
     volume_candle = models.CharField(max_length=20, verbose_name='Max', default='0')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -572,9 +576,9 @@ class samb_movements_analysis(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -612,9 +616,9 @@ class samb_send_message_api_telegram(models.Model):
 
     response_method = models.CharField(max_length=100, verbose_name='Response Method')
 
-    registration_date = models.CharField(max_length=14, verbose_name='Registration Date')
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name='Update Date')
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name='Condition')
 
@@ -644,9 +648,9 @@ class samb_reports(models.Model):
 
     description = models.CharField(max_length=200, verbose_name="Description")
 
-    registration_date = models.CharField(max_length=14, verbose_name="Registration Date")
+    registration_date = models.CharField(max_length=14, verbose_name=REGISTRATION_DATE_VERBOSE_NAME)
 
-    update_date = models.CharField(max_length=14, verbose_name="Update Date")
+    update_date = models.CharField(max_length=14, verbose_name=UPDATE_DATE_VERBOSE_NAME)
 
     condition = models.CharField(max_length=1, verbose_name="Condition")
     class Meta: 
@@ -659,7 +663,7 @@ class samb_reports(models.Model):
 
     def get_samb_reports(self):
 
-        return "{} - {}".format(self.id)
+        return "{}".format(self.id)
 
     def __str__(self):
 
