@@ -36,8 +36,6 @@ class TestConnectionTelegram(APIView):
 
     base_url = 'https://api.telegram.org/bot6392837248:AAFDlXxJeTalDKIglpX4B5pVj3SClG9rjRc/sendMessage'
 
-    # CHAT_ID = '5226081927'
-
     def enviar_mensaje(self,chat_id, mensaje):
 
         url = self.base_url + 'sendMessage'
@@ -65,10 +63,6 @@ class TestConnectionTelegram(APIView):
 
     def get(self, request, format=None):
 
-        # _msj="test v1"
-
-        # self.enviar_mensaje("¡Hola desde Python!")
-
         return Response({self.enviar_mensaje('5226081927', '¡Hola desde Python jugada!')})
 
 class GetDayWeek(APIView):
@@ -95,11 +89,21 @@ class TestEndPoint(APIView):
 
           now = self.dates.get_current_utc5()
 
-          # api_key = request.headers.get('X-API-Key')
-
           api_key="Test"
 
           return Response(self.framework.add(self.framework.generate_id(),self.dates.get_current_date(now),api_key))
+     
+class NowManager(APIView):
+
+     def __init__(self):
+
+          self.dates = case_dates.cases_dates()
+
+     def post(self, request, format=None):
+
+          now = self.dates.get_current_utc5()
+
+          return Response(now)
      
 class TestIq(APIView):
 
@@ -125,10 +129,7 @@ class TestMailSmtp(APIView):
 
           date = self.dates.get_current_date(now)
 
-          return Response(self.smtp.send_notification_email(date, 'TEST ENVIO'))
-          
-          # return Response({'status':True,'message':"Test"})
-     
+          return Response(self.smtp.send_notification_email(date, 'TEST ENVIO'))               
 
 class GetReports(APIView):
 
@@ -149,9 +150,6 @@ class GetReports(APIView):
           date = self.dates.get_current_date(now)
 
           return Response(self.smtp.send_reporting_email(date))
-
-          # return Response({'status':True,'message':"Test"})
-     
 class GetDataAnalysisIqOptionClean(APIView):
 
      def __init__(self):
@@ -220,15 +218,13 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
           
-          result = self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
+          self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 
           now = self.dates.get_current_utc5()
 
           self.dates.set_end_date()
-
-          result = self.cronjobs.set_fields(self.dates.get_current_date(now),self.dates.get_time_execution(),id_cronjobs)
           
-          return Response(result)
+          return Response(self.cronjobs.set_fields(self.dates.get_current_date(now),self.dates.get_time_execution(),id_cronjobs))
                
 class GetDataAnalysisIqOption(APIView):
      
@@ -237,48 +233,3 @@ class GetDataAnalysisIqOption(APIView):
      def post(self, request, format=None):
 
           return True
-
-          # with connection.cursor() as cursor:
-
-          #      _object_cases = cases.class_cases(cursor)
-
-          #      _id_cronjobs = _object_cases.generate_cronjob_id()
-               
-          #      _now = _object_cases.get_current_utc5()
-
-          #      _date = _object_cases.get_current_date(_now)
-
-          #      _hour = _object_cases.get_current_hour(_now)
-
-          #      _result = _object_cases.get_shedule_result(_hour)
-
-          #      if not _result['status']:
-
-          #           return _object_cases.send_notification_email(_date, _result['msj'])
-
-          #      _result = _object_cases.get_api_result()
-
-          #      if not _result['status']:
-
-          #           return _object_cases.send_notification_email(_date, _result['msj'])
-               
-          #      _result = _object_cases.write_cronjobs(_id_cronjobs,_date)
-
-          #      if not _result['status']:
-
-          #           return _object_cases.send_notification_email(_date, _result['msj'])
-               
-          #      _result = _object_cases.init_iq()
-
-          #      if not _result['status']:
-
-          #           return _object_cases.send_notification_email(_date, _result['msj'])
-               
-          #      _result = _object_cases.set_balance()
-
-          #      if not _result['status']:
-
-          #           return _object_cases.send_notification_email(_date, _result['msj'])
-
-          #      return Response(_object_cases.entrys())
-          

@@ -2,7 +2,7 @@ import apis.repositories.iq as repository_iqs
 
 from decouple import config
 from iqoptionapi.stable_api import IQ_Option
-from decimal import *
+from decimal import Decimal
 
 import uuid
 import time
@@ -13,7 +13,7 @@ class cases_iq:
 
         self.username = config("USERNAME")
 
-        self.password = password = config("PASSWORD")
+        self.password = config("PASSWORD")
 
         self.API = None
 
@@ -189,7 +189,7 @@ class cases_iq:
     
         _end_from_time=time.time()
 
-        for i in range(1):
+        for _ in range(1):
 
             _data=self.API.get_candles(self.par, int(self.interval), int(self.candles), _end_from_time)
             
@@ -218,14 +218,6 @@ class cases_iq:
     def analized_candles(self, candles):
 
         candles = self.removed_candle_close(candles,self.candle_removed)
-
-        # candles[0]=1.05
-
-        # candles[1]=1.04
-
-        # candles[2]=1.03
-
-        # candles[3]=1.02
 
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
@@ -361,69 +353,67 @@ class cases_iq:
     
     def get_indicators(self,result,candles):
 
-        if result:
+        if not result:
 
-            result_rsi = self.analized_rsi(candles)
+            return False
 
-            result_sma = self.analized_sma(candles)
+        result_rsi = self.analized_rsi(candles)
 
-            if self.active_rsi and self.active_sma: 
+        result_sma = self.analized_sma(candles)
 
-                return True if result_rsi and result_sma else False
-            
-            if self.active_rsi:
+        if self.active_rsi and self.active_sma:
 
-                return True if result_rsi else False
-            
-            if self.active_sma:
-
-                return True if result_sma else False
-
-            return True
+            return result_rsi and result_sma
         
-        return False
+        if self.active_rsi:
+
+            return result_rsi
+        
+        if self.active_sma:
+
+            return result_sma
+
+        return True
 
     def add_entry_platform(self, result):
 
-        if(result):
+        if not result:
 
-            check,id_entry=self.API.buy(self.money,self.par,self.type,self.expirations_mode)
+            return False
 
-            return id_entry if check else check
+        check,id_entry=self.API.buy(self.money,self.par,self.type,self.expirations_mode)
 
-        return False
+        return id_entry if check else check
     
     def add_entry_traceability(self, result,id_cronjobs,smtp,result_candles):
 
-        if(result):
+        if not result:
 
-            id_entry=self.generate_id()
+            return False
 
-            self.iq.set_id_entry(id_entry)
+        id_entry=self.generate_id()
 
-            result_entry = self.add_result_entry_platform_v3(result)
+        self.iq.set_id_entry(id_entry)
 
-            self.iq.set_result_entry(result_entry)
+        result_entry = self.add_result_entry_platform_v3(result)
 
-            result_entry = "("+str(result_entry)+")"
+        self.iq.set_result_entry(result_entry)
 
-            self.add_message_text(result_entry)
+        result_entry = "("+str(result_entry)+")"
 
-            result=self.iq.add_entrys(self.current_date_general,id_cronjobs,self.type,result)
+        self.add_message_text(result_entry)
 
-            if not result['status']:
+        result=self.iq.add_entrys(self.current_date_general,id_cronjobs,self.type,result)
 
-                smtp.send_notification_email(self.current_date_general, result['msj'])
+        if not result['status']:
 
-                return False
-            
-            return self.add_indicators(smtp,result_candles)
+            smtp.send_notification_email(self.current_date_general, result['msj'])
 
-        return False
-    
+            return False
+        
+        return self.add_indicators(smtp,result_candles)
+
     def add_indicators(self,smtp,result_candles):
-
-        # return str(self.rsi_id) +" | "+str(self.rsi)+" | "+str(self.type) + " | " + str(self.sma10_id)+ " | " + str(self.sma10)+ " | " + str(self.sma30_id)+ " | " + str(self.sma30)
 
         result=self.iq.add_indicators(self.generate_id(),self.current_date_general,self.rsi_id,self.rsi)
 
@@ -482,12 +472,12 @@ class cases_iq:
     
     def send_notification_telegram(self,result,telegram,id_cronjobs):
 
-        if(result):
+        if not result:
 
-            return telegram.send(self.message,id_cronjobs,self.current_date_general)
-        
-        return False
-    
+            return False
+
+        return telegram.send(self.message,id_cronjobs,self.current_date_general)
+            
     def add_result_entry_platform_v3(self,result):
 
         return self.API.check_win_v3(result)
@@ -510,27 +500,25 @@ class cases_iq:
         
     def get_monetary_filter(self,result,smtp):
 
-        if(result):
+        if not result:
+
+            return False
         
-            result = self.iq.get_sum_entrys_date(self.current_date)
+        result = self.iq.get_sum_entrys_date(self.current_date)
 
-            if not result['status']:
+        if not result['status']:
 
-                smtp.send_notification_email(self.current_date_general, result['msj'])
+            smtp.send_notification_email(self.current_date_general, result['msj'])
 
-            # return str(self.profit)+" | "+str(self.loss) +" | "+ str(result['data'])
+        if(result['data'] >= self.profit) or (result['data'] <= self.loss):
 
-            if(result['data'] >= self.profit) or (result['data'] <= self.loss):
+            return False
 
-                return False
-
-            return True
+        return True
         
-        return False
-    
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
-        for i in range(int(self.number_loops)):
+        for _ in range(int(self.number_loops)):
 
             now = date.get_current_utc5()
 

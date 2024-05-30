@@ -22,4 +22,6 @@ urlpatterns = [
 
     path("test-view-connection-telegram/", views.TestConnectionTelegram.as_view()),
 
+    path('get-now-manager/', views.NowManager.as_view())
+
 ]

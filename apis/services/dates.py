@@ -30,14 +30,14 @@ class cases_dates:
 
     def get_current_utc5(self):
 
-        # Obtén la fecha y hora actual en UTC
-        now_utc = datetime.utcnow()
+        # Obtén la fecha y hora actual en UTC con información de zona horaria
+        now_utc = datetime.now(pytz.utc)
 
         # Define la zona horaria deseada (UTC-5)
         tz = pytz.timezone('America/Bogota')  # Puedes cambiar 'America/New_York' por la zona horaria deseada
-
+        
         # Ajusta la fecha y hora a la zona horaria deseada
-        return now_utc.replace(tzinfo=pytz.utc).astimezone(tz)
+        return now_utc.astimezone(tz)
     
     def get_current_date(self,date):
 
