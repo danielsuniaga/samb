@@ -20,6 +20,8 @@ class repositories_cronjobs:
 
         self.id_financial_asset = value
 
+        return True
+
     def get(self):
 
         return {'status':True,'msj':'Success'}

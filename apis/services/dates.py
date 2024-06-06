@@ -20,9 +20,13 @@ class cases_dates:
 
         self.start_date = time.time()
 
+        return True
+
     def set_end_date(self):
 
         self.end_date = time.time()
+
+        return True
 
     def get_time_execution(self):
 
@@ -64,7 +68,5 @@ class cases_dates:
     def get_day(self):
 
         now = self.get_current_utc5()
-
-        # basico
 
         return now.weekday()

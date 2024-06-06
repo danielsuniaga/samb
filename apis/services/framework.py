@@ -10,7 +10,7 @@ class cases_framework:
 
     def get(self):
         
-        return False
+        return True
     
     def add(self,id_framework,date,description):
 

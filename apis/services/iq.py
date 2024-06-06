@@ -113,13 +113,19 @@ class cases_iq:
 
         self.message = valor
 
+        return True
+
     def add_message_text(self,valor):
 
         self.message = self.message + " - "+valor
 
+        return True
+
     def set_value_rsi(self,valor):
 
         self.rsi = valor
+
+        return True
 
     def set_value_sma10(self,valor):
 
@@ -129,6 +135,8 @@ class cases_iq:
 
         self.sma30 = valor
 
+        return True
+
     def generate_id(self):
 
         return uuid.uuid4().hex
@@ -137,17 +145,25 @@ class cases_iq:
 
         self.type = valor
 
+        return True
+
     def set_current_date(self, date):
 
         self.current_date = date
+
+        return True
 
     def set_current_date_general(self, date_general):
 
         self.current_date_general = date_general
 
+        return True
+
     def set_current_date_manipulated(self,date_manipulated):
 
         self.current_date_manipulated = date_manipulated
+
+        return True
 
     def set_balance(self):
 
@@ -218,6 +234,14 @@ class cases_iq:
     def analized_candles(self, candles):
 
         candles = self.removed_candle_close(candles,self.candle_removed)
+
+        candles[0]=1.05
+
+        candles[1]=1.04
+
+        candles[2]=1.03
+
+        candles[3]=1.02
 
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
