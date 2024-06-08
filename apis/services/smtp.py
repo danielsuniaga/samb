@@ -20,7 +20,7 @@ class cases_smtp:
 
             return self.smtp.get_data_reporting_cur(mode)
         
-        if(day==7):
+        if(day==9):
 
             return self.smtp.get_data_reporting_tot(mode)
 
@@ -40,7 +40,9 @@ class cases_smtp:
             {"name":"Wednesday","database":4},
             {"name":"Thursday","database":5},
             {"name":"Friday","database":6},
-            {"name":"Total","database":7}
+            {"name":"Saturday","database":7},
+            {"name":"Sunday","database":8},
+            {"name":"Total","database":9}
 
         ]
 
