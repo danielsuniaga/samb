@@ -70,6 +70,8 @@ class repositories_notifications:
 
         self.fecha = fecha
 
+        return True
+
     def get(self):
         
         return True
@@ -122,7 +124,6 @@ class repositories_notifications:
         
         return result[0]
 
-
 class repositories_smtp(repositories_notifications):
 
     def __init__(self,cursor):
@@ -155,6 +156,8 @@ class repositories_smtp(repositories_notifications):
 
         self.messsage_report=valor
 
+        return True
+
     def get_structura_reporte(self,mensaje):
 
         return """  <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;" align="center" ><b>REPORTES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: left;"> <table width="60%" align="center" border="1"><thead><tr align="center"><td>DAY</td><td>DEMO</td><td>REAL</td></tr></thead><tbody align="center">"""+mensaje+"""</tbody></table> </td></tr></table> """
@@ -171,10 +174,14 @@ class repositories_smtp(repositories_notifications):
 
         self.message = mensaje
 
+        return True
+
     def set_message_body(self):
 
         self.cuerpo = """ <tr> <td bgcolor="#ffffff" style="padding: 20px 30px 5px 30px;"> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td style="color: #340049; font-family: Arial, sans-serif; font-size: 24px;"><b>EXCEPCIONES</b></td> </tr> <tr> <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;text-align: justify;">"""+self.message+"""</td> </tr> <tr> <td> <table border="0" cellpadding="0" cellspacing="0" width="100%"> <tr> <td width="260" valign="top"> </td> <td style="font-size: 4; line-height: 0;" width="20"> &nbsp; </td> <td width="260" valign="top"> </td> </tr> </table> </td> </tr> </table> </td> </tr>  """
-
+        
+        return True
+    
         return self.get_encabezado()+self.cuerpo+self.get_pie()
     
     def send(self,fecha,mensaje):

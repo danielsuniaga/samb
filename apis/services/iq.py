@@ -113,21 +113,31 @@ class cases_iq:
 
         self.message = valor
 
+        return True
+
     def add_message_text(self,valor):
 
         self.message = self.message + " - "+valor
+
+        return True
 
     def set_value_rsi(self,valor):
 
         self.rsi = valor
 
+        return True
+
     def set_value_sma10(self,valor):
 
         self.sma10 = valor
 
+        return True
+
     def set_value_sma30(self,valor):
 
         self.sma30 = valor
+
+        return True
 
     def generate_id(self):
 
@@ -137,17 +147,25 @@ class cases_iq:
 
         self.type = valor
 
+        return True
+
     def set_current_date(self, date):
 
         self.current_date = date
+
+        return True
 
     def set_current_date_general(self, date_general):
 
         self.current_date_general = date_general
 
+        return True
+
     def set_current_date_manipulated(self,date_manipulated):
 
         self.current_date_manipulated = date_manipulated
+
+        return True
 
     def set_balance(self):
 
@@ -218,6 +236,14 @@ class cases_iq:
     def analized_candles(self, candles):
 
         candles = self.removed_candle_close(candles,self.candle_removed)
+
+        candles[0]=1.05
+
+        candles[1]=1.04
+
+        candles[2]=1.03
+
+        candles[3]=1.02
 
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
@@ -516,8 +542,39 @@ class cases_iq:
 
         return True
         
+
+    def get_par(self):
+
+        return self.par
+    
+    def set_par(self,valor):
+
+        self.par = valor
+
+        return True
+    
+    def analized_day(self,date):
+
+        result = date.get_day()
+
+        if(result<5):
+
+            return False
+        
+        return True
+    
+    def set_asset_financial(self,date):
+
+        if self.analized_day(date):
+
+            return self.set_par(self.get_par()+'-OTC')
+
+        return True
+    
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
+        self.set_asset_financial(date)
+    
         for _ in range(int(self.number_loops)):
 
             now = date.get_current_utc5()

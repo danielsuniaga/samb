@@ -36,6 +36,8 @@ class repositories_iq:
 
         self.result_entry = valor
 
+        return True
+
     def get_result_entry(self):
 
         return self.result_entry
@@ -47,18 +49,26 @@ class repositories_iq:
     def set_id_entry(self,valor):
     
         self.id_entry = valor
+
+        return True
         
     def set_complement_start_date(self,date):
 
         self.start_date = str(date) + self.start_date
 
+        return True
+
     def set_complement_end_date(self,date):
 
         self.end_date = str(date) + self.end_date
 
+        return True
+
     def seteo_count(self):
 
         self.count = None
+
+        return True
 
     def get_current_entrys(self,date):
 
@@ -82,12 +92,17 @@ class repositories_iq:
 
         try:
 
-            self.count=self.cursor_db.execute("SELECT samb_entrys.id AS id FROM samb_entrys WHERE samb_entrys.CONDITION=%s AND samb_entrys.registration_date>%s AND samb_entrys.number_candle=%s LIMIT 1",[self.condition,date,candles])
+            self.cursor_db.execute("SELECT samb_entrys.id AS id FROM samb_entrys WHERE samb_entrys.CONDITION=%s AND samb_entrys.registration_date>%s AND samb_entrys.number_candle=%s LIMIT 1", [self.condition, date, candles])
+
+            rows = self.cursor_db.fetchall()
+            
+            self.count = len(rows)
+
         except Exception as err:
 
             return {'status':False,'msj':"Incidencia en la lectura de las entrys escritas  "+str(err)}
         
-        return {'status':True,'msj':'Success'} if self.count<int(self.min_entry) else {'status':False,'msj': "Cantidad maxima alcanzada en 5 minutos"}
+        return {'status':True,'msj':'Success'} if int(self.count)<int(self.min_entry) else {'status':False,'msj': "Cantidad maxima alcanzada en 5 minutos"}
     
     def add_entrys(self,current_date,id_cronjobs,type_operations,id_entry_platform):
 
