@@ -131,6 +131,8 @@ class cases_iq:
 
         self.sma10 = valor
 
+        return True
+
     def set_value_sma30(self,valor):
 
         self.sma30 = valor
@@ -540,8 +542,39 @@ class cases_iq:
 
         return True
         
+
+    def get_par(self):
+
+        return self.par
+    
+    def set_par(self,valor):
+
+        self.par = valor
+
+        return True
+    
+    def analized_day(self,date):
+
+        result = date.get_day()
+
+        if(result<5):
+
+            return False
+        
+        return True
+    
+    def set_asset_financial(self,date):
+
+        if self.analized_day(date):
+
+            return self.set_par(self.get_par()+'-OTC')
+
+        return True
+    
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
+        self.set_asset_financial(date)
+    
         for _ in range(int(self.number_loops)):
 
             now = date.get_current_utc5()
