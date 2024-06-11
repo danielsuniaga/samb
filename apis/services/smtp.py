@@ -41,7 +41,7 @@ class cases_smtp:
             {"name":"Thursday","database":5},
             {"name":"Friday","database":6},
             {"name":"Saturday","database":7},
-            {"name":"Sunday","database":8},
+            {"name":"Sunday","database":1},
             {"name":"Total","database":9}
 
         ]
