@@ -33,13 +33,15 @@ class TestServicesSmtp(TestCase):
     def test_init_data_days(self):
 
         expected_result = [
-            {"name": "Actually", "database": 0},
-            {"name": "Monday", "database": 2},
-            {"name": "Tuesday", "database": 3},
-            {"name": "Wednesday", "database": 4},
-            {"name": "Thursday", "database": 5},
-            {"name": "Friday", "database": 6},
-            {"name": "Total", "database": 7}
+            {"name":"Actually","database":0},
+            {"name":"Monday","database":2},
+            {"name":"Tuesday","database":3},
+            {"name":"Wednesday","database":4},
+            {"name":"Thursday","database":5},
+            {"name":"Friday","database":6},
+            {"name":"Saturday","database":7},
+            {"name":"Sunday","database":1},
+            {"name":"Total","database":9}
         ]
 
         result = self.service.init_data_days()
@@ -69,7 +71,7 @@ class TestServicesSmtp(TestCase):
 
         mock_get.return_value = "Tot_data"
 
-        result = self.service.get_data_repository("PRACTICE", 7)
+        result = self.service.get_data_repository("PRACTICE", 9)
 
         self.assertEqual(result, "Tot_data")
 
