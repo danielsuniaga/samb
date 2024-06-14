@@ -32,6 +32,16 @@ class repositories_iq:
 
         self.result_operation=config("RESULT_OPERATION")
 
+    def set_mode(self,valor):
+
+        self.mode = valor
+
+        return True
+    
+    def get_mode(self):
+
+        return self.mode
+
     def set_result_entry(self,valor):
 
         self.result_entry = valor
@@ -167,4 +177,22 @@ class repositories_iq:
             return {'status':False,'msj':"Incidencia en la lectura de las samb_entrys_results leidas  "+str(err)}
         
         return {'status':True,'data':result[0],'msj':'Success'}
+    
+    def get_type_manager_day(self,day):
+
+        try:
+
+            query = "SELECT samb_manager_days.type AS type FROM samb_manager_days WHERE samb_manager_days.day_number = %s"
+
+            self.cursor_db.execute(query, day)
+
+            result = self.cursor_db.fetchone() 
+            
+        except Exception as err:
+
+            return {'status':False,'msj':"Incidencia en la lectura de las samb_manager_days leidas  "+str(err)}
+                
+        return {'status':True,'data':result[0],'msj':'Success'}
+
+
 
