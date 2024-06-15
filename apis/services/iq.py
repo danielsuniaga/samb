@@ -9,6 +9,8 @@ import time
 
 class cases_iq:
 
+    iq = None
+
     def __init__(self,cursor):
 
         self.username = config("USERNAME")
@@ -534,7 +536,6 @@ class cases_iq:
 
         return True
         
-
     def get_par(self):
 
         return self.par
@@ -562,10 +563,46 @@ class cases_iq:
             return self.set_par(self.get_par()+'-OTC')
 
         return True
+
+    def get_type_manager_day(self,day):
+
+        result = self.iq.get_type_manager_day(day)
+
+        if not result['status']: 
+
+            return False
+
+        return result['data']
     
+    def set_mode(self,valor):
+
+        self.mode = valor
+
+        return True
+    
+    def get_mode(self):
+
+        return self.mode
+
+    def analized_mode(self,date):
+
+        result = self.get_type_manager_day(date.get_day())
+
+        if not result: 
+
+            return False
+        
+        self.set_mode(result)
+
+        self.iq.set_mode(result)
+
+        return self.iq.get_mode()
+
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
         self.set_asset_financial(date)
+
+        self.analized_mode(date)
     
         for _ in range(int(self.number_loops)):
 
