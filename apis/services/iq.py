@@ -241,14 +241,6 @@ class cases_iq:
 
         candles = self.removed_candle_close(candles,self.candle_removed)
 
-        # candles[0]=1.05
-
-        # candles[1]=1.04
-
-        # candles[2]=1.03
-
-        # candles[3]=1.02
-
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
             self.set_type(self.type_entry_long)
@@ -473,7 +465,6 @@ class cases_iq:
     
     def add_movements(self,smtp,result_candles):
 
-        # Preparar los datos para la inserción en lote
         data_to_insert = [(self.generate_id(),self.current_date_general,self.current_date_general,self.condition,candle["at"], candle["close"], candle["from"], candle["id"], self.iq.get_id_entry(), candle["max"], candle["min"], candle["open"], candle["to"], candle["volume"]) for candle in result_candles]
 
         result=self.iq.add_movements(data_to_insert)

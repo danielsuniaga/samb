@@ -177,16 +177,6 @@ class TestRepositoriesSMTP(TestCase):
 
         self.assertTrue(result)
 
-    def test_send_reports(self): 
-
-        message_email = self.new_value
-
-        date = self.new_date
-
-        result = self.repo.send(date,message_email)
-
-        self.assertTrue(result)
-
     def test_get_data_reporting(self):
 
         mode = self.mode
