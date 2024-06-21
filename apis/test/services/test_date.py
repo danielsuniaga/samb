@@ -100,7 +100,9 @@ class TestServicesDates(TestCase):
     @patch('apis.services.dates.cases_dates.get_current_utc5')
     def test_get_seconds_next_minute(self, mock_get_current_utc5):
 
-        test_date = datetime(2024, 6, 1, 12, 0, 45, tzinfo=pytz.timezone('America/Bogota'))
+        timezone = pytz.timezone('America/Bogota')
+        
+        test_date = timezone.localize(datetime(2024, 6, 1, 12, 0, 45))
         
         mock_get_current_utc5.return_value = test_date
 
@@ -113,7 +115,9 @@ class TestServicesDates(TestCase):
     @patch('apis.services.dates.cases_dates.get_current_utc5')
     def test_get_day(self, mock_get_current_utc5):
 
-        test_date = datetime(2024, 6, 1, 12, 0, 0, tzinfo=pytz.timezone('America/Bogota'))
+        timezone = pytz.timezone('America/Bogota')
+
+        test_date = timezone.localize(datetime(2024, 6, 1, 12, 0, 0))
         
         mock_get_current_utc5.return_value = test_date
 

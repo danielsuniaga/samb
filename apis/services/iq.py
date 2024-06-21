@@ -465,7 +465,6 @@ class cases_iq:
     
     def add_movements(self,smtp,result_candles):
 
-        # Preparar los datos para la inserción en lote
         data_to_insert = [(self.generate_id(),self.current_date_general,self.current_date_general,self.condition,candle["at"], candle["close"], candle["from"], candle["id"], self.iq.get_id_entry(), candle["max"], candle["min"], candle["open"], candle["to"], candle["volume"]) for candle in result_candles]
 
         result=self.iq.add_movements(data_to_insert)

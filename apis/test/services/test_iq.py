@@ -538,7 +538,7 @@ class TestServicesIq(TestCase):
 
         date = case_dates.cases_dates()
 
-        result = self.service.analized_day(date)
+        result = self.service.set_asset_financial(date)
 
         self.assertTrue(result)
 

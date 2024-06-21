@@ -19,7 +19,7 @@ class TestServicesSmtp(TestCase):
 
         result = self.service.send_notification_email("20240606","TEST")
 
-        self.assertEqual(result, True)
+        self.assertTrue(result)
 
     @mock.patch('apis.repositories.notification.repositories_smtp.send_reports')
     def test_send_reporting_email(self, mock_get):
@@ -28,7 +28,7 @@ class TestServicesSmtp(TestCase):
 
         result = self.service.send_reporting_email("20240606")
 
-        self.assertEqual(result, True)
+        self.assertTrue(result)
 
     def test_init_data_days(self):
 
