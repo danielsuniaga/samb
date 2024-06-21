@@ -11,6 +11,8 @@ class cases_iq:
 
     iq = None
 
+    API = None
+
     def __init__(self,cursor):
 
         self.username = config("USERNAME")
@@ -519,12 +521,6 @@ class cases_iq:
     def add_result_entry_platform_v1(self,result):
 
         return self.API.check_win(result)
-    
-    def add_result_entry_traceability(self, result):
-    
-        if(result):
-
-            result = self.add_result_entry_v3(result)
         
     def get_monetary_filter(self,result,smtp):
 

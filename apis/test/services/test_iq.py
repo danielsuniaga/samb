@@ -8,6 +8,8 @@ from apis.services.smtp import cases_smtp
 
 from decimal import Decimal
 
+import apis.services.dates as case_dates
+
 class TestServicesIq(TestCase):
 
     def setUp(self):
@@ -266,7 +268,6 @@ class TestServicesIq(TestCase):
         
         self.assertEqual(result, "LONG")
 
-
     @mock.patch('apis.services.iq.cases_iq.iq')
     def test_get_current_entrys_success(self,mock_iq):
 
@@ -299,6 +300,7 @@ class TestServicesIq(TestCase):
     @mock.patch.object(cases_iq, 'get_rsi', return_value=Decimal("50"))
     @mock.patch.object(cases_iq, 'removed_candle_close', return_value=[Decimal("1.05"), Decimal("1.04"), Decimal("1.03"), Decimal("1.02")])
     def test_analized_rsi_in_range(self, mock_get_rsi, mock_get):
+        
         candles = [
             {"close": Decimal("1.06")},
             {"close": Decimal("1.05")},
@@ -331,3 +333,201 @@ class TestServicesIq(TestCase):
         result = self.service.get_sma(candles, type_sma, account_candles)
 
         self.assertEqual(result, expected_sma)
+
+    
+    @mock.patch.object(cases_iq, 'removed_candle_close', return_value=[Decimal("1.06"), Decimal("1.05"), Decimal("1.04"), Decimal("1.03"), Decimal("1.02")])
+    @mock.patch.object(cases_iq, 'get_sma', return_value=Decimal("1.04"))
+    @mock.patch.object(cases_iq, 'set_value_sma10', return_value=True)
+    @mock.patch.object(cases_iq, 'set_value_sma30', return_value=True)
+    def test_analized_sma_short(self,mock_set_value_sma30, mock_set_value_sma10, mock_get_sma, mock_removed_candle_close):
+
+        candles = [
+            {"close": Decimal("1.06")},
+            {"close": Decimal("1.05")},
+            {"close": Decimal("1.04")},
+            {"close": Decimal("1.03")},
+            {"close": Decimal("1.02")}
+        ]
+
+        self.service.type = "put"
+
+        self.service.sma_short = 10
+
+        self.service.candle_sma_short = 10
+
+        self.service.sma_long = 30
+
+        self.service.candle_sma_long = 30
+
+        self.service.candle_last = 5
+
+        self.service.last = 0 
+
+        self.service.type_entry_short = "call"
+
+        self.service.type_entry_long = "put"
+
+        result = self.service.analized_sma(candles)
+
+        self.assertTrue(result)
+
+    
+    @mock.patch.object(cases_iq, 'analized_rsi', return_value=True)
+    @mock.patch.object(cases_iq, 'analized_sma', return_value=True)
+    def test_get_indicators_both_active_true(self,mock_rsi,mock_sma):
+
+        candles = [
+            {"close": Decimal("1.06")},
+            {"close": Decimal("1.05")},
+            {"close": Decimal("1.04")},
+            {"close": Decimal("1.03")},
+            {"close": Decimal("1.02")}
+        ]
+
+        self.service.active_rsi = True
+
+        self.service.active_sma = True
+
+        result = self.service.get_indicators(True, candles)
+
+        self.assertTrue(result)
+    
+    @mock.patch.object(cases_iq, 'add_result_entry_platform_v3', return_value=2)
+    @mock.patch('apis.repositories.iq.repositories_iq.add_entrys', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch.object(cases_iq, 'add_indicators', return_value=True)
+    def test_add_entry_traceability(self,mock_add_indicators,mock_add_entrys,mock_add_result_entry_platform_v3):
+
+        result = True
+
+        id_cronjobs = "Test"
+
+        self.service.current_date_general = '2024-06-14'
+
+        self.service.type = 'test_type'
+
+        self.service.message = ""
+
+        result_candles = 'test_result_candles'
+
+        smtp = mock.Mock()
+
+        result_value = self.service.add_entry_traceability(result, id_cronjobs, smtp, result_candles)
+
+        self.assertTrue(result_value)
+
+    @mock.patch('apis.repositories.iq.repositories_iq.add_indicators', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch.object(cases_iq, 'add_movements', return_value=True)
+    def test_add_indicators_success(self,mock_add_indicators,mock_add_movements):
+
+        smtp = mock.Mock()
+
+        result_candles = 'test_result_candles'
+
+        self.service.current_date_general = '2024-06-14'
+
+        result_value = self.service.add_indicators(smtp, result_candles)
+
+        self.assertTrue(result_value)
+
+    @mock.patch('apis.repositories.iq.repositories_iq.add_movements', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch.object(cases_iq, 'add_result_entry', return_value=True)
+    @mock.patch('apis.repositories.iq.repositories_iq.get_id_entry', return_value='entry_id')
+    def test_add_movements_success(self,mock_add_movements,mock_add_result_entry, mock_get_id_entry):
+
+        smtp = mock.Mock()
+
+        result_candles = [
+            {"at": '2024-06-14T00:00:00Z', "close": Decimal("1.06"), "from": 'source1', "id": 'candle1', "max": Decimal("1.10"), "min": Decimal("1.00"), "open": Decimal("1.05"), "to": 'destination1', "volume": Decimal("100")},
+            {"at": '2024-06-14T01:00:00Z', "close": Decimal("1.05"), "from": 'source2', "id": 'candle2', "max": Decimal("1.09"), "min": Decimal("1.01"), "open": Decimal("1.04"), "to": 'destination2', "volume": Decimal("150")},
+            {"at": '2024-06-14T02:00:00Z', "close": Decimal("1.04"), "from": 'source3', "id": 'candle3', "max": Decimal("1.08"), "min": Decimal("1.02"), "open": Decimal("1.03"), "to": 'destination3', "volume": Decimal("200")}
+        ]
+
+        self.service.current_date_general = '2024-06-14'
+
+        result_value = self.service.add_movements(smtp, result_candles)
+
+        self.assertTrue(result_value)
+
+    @mock.patch('apis.repositories.iq.repositories_iq.add_entrys_result', return_value={'status': True, 'msj': 'Success'})
+    def test_add_result_entry_success(self,mock_add_entrys_result):
+
+        smtp = mock.Mock()
+
+        self.service.current_date_general = '2024-06-14'
+
+        result_value = self.service.add_result_entry(smtp)
+
+        self.assertTrue(result_value)
+
+
+    @mock.patch('apis.services.telegram.cases_telegram.send', return_value=True)
+    def test_send_notification_telegram_success(self, mock_telegram_send):
+
+        result = True
+
+        id_cronjobs = "Test"
+
+        result_value = self.service.send_notification_telegram(result, mock_telegram_send, id_cronjobs)
+
+        self.assertTrue(result_value)
+
+    @mock.patch('apis.services.iq.IQ_Option')
+    def test_add_result_entry_platform_v3_success(self, mock_iq_option):
+
+        result=1234456577
+
+        expected_result = 1
+
+        mock_instance = mock_iq_option.return_value
+
+        mock_instance.connect.return_value = True
+
+        mock_instance.check_win_v3.return_value = expected_result
+
+        self.service.init()
+
+        result = self.service.add_result_entry_platform_v3(result)
+
+        self.assertEqual(result,expected_result)
+
+    @mock.patch('apis.repositories.iq.repositories_iq.get_sum_entrys_date', return_value={'status':True,'data': 1,'msj':'Success'})
+    def test_get_monetary_filter(self,mock_get_sum_entrys_date):
+
+        result = True
+
+        smtp = True
+
+        self.service.profit=2
+
+        self.service.loss=-4
+
+        result = self.service.get_monetary_filter(result,smtp)
+
+        self.assertTrue(result)
+
+    def test_get_par(self):
+
+        expected_result = "TEST"
+
+        self.service.par = expected_result
+
+        result = self.service.get_par()
+
+        self.assertEqual(expected_result,result)
+
+    def test_set_par(self):
+
+        valor = "TEST"
+
+        result = self.service.set_par(valor)
+
+        self.assertTrue(result)
+
+    @mock.patch('apis.services.dates.cases_dates.get_day', return_value=6)
+    def test_analized_day_true(self,mock_date):
+
+        date = case_dates.cases_dates()
+        
+        result = self.service.analized_day(date)
+
+        self.assertTrue(result)
