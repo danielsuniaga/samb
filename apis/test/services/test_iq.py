@@ -10,6 +10,10 @@ from decimal import Decimal
 
 import apis.services.dates as case_dates
 
+import apis.services.telegram as case_telegram
+
+from django.db import connection
+
 class TestServicesIq(TestCase):
 
     def setUp(self):
@@ -334,7 +338,6 @@ class TestServicesIq(TestCase):
 
         self.assertEqual(result, expected_sma)
 
-    
     @mock.patch.object(cases_iq, 'removed_candle_close', return_value=[Decimal("1.06"), Decimal("1.05"), Decimal("1.04"), Decimal("1.03"), Decimal("1.02")])
     @mock.patch.object(cases_iq, 'get_sma', return_value=Decimal("1.04"))
     @mock.patch.object(cases_iq, 'set_value_sma10', return_value=True)
@@ -371,7 +374,6 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result)
 
-    
     @mock.patch.object(cases_iq, 'analized_rsi', return_value=True)
     @mock.patch.object(cases_iq, 'analized_sma', return_value=True)
     def test_get_indicators_both_active_true(self,mock_rsi,mock_sma):
@@ -459,7 +461,6 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result_value)
 
-
     @mock.patch('apis.services.telegram.cases_telegram.send', return_value=True)
     def test_send_notification_telegram_success(self, mock_telegram_send):
 
@@ -531,3 +532,85 @@ class TestServicesIq(TestCase):
         result = self.service.analized_day(date)
 
         self.assertTrue(result)
+
+    @mock.patch.object(cases_iq, 'analized_day', return_value=True)
+    def test_set_asset_financial(self,mock_analized_day):
+
+        date = case_dates.cases_dates()
+
+        result = self.service.analized_day(date)
+
+        self.assertTrue(result)
+
+    @mock.patch('apis.repositories.iq.repositories_iq.get_type_manager_day', return_value={'status':True,'data': 1,'msj':'Success'})
+    def test_get_type_manager_day(self,mock_iq_get_type_manager_day):
+
+        expected_result = 1
+
+        day=3
+
+        result = self.service.get_type_manager_day(day)
+
+        self.assertEqual(result,expected_result)
+
+    def test_set_mode(self):
+
+        valor="TEST"
+
+        result = self.service.set_mode(valor)
+
+        self.assertTrue(result)
+
+    def test_get_mode(self):
+
+        expected_result = "REAL"
+
+        self.service.mode = expected_result
+
+        result = self.service.get_mode()
+
+        self.assertEqual(expected_result,result)
+
+    @mock.patch.object(cases_iq, 'get_type_manager_day', return_value=1)
+    def test_analized_mode(self,mock_get_type_manager_day):
+        
+
+        date = case_dates.cases_dates()
+
+        result = self.service.analized_mode(date)
+
+        self.assertTrue(result)
+
+    @mock.patch.object(cases_iq, 'set_asset_financial', return_value=True)
+    @mock.patch.object(cases_iq, 'analized_mode', return_value=True)
+    @mock.patch.object(cases_iq, 'set_current_date', return_value=True)
+    @mock.patch.object(cases_iq, 'set_current_date_general', return_value=True)
+    @mock.patch.object(cases_iq, 'set_current_date_manipulated', return_value=True)
+    @mock.patch.object(cases_iq, 'get_current_entrys', return_value=True)
+    @mock.patch.object(cases_iq, 'get_indicators', return_value=True)
+    @mock.patch.object(cases_iq, 'get_monetary_filter', return_value=True)
+    @mock.patch.object(cases_iq, 'add_entry_platform', return_value=True)
+    @mock.patch.object(cases_iq, 'add_entry_traceability', return_value=True)
+    @mock.patch.object(cases_iq, 'send_notification_telegram', return_value=True)
+    def test_get_loops(self,mock_set_asset_financial,mock_analized_mode,mock_set_current_date,mock_set_current_date_general,mock_set_current_date_manipulated,mock_get_current_entrys,mock_get_indicators,mock_get_monetary_filter,mock_add_entry_platform,mock_add_entry_traceability,mock_send_notification_telegram):
+
+        cursor = connection.cursor()
+
+        date = case_dates.cases_dates()
+
+        telegram = case_telegram.cases_telegram(cursor)
+
+        smtp = "test"
+
+        id_cronjobs = "11111111111"
+
+        self.service.sleep = 0
+
+        self.service.number_loops = 1
+
+        self.service.init()
+
+        result = self.service.get_loops(date,smtp,id_cronjobs,telegram)
+
+        self.assertTrue(result)
+

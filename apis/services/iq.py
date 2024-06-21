@@ -600,7 +600,7 @@ class cases_iq:
 
         self.iq.set_mode(result)
 
-        return self.iq.get_mode()
+        return True
 
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
