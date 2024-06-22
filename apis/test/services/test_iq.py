@@ -177,6 +177,8 @@ class TestServicesIq(TestCase):
     @mock.patch('apis.services.iq.IQ_Option')
     def test_set_balance(self, mock_iq_option):
 
+        date = case_dates.cases_dates()
+
         expected_result = {'status':True,'msj':'Success'}
 
         mock_instance = mock_iq_option.return_value
@@ -187,7 +189,7 @@ class TestServicesIq(TestCase):
 
         self.service.init()
 
-        result = self.service.set_balance()
+        result = self.service.set_balance(date)
         
         self.assertEqual(result, expected_result)
 

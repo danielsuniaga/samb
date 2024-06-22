@@ -212,12 +212,12 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
           
-          result = self.iq.set_balance()
+          result = self.iq.set_balance(self.dates)
 
           if not result['status']:
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
-          
+                    
           self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 
           now = self.dates.get_current_utc5()
