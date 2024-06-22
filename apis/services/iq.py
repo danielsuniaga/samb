@@ -171,18 +171,6 @@ class cases_iq:
 
         return True
 
-    def set_balance(self):
-
-        try:
-
-            self.API.change_balance(self.mode)
-
-        except Exception as err:
-
-            return {'status': False, 'message':'Se genero una excepcion al posicionar el modo'+str(err)}
-        
-        return {'status':True,'msj':'Success'}
-
     def check(self):
 
         try:
@@ -593,11 +581,23 @@ class cases_iq:
 
         return True
 
+    def set_balance(self,dates):
+
+        self.analized_mode(dates)
+
+        try:
+
+            self.API.change_balance(self.mode)
+
+        except Exception as err:
+
+            return {'status': False, 'message':'Se genero una excepcion al posicionar el modo'+str(err)}
+        
+        return {'status':True,'msj':'Success'}
+
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
         self.set_asset_financial(date)
-
-        self.analized_mode(date)
     
         for _ in range(int(self.number_loops)):
 
