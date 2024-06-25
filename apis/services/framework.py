@@ -1,8 +1,10 @@
 import apis.repositories.framework as repository_framework
 
+from apis.services.iframework import icases_framework
+
 import uuid
 
-class cases_framework:
+class cases_framework(icases_framework):
 
     def __init__(self,cursor):
 

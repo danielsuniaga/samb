@@ -1,6 +1,8 @@
 from decouple import config
 
-class repositories_iq:
+from apis.repositories.iiq import irepositories_iq
+
+class repositories_iq(irepositories_iq):
 
     def __init__(self,cursor):
 

@@ -10,7 +10,13 @@ import email.message
 
 import requests
 
-class repositories_notifications:
+from apis.repositories.inotification import irepositories_notifications
+
+from apis.repositories.ismtp import irepositories_smtp
+
+from apis.repositories.itelegram import irepositories_telegram
+
+class repositories_notifications(irepositories_notifications):
 
     def __init__(self,cursor):
 
@@ -124,7 +130,7 @@ class repositories_notifications:
         
         return result[0]
 
-class repositories_smtp(repositories_notifications):
+class repositories_smtp(repositories_notifications,irepositories_smtp):
 
     def __init__(self,cursor):
 
@@ -280,7 +286,7 @@ class repositories_smtp(repositories_notifications):
 
         return self.get_data_reporting_total(mode)
 
-class repositories_telegram(repositories_notifications):
+class repositories_telegram(repositories_notifications,irepositories_telegram):
 
     def __init__(self,cursor):
 

@@ -6,7 +6,9 @@ import json
 
 import requests
 
-class cases_telegram:
+from apis.services.itelegram import icases_telegram
+
+class cases_telegram(icases_telegram):
 
     def __init__(self,cursor):
 

@@ -1,8 +1,9 @@
 import apis.repositories.api as repository_apis
 
-from decouple import config
+from apis.services.iapi import icases_api
 
-class cases_api:
+from decouple import config
+class cases_api(icases_api):
 
     def __init__(self,cursor):
 

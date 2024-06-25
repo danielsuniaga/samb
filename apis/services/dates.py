@@ -1,12 +1,13 @@
 from datetime import datetime
 from decouple import config
 from datetime import timedelta
+from apis.services.idates import icases_dates
 
 import time
 
 import pytz
 
-class cases_dates:
+class cases_dates(icases_dates):
 
     def __init__(self):
 

@@ -1,6 +1,8 @@
 from decouple import config
 
-class repositories_api:
+from apis.repositories.iapi import irepositories_api
+
+class repositories_api(irepositories_api):
 
     def __init__(self,cursor):
 

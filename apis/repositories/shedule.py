@@ -1,6 +1,8 @@
 from decouple import config
 
-class repositories_shedule:
+from apis.repositories.ishedule import irepositories_shedule
+
+class repositories_shedule(irepositories_shedule):
 
     def __init__(self,cursor):
 
