@@ -3,11 +3,12 @@ import apis.repositories.iq as repository_iqs
 from decouple import config
 from iqoptionapi.stable_api import IQ_Option
 from decimal import Decimal
+from apis.services.iiq import icases_iq
 
 import uuid
 import time
 
-class cases_iq:
+class cases_iq(icases_iq):
 
     iq = None
 

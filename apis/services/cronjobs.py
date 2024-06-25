@@ -1,8 +1,9 @@
 import apis.repositories.cronjobs as repository_cronjobs
 
-import uuid
+from apis.services.icronjobs import icases_cronjobs
 
-class cases_cronjobs:
+import uuid
+class cases_cronjobs(icases_cronjobs):
 
     def __init__(self,cursor):
 

@@ -1,6 +1,8 @@
 import apis.repositories.shedule as repository_shedules
 
-class cases_shedule:
+from apis.services.ishedule import icases_shedule
+
+class cases_shedule(icases_shedule):
 
     def __init__(self,cursor):
 

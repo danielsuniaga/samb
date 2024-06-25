@@ -1,6 +1,8 @@
 from decouple import config
 
-class repositories_cronjobs:
+from apis.repositories.icronjobs import irepositories_cronjobs
+
+class repositories_cronjobs(irepositories_cronjobs):
 
     def __init__(self,cursor):
 
