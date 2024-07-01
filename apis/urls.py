@@ -20,6 +20,8 @@ urlpatterns = [
 
     path('get-data-analysis-iqoption-clean/', views.GetDataAnalysisIqOptionClean.as_view()),
 
+    path('get-data-analysis-iqoption-clean-another/', views.GetDataAnalysisIqOptionCleanAnother.as_view()),
+
     path("test-view-connection-telegram/", views.TestConnectionTelegram.as_view()),
 
     path('get-now-manager/', views.NowManager.as_view())
