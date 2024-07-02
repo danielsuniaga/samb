@@ -151,7 +151,23 @@ class GetReports(APIView):
 
           date = self.dates.get_current_date(now)
 
-          return Response(self.smtp.send_reporting_email(date))
+          self.smtp.set_end_date_repository(self.smtp.get_end_date())
+
+          self.smtp.set_start_date_repository(self.smtp.get_start_date())
+
+          self.smtp.set_subject_reports(self.smtp.get_subject_reports_nominal())
+
+          self.smtp.send_reporting_email(date)
+
+          self.smtp.set_end_date_repository(self.smtp.get_end_date_another())
+
+          self.smtp.set_start_date_repository(self.smtp.get_start_date_another())   
+
+          self.smtp.set_subject_reports(self.smtp.get_subject_reports_another())
+
+          self.smtp.send_reporting_email(date)  
+
+          return Response(True)
 class GetDataAnalysisIqOptionClean(APIView):
 
      def __init__(self):
