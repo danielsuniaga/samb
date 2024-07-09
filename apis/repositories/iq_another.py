@@ -192,7 +192,7 @@ class repositories_iq_another(irepositories_iq):
 
         try:
 
-            query = "SELECT samb_manager_days.type AS type FROM samb_manager_days WHERE samb_manager_days.day_number = %s"
+            query = "SELECT samb_manager_days.type_another AS type FROM samb_manager_days WHERE samb_manager_days.day_number = %s"
 
             self.cursor_db.execute(query, day)
 
