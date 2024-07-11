@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-from apis.services.api import cases_api
+from apis.services.api.api import cases_api
 
 from decouple import config
 

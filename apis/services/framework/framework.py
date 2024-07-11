@@ -1,6 +1,6 @@
 import apis.repositories.framework as repository_framework
 
-from apis.services.iframework import icases_framework
+from apis.services.framework.iframework import icases_framework
 
 import uuid
 

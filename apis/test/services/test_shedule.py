@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch
 
-from apis.services.shedule import cases_shedule
+from apis.services.shedule.shedule import cases_shedule
 
 class TestServicesShedule(TestCase):
 

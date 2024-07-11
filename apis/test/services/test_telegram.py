@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch
 
-from apis.services.telegram import cases_telegram
+from apis.services.telegram.telegram import cases_telegram
 
 import json
 

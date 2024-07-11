@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch,Mock
 
-from apis.services.smtp import cases_smtp
+from apis.services.smtp.smtp import cases_smtp
 
 class TestServicesSmtp(TestCase):
 

@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-from apis.services.cronjobs import cases_cronjobs
+from apis.services.cronjobs.cronjobs import cases_cronjobs
 
 class TestServicesCronjobs(TestCase):
 

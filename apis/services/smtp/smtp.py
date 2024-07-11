@@ -1,6 +1,6 @@
 import apis.repositories.notification as repository_notifications
 
-from apis.services.ismtp import icases_smtp
+from apis.services.smtp.ismtp import icases_smtp
 
 class cases_smtp(icases_smtp):
 

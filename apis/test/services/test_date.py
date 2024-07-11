@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch
 
-from apis.services.dates import cases_dates
+from apis.services.dates.dates import cases_dates
 
 from datetime import timedelta,datetime
 

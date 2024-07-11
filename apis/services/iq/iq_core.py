@@ -1,14 +1,15 @@
-import apis.repositories.iq_another as repository_iqs_another
 
 from decouple import config
+
 from iqoptionapi.stable_api import IQ_Option
+
 from decimal import Decimal
-from apis.services.iiq import icases_iq
 
 import uuid
+
 import time
 
-class cases_iq_another(icases_iq):
+class cases_iq_core():
 
     iq = None
 
@@ -16,33 +17,15 @@ class cases_iq_another(icases_iq):
 
     def __init__(self,cursor):
 
-        self.username = config("USERNAME")
-
-        self.password = config("PASSWORD")
+        self.message=None 
 
         self.API = None
 
-        self.mode = config("MODE")
+        self.rsi=None
 
-        self.end_from_time = time.time()
+        self.sma10=None
 
-        self.ANS=[]
-
-        self.par=config("PAR")
-
-        self.candles=config("CANDLE")
-
-        self.candle_analized = int(config("CANDLE_ANALIZED"))
-
-        self.candle_removed = int(config("CANDLE_REMOVED"))
-
-        self.interval=config("INTERVAL")
-
-        self.type = None
-
-        self.number_loops = config("NUMBER_LOOPS")
-
-        self.iq = repository_iqs_another.repositories_iq_another(cursor)
+        self.sma30=None
 
         self.current_date = None
 
@@ -50,9 +33,33 @@ class cases_iq_another(icases_iq):
 
         self.current_date_manipulated = None
 
-        self.minutes_manipulated = config("MINUTES")
+        self.username = config("USERNAME")
 
-        self.indicator = config("INDICATORS")
+        self.password = config("PASSWORD")
+
+        self.par=config("PAR")
+
+        self.interval=config("INTERVAL")
+
+        self.candles=config("CANDLE")
+
+        self.ANS=[]
+
+        self.candle_removed = int(config("CANDLE_REMOVED"))
+
+        self.candle_analized = int(config("CANDLE_ANALIZED"))
+
+        self.type_entry_long = config("TYPE_ENTRY_LONG")
+
+        self.mode = config("MODE")
+
+        self.project_name = config("PROJECT_NAME")
+
+        self.message_entry_long=config("MESSAGE_ENTRY_LONG")
+
+        self.type_entry_short = config("TYPE_ENTRY_SHORT")
+
+        self.message_entry_short=config("MESSAGE_ENTRY_SHORT")
 
         self.candles_rsi = int(config("CANDLE_RSI"))
 
@@ -64,29 +71,29 @@ class cases_iq_another(icases_iq):
 
         self.sma_short = int(config("SMA_SHORT"))
 
-        self.sma_long = int(config("SMA_LONG"))
-
         self.candle_sma_short = int(config("CANDLE_SMA_SHORT"))
+
+        self.sma_long = int(config("SMA_LONG"))
 
         self.candle_sma_long = int(config("CANDLE_SMA_LONG"))
 
-        self.type_entry_short = config("TYPE_ENTRY_SHORT")
-
-        self.type_entry_long = config("TYPE_ENTRY_LONG")
-
         self.candle_last = int(config("CANDLE_LAST"))
+
+        self.type = None
+
+        self.end_from_time = time.time()
+
+        self.number_loops = config("NUMBER_LOOPS")
+
+        self.minutes_manipulated = config("MINUTES")
+
+        self.indicator = config("INDICATORS")
 
         self.last = int(config("LAST"))
 
         self.money = int(config("MONEY"))
 
         self.expirations_mode = int(config("EXPIRATIONS_MODE"))
-
-        self.rsi=None
-
-        self.sma10=None
-
-        self.sma30=None
 
         self.rsi_id=config("RSI10")
 
@@ -95,12 +102,6 @@ class cases_iq_another(icases_iq):
         self.sma30_id=config("SMA30")
 
         self.condition=config("CONDITION")
-
-        self.message=None 
-
-        self.message_entry_short=config("MESSAGE_ENTRY_SHORT")
-
-        self.message_entry_long=config("MESSAGE_ENTRY_LONG")
 
         self.sleep = int(config("SLEEP"))
 
@@ -112,38 +113,36 @@ class cases_iq_another(icases_iq):
 
         self.loss = int(config("LOSS"))
 
-        self.project_name = config("PROJECT_NAME")
-
     def set_message(self,valor):
 
         self.message = valor
 
         return True
-
+    
     def add_message_text(self,valor):
 
         self.message = self.message + " - "+valor
 
         return True
-
+    
     def set_value_rsi(self,valor):
 
         self.rsi = valor
 
         return True
-
+    
     def set_value_sma10(self,valor):
 
         self.sma10 = valor
 
         return True
-
+    
     def set_value_sma30(self,valor):
 
         self.sma30 = valor
 
         return True
-
+    
     def generate_id(self):
 
         return uuid.uuid4().hex
@@ -153,25 +152,25 @@ class cases_iq_another(icases_iq):
         self.type = valor
 
         return True
-
+    
     def set_current_date(self, date):
 
         self.current_date = date
 
         return True
-
+    
     def set_current_date_general(self, date_general):
 
         self.current_date_general = date_general
 
         return True
-
+    
     def set_current_date_manipulated(self,date_manipulated):
 
         self.current_date_manipulated = date_manipulated
 
         return True
-
+    
     def check(self):
 
         try:
@@ -181,7 +180,7 @@ class cases_iq_another(icases_iq):
         except Exception as err:
 
             return {'status': False, 'message':'Se genero una excepcion al chequear sincronizcion con iq'+str(err)}
-
+        
     def init(self):
 
         try:
@@ -215,7 +214,7 @@ class cases_iq_another(icases_iq):
         candles.pop()
 
         return candles
-
+    
     def removed_candle_close(self,candles,amount):
 
         total_length = len(candles)
@@ -225,30 +224,6 @@ class cases_iq_another(icases_iq):
         close_prices = self.removed_candle_last(close_prices)
 
         return close_prices
-    
-    def analized_candles(self, candles):
-
-        candles = self.removed_candle_close(candles,self.candle_removed)
-
-        if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
-
-            self.set_type(self.type_entry_long)
-
-            self.set_message("ANOTHER - "+self.mode+" - "+self.project_name+" - "+self.message_entry_long+" - "+self.par)
-
-            # ALCISTA
-            return self.type_entry_long
-        
-        if all(candles[i] > candles[i+1] for i in range(self.candle_analized - 1)):
-
-            self.set_type(self.type_entry_short)
-
-            self.set_message("ANOTHER - "+self.mode+" - "+self.project_name+" - "+self.message_entry_short+" - "+self.par)
-
-            # BAJISTA
-            return self.type_entry_short
-        
-        return 0
     
     def get_current_entrys(self,flash,smtp):
 
@@ -273,7 +248,7 @@ class cases_iq_another(icases_iq):
             return True
         
         return False
-    
+
     def get_rsi(self,candles,periodos):
 
         gains = []
@@ -530,24 +505,6 @@ class cases_iq_another(icases_iq):
 
         return True
     
-    def analized_day(self,date):
-
-        result = date.get_day()
-
-        if(result<5):
-
-            return True
-        
-        return True
-    
-    def set_asset_financial(self,date):
-
-        if self.analized_day(date):
-
-            return self.set_par(self.get_par()+'-OTC')
-
-        return True
-
     def get_type_manager_day(self,day):
 
         result = self.iq.get_type_manager_day(day)
@@ -567,73 +524,3 @@ class cases_iq_another(icases_iq):
     def get_mode(self):
 
         return self.mode
-
-    def analized_mode(self,date):
-
-        result = self.get_type_manager_day(date.get_day())
-
-        if not result: 
-
-            return False
-        
-        self.set_mode(result)
-
-        self.iq.set_mode(result)
-
-        return True
-
-    def set_balance(self,dates):
-
-        self.analized_mode(dates)
-
-        try:
-
-            self.API.change_balance(self.mode)
-
-        except Exception as err:
-
-            return {'status': False, 'message':'Se genero una excepcion al posicionar el modo'+str(err)}
-        
-        return {'status':True,'msj':'Success'}
-
-    def get_loops(self,date,smtp,id_cronjobs,telegram):
-
-        self.set_asset_financial(date)
-    
-        for _ in range(int(self.number_loops)):
-
-            now = date.get_current_utc5()
-
-            current_date_local = date.get_current_date(now)
-
-            self.set_current_date(date.get_current_date_only(now))
-
-            self.set_current_date_general(current_date_local)
-
-            self.set_current_date_manipulated(date.get_current_date(date.get_current_date_minus_minutes(now,int(self.minutes_manipulated))))
-
-            result_candles = self.get_candles_data()
-
-            result = self.analized_candles(result_candles)
-
-            result = self.get_current_entrys(result,smtp)
-
-            result = self.get_indicators(result,result_candles)
-
-            result = self.get_monetary_filter(result,smtp)
-
-            result = self.add_entry_platform(result)
-
-            result = self.add_entry_traceability(result,id_cronjobs,smtp,result_candles)
-
-            self.send_notification_telegram(result,telegram,id_cronjobs)
-
-            if not result:
-
-                time.sleep(self.sleep)
-
-            else:
-
-                break
-
-        return True

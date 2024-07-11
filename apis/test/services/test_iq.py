@@ -2,15 +2,15 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch
 
-from apis.services.iq import cases_iq
+from apis.services.iq.iq import cases_iq
 
-from apis.services.smtp import cases_smtp
+from apis.services.smtp.smtp import cases_smtp
 
 from decimal import Decimal
 
-import apis.services.dates as case_dates
+import apis.services.dates.dates as case_dates
 
-import apis.services.telegram as case_telegram
+import apis.services.telegram.telegram as case_telegram
 
 from django.db import connection
 

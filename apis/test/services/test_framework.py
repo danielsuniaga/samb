@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch
 
-from apis.services.framework import cases_framework
+from apis.services.framework.framework import cases_framework
 
 class TestServicesDates(TestCase):
 

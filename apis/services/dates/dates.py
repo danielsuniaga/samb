@@ -1,7 +1,7 @@
 from datetime import datetime
 from decouple import config
 from datetime import timedelta
-from apis.services.idates import icases_dates
+from apis.services.dates.idates import icases_dates
 
 import time
 
