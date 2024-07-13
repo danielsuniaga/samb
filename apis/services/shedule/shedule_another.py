@@ -1,4 +1,4 @@
-import apis.repositories.shedule_another as repositories_shedule_another
+import apis.repositories.shedule.shedule_another as repositories_shedule_another
 
 from apis.services.shedule.shedule_core import cases_shedule_core
 

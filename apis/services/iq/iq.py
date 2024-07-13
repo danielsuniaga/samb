@@ -1,10 +1,11 @@
-import apis.repositories.iq as repository_iqs
+import apis.repositories.iq.iq as repository_iqs
 
 from apis.services.iq.iq_core import cases_iq_core
 
 import time
 
-class cases_iq(cases_iq_core):
+from apis.services.iq.iiq import icases_iq
+class cases_iq(cases_iq_core,icases_iq):
 
     def __init__(self,cursor):
 

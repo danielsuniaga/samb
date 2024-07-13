@@ -1,4 +1,4 @@
-import apis.repositories.framework as repository_framework
+import apis.repositories.framework.framework as repository_framework
 
 from apis.services.framework.iframework import icases_framework
 

@@ -1,6 +1,6 @@
-import apis.repositories.cronjobs as repository_cronjobs
+import apis.repositories.cronjobs.cronjobs as repository_cronjobs
 
-from apis.services.iq.icronjobs import icases_cronjobs
+from apis.services.cronjobs.icronjobs import icases_cronjobs
 
 import uuid
 class cases_cronjobs(icases_cronjobs):

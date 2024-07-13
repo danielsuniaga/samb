@@ -1,6 +1,6 @@
 
-
-class cases_shedule_core():
+from apis.services.shedule.ishedule_core import icases_shedule_core
+class cases_shedule_core(icases_shedule_core):
 
     shedule=None
 

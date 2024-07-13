@@ -1,4 +1,4 @@
-import apis.repositories.notification as repository_notifications
+import apis.repositories.notification.notification as repository_notifications
 
 from apis.services.smtp.ismtp import icases_smtp
 

@@ -5,11 +5,13 @@ from iqoptionapi.stable_api import IQ_Option
 
 from decimal import Decimal
 
+from apis.services.iq.iiq_core import icases_iq_core
+
 import uuid
 
 import time
 
-class cases_iq_core():
+class cases_iq_core(icases_iq_core):
 
     iq = None
 

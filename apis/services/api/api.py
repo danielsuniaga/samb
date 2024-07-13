@@ -1,4 +1,4 @@
-import apis.repositories.api as repository_apis
+import apis.repositories.api.api as repository_apis
 
 from apis.services.api.iapi import icases_api
 
