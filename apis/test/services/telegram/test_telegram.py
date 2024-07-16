@@ -14,7 +14,7 @@ class TestServicesTelegram(TestCase):
         
         self.service = cases_telegram(self.mock_cursor)
 
-    @mock.patch('apis.repositories.notification.repositories_telegram.add')
+    @mock.patch('apis.repositories.notification.notification.repositories_telegram.add')
     def test_send_reporting_email(self, mock_get):
 
         mock_get.return_value = {'status':True,'msj':'Success'} 

@@ -12,7 +12,7 @@ class TestServicesShedule(TestCase):
         
         self.service = cases_shedule(self.mock_cursor)
 
-    @mock.patch('apis.repositories.shedule.repositories_shedule.get')
+    @mock.patch('apis.repositories.shedule.shedule.repositories_shedule.get')
     def test_get_shedule_result(self, mock_get):
 
         mock_get.return_value = {'status':True,'msj':'Success'}
