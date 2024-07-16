@@ -32,6 +32,22 @@ class repositories_notifications(irepositories_notifications):
 
         self.condition = config("CONDITION")
 
+        self.start_date = config("START")
+
+        self.end_date = config("END")
+
+    def set_start_date(self,valor):
+        
+        self.start_date = valor
+
+        return True
+
+    def set_end_date(self,valor):
+
+        self.end_date = valor
+
+        return True
+
     def add_notificacion_exc(self,mensaje):
 
         try:
@@ -86,9 +102,9 @@ class repositories_notifications(irepositories_notifications):
 
         try:
 
-            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND DAYOFWEEK(samb_entrys_results.registration_date) = %s"
+            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND DAYOFWEEK(samb_entrys_results.registration_date) = %s AND TIME(samb_entrys_results.registration_date) BETWEEN %s AND %s"
 
-            self.cursor_db.execute(query, (mode, day))
+            self.cursor_db.execute(query, (mode, day,int(self.start_date),int(self.end_date)))
 
             result = self.cursor_db.fetchone() 
             
@@ -102,9 +118,9 @@ class repositories_notifications(irepositories_notifications):
 
         try:
 
-            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND DATE(samb_entrys_results.registration_date) = CURDATE()"
+            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND DATE(samb_entrys_results.registration_date) = CURDATE() AND TIME(samb_entrys_results.registration_date) BETWEEN %s AND %s"
 
-            self.cursor_db.execute(query, (mode))
+            self.cursor_db.execute(query, (mode,int(self.start_date),int(self.end_date)))
 
             result = self.cursor_db.fetchone() 
             
@@ -118,9 +134,9 @@ class repositories_notifications(irepositories_notifications):
 
         try:
 
-            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s"
+            query = "SELECT IFNULL(SUM(samb_entrys_results.result), 0) as result FROM samb_entrys_results INNER JOIN samb_entrys ON samb_entrys.id = samb_entrys_results.id_entrys_id WHERE samb_entrys.type_account = %s AND TIME(samb_entrys_results.registration_date) BETWEEN %s AND %s"
 
-            self.cursor_db.execute(query, (mode))
+            self.cursor_db.execute(query, (mode,int(self.start_date),int(self.end_date)))
 
             result = self.cursor_db.fetchone() 
             
@@ -142,7 +158,7 @@ class repositories_smtp(repositories_notifications,irepositories_smtp):
 
         self.subject = "Notificaciones de excepciones | SAMB | TRADING "
 
-        self.subject_reports = "Management report ("+config("PROJECT_NAME")+") | SAMB | TRADING "
+        self.subject_reports = "Management report ("+config("PROJECT_NAME")+") SESSION NOMINAL | SAMB | TRADING "
 
         self.destinatario = config("EMAIL_RECIPIENT")
 
@@ -157,6 +173,12 @@ class repositories_smtp(repositories_notifications,irepositories_smtp):
         self.port = config("PORT_SMTP")
 
         self.messsage_report=""
+
+    def set_subject_reports(self,valor):
+
+        self.subject_reports = valor
+
+        return True
 
     def set_message_report(self,valor):
 

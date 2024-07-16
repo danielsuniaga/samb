@@ -2,11 +2,67 @@ import apis.repositories.notification.notification as repository_notifications
 
 from apis.services.smtp.ismtp import icases_smtp
 
+from decouple import config
+
 class cases_smtp(icases_smtp):
 
     def __init__(self,cursor):
 
         self.smtp = repository_notifications.repositories_smtp(cursor)
+
+        self.start_date = config("START")
+
+        self.end_date = config("END")
+
+        self.start_date_another = config("START_ANOTHER")
+
+        self.end_date_another = config("END_ANOTHER")
+
+        self.subject_reports_nominal = "Management report ("+config("PROJECT_NAME")+") SESSION NOMINAL | SAMB | TRADING "
+
+        self.subject_reports_another = "Management report ("+config("PROJECT_NAME")+") SESSION ANOTHER | SAMB | TRADING "
+
+    def get_subject_reports_nominal(self):
+
+        return self.subject_reports_nominal
+    
+    def get_subject_reports_another(self):
+
+        return self.subject_reports_another
+    
+    def set_subject_reports(self,valor):
+
+        self.smtp.set_subject_reports(valor)
+
+        return True
+
+    def get_end_date_another(self):
+
+        return self.end_date_another
+    
+    def get_start_date_another(self):
+
+        return self.start_date_another
+
+    def get_end_date(self):
+
+        return self.end_date
+    
+    def get_start_date(self):
+
+        return self.start_date
+
+    def set_end_date_repository(self,valor):
+
+        self.smtp.set_end_date(valor)
+
+        return True
+    
+    def set_start_date_repository(self,valor):
+
+        self.smtp.set_start_date(valor)
+
+        return True
 
     def send_notification_email(self,date,mensaje):
         
