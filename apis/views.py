@@ -17,16 +17,16 @@ from iqoptionapi.stable_api import IQ_Option
 
 # Your own imports
 # import apis.cases as cases
-import apis.services.cronjobs as case_cronjobs
-import apis.services.dates as case_dates
-import apis.services.shedule as case_shedules
-import apis.services.shedule_another as cases_shedule_another
-import apis.services.smtp as case_smtps
-import apis.services.api as case_apis
-import apis.services.iq as case_iq
-import apis.services.iq_another as case_iq_another
-import apis.services.framework as case_framework
-import apis.services.telegram as case_telegram
+import apis.services.cronjobs.cronjobs as case_cronjobs
+import apis.services.dates.dates as case_dates
+import apis.services.shedule.shedule as case_shedules
+import apis.services.shedule.shedule_another as cases_shedule_another
+import apis.services.smtp.smtp as case_smtps
+import apis.services.api.api as case_apis
+import apis.services.iq.iq as case_iq
+import apis.services.iq.iq_another as case_iq_another
+import apis.services.framework.framework as case_framework
+import apis.services.telegram.telegram as case_telegram
 
 import uuid
 import time
