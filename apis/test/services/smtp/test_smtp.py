@@ -12,7 +12,7 @@ class TestServicesSmtp(TestCase):
         
         self.service = cases_smtp(self.mock_cursor)
 
-    @mock.patch('apis.repositories.notification.repositories_smtp.send')
+    @mock.patch('apis.repositories.notification.notification.repositories_smtp.send')
     def test_send_notification_email(self, mock_get):
 
         mock_get.return_value = True
@@ -21,7 +21,7 @@ class TestServicesSmtp(TestCase):
 
         self.assertTrue(result)
 
-    @mock.patch('apis.repositories.notification.repositories_smtp.send_reports')
+    @mock.patch('apis.repositories.notification.notification.repositories_smtp.send_reports')
     def test_send_reporting_email(self, mock_get):
 
         mock_get.return_value = True
@@ -48,7 +48,7 @@ class TestServicesSmtp(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    @mock.patch('apis.repositories.notification.repositories_smtp.get_data_reporting_cur')
+    @mock.patch('apis.repositories.notification.notification.repositories_smtp.get_data_reporting_cur')
     def test_get_data_repository_cur(self, mock_get):
 
         mock_get.return_value = "Cur_data"
@@ -57,7 +57,7 @@ class TestServicesSmtp(TestCase):
 
         self.assertEqual(result, "Cur_data")
 
-    @mock.patch('apis.repositories.notification.repositories_smtp.get_data_reporting')
+    @mock.patch('apis.repositories.notification.notification.repositories_smtp.get_data_reporting')
     def test_get_data_repository(self, mock_get):
 
         mock_get.return_value = "Other_data"
@@ -66,7 +66,7 @@ class TestServicesSmtp(TestCase):
 
         self.assertEqual(result, "Other_data")
 
-    @mock.patch('apis.repositories.notification.repositories_smtp.get_data_reporting_tot')
+    @mock.patch('apis.repositories.notification.notification.repositories_smtp.get_data_reporting_tot')
     def test_get_data_repository_tot(self, mock_get):
 
         mock_get.return_value = "Tot_data"

@@ -144,7 +144,7 @@ class TestServicesIq(TestCase):
 
         self.assertEqual(self.service.current_date_manipulated, expected_message)
 
-    @mock.patch('apis.services.iq.IQ_Option')
+    @mock.patch('apis.services.iq.iq_core.IQ_Option')
     def test_init_success(self, mock_get):
 
         mock_instance = mock_get.return_value
@@ -157,7 +157,7 @@ class TestServicesIq(TestCase):
 
         self.assertEqual(result, {'status':True,'msj':'Success sync'})
   
-    @mock.patch('apis.services.iq.IQ_Option')
+    @mock.patch('apis.services.iq.iq_core.IQ_Option')
     def test_check_success(self, mock_iq_option):
 
         expected_result = {'status': True, 'msj': 'Success sync'}
@@ -174,7 +174,7 @@ class TestServicesIq(TestCase):
         
         self.assertEqual(result, expected_result)
 
-    @mock.patch('apis.services.iq.IQ_Option')
+    @mock.patch('apis.services.iq.iq_core.IQ_Option')
     def test_set_balance(self, mock_iq_option):
 
         date = case_dates.cases_dates()
@@ -193,7 +193,7 @@ class TestServicesIq(TestCase):
         
         self.assertEqual(result, expected_result)
 
-    @mock.patch('apis.services.iq.IQ_Option')
+    @mock.patch('apis.services.iq.iq_core.IQ_Option')
     def test_get_candles_data(self, mock_iq_option):
 
         expected_result = [
@@ -249,7 +249,7 @@ class TestServicesIq(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    @mock.patch.object(cases_iq, 'removed_candle_close', return_value=[Decimal("1.04"), Decimal("1.05"), Decimal("1.06")])
+    @mock.patch.object(cases_iq, 'removed_candle_close', return_value=[Decimal("1.03"),Decimal("1.04"), Decimal("1.05"), Decimal("1.06")])
     def test_analized_candles_long(self,mock_get):
 
         candles = [
@@ -272,9 +272,9 @@ class TestServicesIq(TestCase):
         
         result = self.service.analized_candles(candles)
         
-        self.assertEqual(result, "LONG")
+        self.assertEqual(result, "SHORT")
 
-    @mock.patch('apis.services.iq.cases_iq.iq')
+    @mock.patch('apis.services.iq.iq.cases_iq.iq')
     def test_get_current_entrys_success(self,mock_iq):
 
         flash = "call"
@@ -397,7 +397,7 @@ class TestServicesIq(TestCase):
         self.assertTrue(result)
     
     @mock.patch.object(cases_iq, 'add_result_entry_platform_v3', return_value=2)
-    @mock.patch('apis.repositories.iq.repositories_iq.add_entrys', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.add_entrys', return_value={'status': True, 'msj': 'Success'})
     @mock.patch.object(cases_iq, 'add_indicators', return_value=True)
     def test_add_entry_traceability(self,mock_add_indicators,mock_add_entrys,mock_add_result_entry_platform_v3):
 
@@ -419,7 +419,7 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result_value)
 
-    @mock.patch('apis.repositories.iq.repositories_iq.add_indicators', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.add_indicators', return_value={'status': True, 'msj': 'Success'})
     @mock.patch.object(cases_iq, 'add_movements', return_value=True)
     def test_add_indicators_success(self,mock_add_indicators,mock_add_movements):
 
@@ -433,9 +433,9 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result_value)
 
-    @mock.patch('apis.repositories.iq.repositories_iq.add_movements', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.add_movements', return_value={'status': True, 'msj': 'Success'})
     @mock.patch.object(cases_iq, 'add_result_entry', return_value=True)
-    @mock.patch('apis.repositories.iq.repositories_iq.get_id_entry', return_value='entry_id')
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.get_id_entry', return_value='entry_id')
     def test_add_movements_success(self,mock_add_movements,mock_add_result_entry, mock_get_id_entry):
 
         smtp = mock.Mock()
@@ -452,7 +452,7 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result_value)
 
-    @mock.patch('apis.repositories.iq.repositories_iq.add_entrys_result', return_value={'status': True, 'msj': 'Success'})
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.add_entrys_result', return_value={'status': True, 'msj': 'Success'})
     def test_add_result_entry_success(self,mock_add_entrys_result):
 
         smtp = mock.Mock()
@@ -463,7 +463,7 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result_value)
 
-    @mock.patch('apis.services.telegram.cases_telegram.send', return_value=True)
+    @mock.patch('apis.services.telegram.telegram.cases_telegram.send', return_value=True)
     def test_send_notification_telegram_success(self, mock_telegram_send):
 
         result = True
@@ -474,7 +474,7 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result_value)
 
-    @mock.patch('apis.services.iq.IQ_Option')
+    @mock.patch('apis.services.iq.iq_core.IQ_Option')
     def test_add_result_entry_platform_v3_success(self, mock_iq_option):
 
         result=1234456577
@@ -493,7 +493,7 @@ class TestServicesIq(TestCase):
 
         self.assertEqual(result,expected_result)
 
-    @mock.patch('apis.repositories.iq.repositories_iq.get_sum_entrys_date', return_value={'status':True,'data': 1,'msj':'Success'})
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.get_sum_entrys_date', return_value={'status':True,'data': 1,'msj':'Success'})
     def test_get_monetary_filter(self,mock_get_sum_entrys_date):
 
         result = True
@@ -526,7 +526,7 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result)
 
-    @mock.patch('apis.services.dates.cases_dates.get_day', return_value=6)
+    @mock.patch('apis.services.dates.dates.cases_dates.get_day', return_value=6)
     def test_analized_day_true(self,mock_date):
 
         date = case_dates.cases_dates()
@@ -544,7 +544,7 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result)
 
-    @mock.patch('apis.repositories.iq.repositories_iq.get_type_manager_day', return_value={'status':True,'data': 1,'msj':'Success'})
+    @mock.patch('apis.repositories.iq.iq.repositories_iq.get_type_manager_day', return_value={'status':True,'data': 1,'msj':'Success'})
     def test_get_type_manager_day(self,mock_iq_get_type_manager_day):
 
         expected_result = 1

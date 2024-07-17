@@ -40,7 +40,7 @@ class TestServicesDates(TestCase):
 
         self.assertEqual(execution_time, expected_time)
 
-    @patch('apis.services.dates.datetime')
+    @patch('apis.services.dates.dates.datetime')
     def test_get_current_utc5(self,mock_datetime):
 
         mock_datetime.now.return_value = datetime(2024, 6, 1, 12, 0, 0, tzinfo=pytz.utc)
@@ -97,7 +97,7 @@ class TestServicesDates(TestCase):
         
         self.assertEqual(result, expected_result)
 
-    @patch('apis.services.dates.cases_dates.get_current_utc5')
+    @patch('apis.services.dates.dates.cases_dates.get_current_utc5')
     def test_get_seconds_next_minute(self, mock_get_current_utc5):
 
         timezone = pytz.timezone('America/Bogota')
@@ -112,7 +112,7 @@ class TestServicesDates(TestCase):
 
         self.assertEqual(result, expected_result)
 
-    @patch('apis.services.dates.cases_dates.get_current_utc5')
+    @patch('apis.services.dates.dates.cases_dates.get_current_utc5')
     def test_get_day(self, mock_get_current_utc5):
 
         timezone = pytz.timezone('America/Bogota')

@@ -18,7 +18,7 @@ class TestServicesDates(TestCase):
         
         self.assertTrue(result)
 
-    @mock.patch('apis.repositories.framework.repositories_framework.add')
+    @mock.patch('apis.repositories.framework.framework.repositories_framework.add')
     def test_add(self, mock_get):
 
         mock_get.return_value = {'status':True,'msj':'Success'}

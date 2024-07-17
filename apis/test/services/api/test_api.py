@@ -14,7 +14,7 @@ class TestServicesApi(TestCase):
 
         self.api_key = config("API")
 
-    @mock.patch('apis.repositories.api.repositories_api.get')
+    @mock.patch('apis.repositories.api.api.repositories_api.get')
     def test_get_api_result(self, mock_get):
 
         mock_get.return_value = "TEST"
@@ -23,7 +23,7 @@ class TestServicesApi(TestCase):
 
         self.assertEqual(result, "TEST")
 
-    @mock.patch('apis.repositories.api.repositories_api.get_api_key')
+    @mock.patch('apis.repositories.api.api.repositories_api.get_api_key')
     def test_get_api_key_with_key_present(self,mock_get):
 
         expected_result = {'status': True, 'msj': 'Success'}

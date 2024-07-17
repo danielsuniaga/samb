@@ -28,7 +28,7 @@ class TestServicesCronjobs(TestCase):
 
             unique_ids.add(new_id)
 
-    @mock.patch('apis.repositories.cronjobs.repositories_cronjobs.add')
+    @mock.patch('apis.repositories.cronjobs.cronjobs.repositories_cronjobs.add')
     def test_add(self, mock_get):
 
         mock_get.return_value = {'status':True,'msj':'Success'}
@@ -37,7 +37,7 @@ class TestServicesCronjobs(TestCase):
 
         self.assertEqual(result, {'status':True,'msj':'Success'})
 
-    @mock.patch('apis.repositories.cronjobs.repositories_cronjobs.set_fields')
+    @mock.patch('apis.repositories.cronjobs.cronjobs.repositories_cronjobs.set_fields')
     def test_set_fields(self, mock_get):
 
         mock_get.return_value = {'status':True,'msj':'Success'}
