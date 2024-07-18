@@ -17,14 +17,6 @@ class cases_iq_another(cases_iq_core,icases_iq):
 
         candles = self.removed_candle_close(candles,self.candle_removed)
 
-        candles[0]=1.05
-
-        candles[1]=1.04
-
-        candles[2]=1.03
-
-        candles[3]=1.02
-
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
             self.set_type(self.type_entry_long)
@@ -90,7 +82,7 @@ class cases_iq_another(cases_iq_core,icases_iq):
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
         self.set_asset_financial(date)
-
+        
         for _ in range(int(self.number_loops)):
 
             now = date.get_current_utc5()
