@@ -115,6 +115,36 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def set_loss(self,valor):
+
+        self.loss = int(valor)
+
+        return True
+    
+    def get_loss(self):
+
+        return self.loss
+
+    def set_profit(self,valor):
+
+        self.profit = int(valor)
+
+        return True
+
+    def get_profit(self):
+
+        return self.profit
+
+    def set_money(self,valor):
+
+        self.money = int(valor)
+
+        return True
+    
+    def get_money(self):
+
+        return self.money
+
     def set_message(self,valor):
 
         self.message = valor

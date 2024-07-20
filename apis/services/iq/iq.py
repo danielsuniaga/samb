@@ -45,9 +45,17 @@ class cases_iq(cases_iq_core,icases_iq):
 
             return False
         
-        self.set_mode(result)
+        self.set_mode(result['type'])
 
-        self.iq.set_mode(result)
+        self.set_money(result['money'])
+
+        self.set_profit(result['profit'])
+
+        self.set_loss(result['loss'])
+
+        self.iq.set_mode(result['type'])
+
+        self.iq.set_amount(result['money'])
 
         return True
 
