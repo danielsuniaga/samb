@@ -44,6 +44,16 @@ class repositories_iq_core(irepositories_iq_core):
 
         self.result_operation=config("RESULT_OPERATION")
 
+    def set_amount(self,valor):
+
+        self.amount = valor
+
+        return True
+    
+    def get_amount(self):
+
+        return self.amount
+
     def set_mode(self,valor):
 
         self.mode = valor
