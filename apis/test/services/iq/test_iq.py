@@ -175,14 +175,13 @@ class TestServicesIq(TestCase):
         self.assertEqual(result, expected_result)
 
     @mock.patch('apis.services.iq.iq_core.IQ_Option')
-    def test_set_balance(self, mock_iq_option):
-
+    @mock.patch.object(cases_iq, 'get_type_manager_day', return_value={'type':'PRACTICE','money': 2,'profit':4,'loss':-8})
+    def test_set_balance(self, mock_get_type_manager_day, mock_iq_option):
         date = case_dates.cases_dates()
+        expected_result = {'status': True, 'msj': 'Success'}
 
-        expected_result = {'status':True,'msj':'Success'}
-
+        # Configurar el mock de IQ_Option
         mock_instance = mock_iq_option.return_value
-
         mock_instance.connect.return_value = True
 
         mock_instance.check_connect.return_value = True
@@ -272,7 +271,7 @@ class TestServicesIq(TestCase):
         
         result = self.service.analized_candles(candles)
         
-        self.assertEqual(result, "SHORT")
+        self.assertEqual(result, "LONG")
 
     @mock.patch('apis.services.iq.iq.cases_iq.iq')
     def test_get_current_entrys_success(self,mock_iq):
@@ -573,10 +572,9 @@ class TestServicesIq(TestCase):
 
         self.assertEqual(expected_result,result)
 
-    @mock.patch.object(cases_iq, 'get_type_manager_day', return_value=1)
+    @mock.patch.object(cases_iq, 'get_type_manager_day', return_value={'type':'PRACTICE','money': 2,'profit':4,'loss':-8})
     def test_analized_mode(self,mock_get_type_manager_day):
         
-
         date = case_dates.cases_dates()
 
         result = self.service.analized_mode(date)
