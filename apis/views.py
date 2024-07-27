@@ -27,6 +27,7 @@ import apis.services.iq.iq as case_iq
 import apis.services.iq.iq_another as case_iq_another
 import apis.services.framework.framework as case_framework
 import apis.services.telegram.telegram as case_telegram
+import apis.services.machine_learning.logistic_regression as case_logistic_regression
 
 import uuid
 import time
@@ -327,3 +328,27 @@ class GetDataAnalysisIqOption(APIView):
      def post(self, request, format=None):
 
           return True
+
+class AddDatasetHistoric(APIView):
+
+     def __init__(self):
+
+          cursor = connection.cursor()
+
+          self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
+
+     def post(self, request, format=None):
+
+          return Response(self.logistic_regression.add_dataset_historic())
+     
+class AddModelRegressionLogistic(APIView):
+
+     def __init__(self):
+
+          cursor = connection.cursor()
+
+          self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
+
+     def post(self, request, format=None):
+
+          return Response(self.logistic_regression.train_model())

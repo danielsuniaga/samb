@@ -8,6 +8,10 @@ urlpatterns = [
 
     path('test-endpoint/', views.TestEndPoint.as_view()),
 
+    path('add-dataset-historic/', views.AddDatasetHistoric.as_view()),
+
+    path('add-model-regression-logistic/',views.AddModelRegressionLogistic.as_view()),
+
     path('get-day-week/', views.GetDayWeek.as_view()),
 
     path('get-reports/', views.GetReports.as_view()),
