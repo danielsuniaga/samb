@@ -4,11 +4,15 @@ from sklearn.linear_model import LogisticRegression
 
 from sklearn.model_selection import train_test_split
 
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report,confusion_matrix, ConfusionMatrixDisplay
 
 import pandas as pd
 
 import os
+
+import matplotlib.pyplot as plt
+
+import pickle
 
 from decouple import config
 
@@ -20,11 +24,35 @@ class case_logistic_regression():
 
     directory_file_general = None
 
+    directory_model_general = None
+
     model_logistic_regression_general = None
+
+    name_model_logistic_regression_general = None
 
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
+
+    def init_directory_model_general(self):
+
+        self.model_logistic_regression_general = config("DIRECTORY_GENERAL_MODEL_ML_LOGISTIC_REGRESSION")
+
+        return True
+    
+    def init_name_model_logistic_regression_general(self):
+
+        self.name_model_logistic_regression_general = config("MODEL_GENERAL_MODEL_ML_LOGISTIC_REGRESSION")
+
+        return True
+    
+    def get_name_model_logistic_regression_general(self):
+
+        return self.name_model_logistic_regression_general
+
+    def get_directory_model_general(self):
+
+        return self.model_logistic_regression_general
 
     def init_dataset_file_general(self):
         
@@ -104,43 +132,53 @@ class case_logistic_regression():
 
         return True
     
-    def train_model(self):
+def train_model(self):
 
-        self.init_dataset_file_general()
+    self.init_dataset_file_general()
 
-        self.init_directory_file_general()
+    self.init_directory_file_general()
 
-        dataset_path = self.get_directory_file_general() + self.get_dataset_file_general()
+    dataset_path = self.get_directory_file_general() + self.get_dataset_file_general()
 
-        if not self.analize_directory_exists(dataset_path):
+    if not self.analize_directory_exists(dataset_path):
+        return False
 
-            return False
-               
-        data = pd.read_csv(dataset_path)
+    data = pd.read_csv(dataset_path)
 
-        self.get_status_dataframe(data)
-        
-        # Separar características y etiqueta
-        X = data.drop(columns=['entry_result'])
-        y = data['entry_result']
-        
-        # Dividir los datos en entrenamiento y prueba
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-        
-        # Entrenar el modelo
-        self.model = LogisticRegression()
-        self.model.fit(X_train, y_train)
-        
-        # Hacer predicciones y evaluar el modelo
-        y_pred = self.model.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        report = classification_report(y_test, y_pred)
-        
-        # Guardar el modelo en un archivo
-        # with open(os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl'), 'wb') as model_file:
-        #     pickle.dump(self.model, model_file)
-        
-        # return self.model, accuracy, report
+    self.get_status_dataframe(data)
+
+    # Separar características y etiqueta
+    X = data.drop(columns=['entry_result'])
+    y = data['entry_result']
+
+    # Dividir los datos en entrenamiento y prueba
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+    # Entrenar el modelo
+    self.model = LogisticRegression()
+    self.model.fit(X_train, y_train)
+
+    # Hacer predicciones y evaluar el modelo
+    y_pred = self.model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred)
+
+    # Generar matriz de confusión
+    cm = confusion_matrix(y_test, y_pred)
+    cmd = ConfusionMatrixDisplay(cm, display_labels=self.model.classes_)
+    cmd.plot()
+
+    # Visualizar matriz de confusión
+    plt.title('Matriz de Confusión')
+    plt.show()
+
+    # Guardar el modelo en un archivo (opcional)
+
+    with open(os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl'), 'wb') as model_file:
+
+        pickle.dump(self.model, model_file)
+
+    return self.model, accuracy, report
     
     def load_model(self):
         model_path = os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl')
