@@ -119,8 +119,6 @@ class case_logistic_regression():
         data = pd.read_csv(dataset_path)
 
         self.get_status_dataframe(data)
-
-        return True
         
         # Separar características y etiqueta
         X = data.drop(columns=['entry_result'])
@@ -139,10 +137,10 @@ class case_logistic_regression():
         report = classification_report(y_test, y_pred)
         
         # Guardar el modelo en un archivo
-        with open(os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl'), 'wb') as model_file:
-            pickle.dump(self.model, model_file)
+        # with open(os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl'), 'wb') as model_file:
+        #     pickle.dump(self.model, model_file)
         
-        return self.model, accuracy, report
+        # return self.model, accuracy, report
     
     def load_model(self):
         model_path = os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl')
