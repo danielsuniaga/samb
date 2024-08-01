@@ -132,53 +132,73 @@ class case_logistic_regression():
 
         return True
     
-def train_model(self):
+    def load_data(self):
 
-    self.init_dataset_file_general()
+        dataset_path = self.get_directory_file_general() + self.get_dataset_file_general()
 
-    self.init_directory_file_general()
+        data = pd.read_csv(dataset_path)
+        
+        if 'entry_registration_date' in data.columns:
+            
+            data['entry_registration_date'] = data['entry_registration_date'].astype(str)
+            
+            data['year'] = data['entry_registration_date'].str[:4].astype(int)
+            
+            data['month'] = data['entry_registration_date'].str[4:6].astype(int)
 
-    dataset_path = self.get_directory_file_general() + self.get_dataset_file_general()
+            data['day'] = data['entry_registration_date'].str[6:8].astype(int)
 
-    if not self.analize_directory_exists(dataset_path):
-        return False
+            data['hour'] = data['entry_registration_date'].str[8:10].astype(int)
 
-    data = pd.read_csv(dataset_path)
+            data['minute'] = data['entry_registration_date'].str[10:12].astype(int)
 
-    self.get_status_dataframe(data)
+            data['second'] = data['entry_registration_date'].str[12:14].astype(int)
+            
+            data.drop(columns=['entry_registration_date'], inplace=True)
+        
+        return data
+    
+    def preprocess_data(self, data):
 
-    # Separar características y etiqueta
-    X = data.drop(columns=['entry_result'])
-    y = data['entry_result']
+        X = data.drop(columns=['entry_result'])
 
-    # Dividir los datos en entrenamiento y prueba
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        y = data['entry_result']
 
-    # Entrenar el modelo
-    self.model = LogisticRegression()
-    self.model.fit(X_train, y_train)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        
+        return X_train, X_test, y_train, y_test
+    
+    def train_model(self, X_train, y_train):
 
-    # Hacer predicciones y evaluar el modelo
-    y_pred = self.model.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
+        self.model = LogisticRegression()
 
-    # Generar matriz de confusión
-    cm = confusion_matrix(y_test, y_pred)
-    cmd = ConfusionMatrixDisplay(cm, display_labels=self.model.classes_)
-    cmd.plot()
+        self.model.fit(X_train, y_train)
 
-    # Visualizar matriz de confusión
-    plt.title('Matriz de Confusión')
-    plt.show()
+        return self.model
+    
+    def generate_training(self):
 
-    # Guardar el modelo en un archivo (opcional)
+        self.init_dataset_file_general()
 
-    with open(os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl'), 'wb') as model_file:
+        self.init_directory_file_general()
+        
+        data = self.load_data()
 
-        pickle.dump(self.model, model_file)
+        print(data)
 
-    return self.model, accuracy, report
+        return True
+
+        X_train, X_test, y_train, y_test = self.preprocess_data(data)
+
+        self.train_model(X_train, y_train)
+
+        return True
+
+        # accuracy, report, matrix = self.evaluate_model(X_test, y_test)
+
+        # self.save_model()
+        
+        # return accuracy, report, matrix
     
     def load_model(self):
         model_path = os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl')

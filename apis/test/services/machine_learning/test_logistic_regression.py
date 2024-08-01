@@ -34,8 +34,10 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.assertTrue(result)
 
-    def test_train_model(self):
+    def test_generate_training(self):
 
-        result = self.service_real.train_model()
+        result = self.service_real.generate_training()
+
+        print(result)
         
 
