@@ -30,6 +30,8 @@ class case_logistic_regression():
 
     name_model_logistic_regression_general = None
 
+    model = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
@@ -183,10 +185,6 @@ class case_logistic_regression():
         self.init_directory_file_general()
         
         data = self.load_data()
-
-        print(data)
-
-        return True
 
         X_train, X_test, y_train, y_test = self.preprocess_data(data)
 
