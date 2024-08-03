@@ -20,15 +20,13 @@ class case_logistic_regression():
 
     dataset_file_general = None
 
-    logistic_regression = None
-
     directory_file_general = None
 
-    directory_model_general = None
+    logistic_regression = None
 
-    model_logistic_regression_general = None
+    matriz_general = None
 
-    name_model_logistic_regression_general = None
+    directory_matriz_general = None
 
     model = None
 
@@ -36,25 +34,15 @@ class case_logistic_regression():
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
-    def init_directory_model_general(self):
 
-        self.model_logistic_regression_general = config("DIRECTORY_GENERAL_MODEL_ML_LOGISTIC_REGRESSION")
+    def get_directory_matriz_general(self):
 
-        return True
+        return self.directory_matriz_general
     
-    def init_name_model_logistic_regression_general(self):
 
-        self.name_model_logistic_regression_general = config("MODEL_GENERAL_MODEL_ML_LOGISTIC_REGRESSION")
+    def get_matriz_general(self):
 
-        return True
-    
-    def get_name_model_logistic_regression_general(self):
-
-        return self.name_model_logistic_regression_general
-
-    def get_directory_model_general(self):
-
-        return self.model_logistic_regression_general
+        return self.matriz_general
 
     def init_dataset_file_general(self):
         
@@ -172,11 +160,33 @@ class case_logistic_regression():
     
     def train_model(self, X_train, y_train):
 
-        self.model = LogisticRegression()
+        self.model = LogisticRegression(max_iter=500)
 
         self.model.fit(X_train, y_train)
 
         return self.model
+
+    def evaluate_model(self, X_test, y_test):
+
+        self.init
+
+        y_pred = self.model.predict(X_test)
+        
+        accuracy = accuracy_score(y_test, y_pred)
+        
+        report = classification_report(y_test, y_pred)
+        
+        cm = confusion_matrix(y_test, y_pred)
+
+        cm_display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=self.model.classes_)
+        
+        fig, ax = plt.subplots(figsize=(10, 7))
+
+        cm_display.plot(cmap=plt.cm.Blues, ax=ax)
+
+        plt.savefig('matriz.png')  # Guarda la imagen
+                
+        return accuracy, report, cm
     
     def generate_training(self):
 
@@ -187,16 +197,12 @@ class case_logistic_regression():
         data = self.load_data()
 
         X_train, X_test, y_train, y_test = self.preprocess_data(data)
-
-        self.train_model(X_train, y_train)
-
-        return True
-
-        # accuracy, report, matrix = self.evaluate_model(X_test, y_test)
-
-        # self.save_model()
         
-        # return accuracy, report, matrix
+        self.train_model(X_train, y_train)
+        
+        accuracy, report, matrix = self.evaluate_model(X_test, y_test)
+        
+        return accuracy, report, matrix
     
     def load_model(self):
         model_path = os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl')
