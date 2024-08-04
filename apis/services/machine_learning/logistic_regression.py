@@ -20,13 +20,17 @@ class case_logistic_regression():
 
     dataset_file_general = None
 
+    matriz_general = None
+
     directory_file_general = None
+
+    matriz_directory_general = None
 
     logistic_regression = None
 
-    matriz_general = None
+    model_general = None
 
-    directory_matriz_general = None
+    directory_model_general = None
 
     model = None
 
@@ -34,16 +38,46 @@ class case_logistic_regression():
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+    def init_model_general(self):
 
-    def get_directory_matriz_general(self):
+        self.model_general = config("MODEL_GENERAL_ML_LOGISTIC_REGRESSION")
 
-        return self.directory_matriz_general
+        return True
     
+    def get_model_general(self):
+
+        return self.model_general
+    
+    def init_directory_model_general(self):
+
+        self.directory_model_general = config("MODEL_DIRECTORY_GENERAL_ML_LOGISTIC_REGRESSION")
+
+        return True
+    
+    def get_directory_model_general(self):
+
+        return self.directory_model_general
+
+    def init_matriz_general(self):
+
+        self.matriz_general = config("MATRIZ_GENERAL_ML_LOGISTIC_REGRESSION")
+
+        return True
 
     def get_matriz_general(self):
 
         return self.matriz_general
+    
+    def init_matriz_directory_general(self):
 
+        self.matriz_directory_general = config("MATRIZ_DIRECTORY_GENERAL_ML_LOGISTIC_REGRESSION")
+
+        return True
+    
+    def get_matriz_directory_general(self):
+
+        return self.matriz_directory_general
+    
     def init_dataset_file_general(self):
         
         self.dataset_file_general = config("DATASET_FILE_GENERAL_ML_LOGISTIC_REGRESSION")
@@ -60,6 +94,10 @@ class case_logistic_regression():
 
         return self.directory_file_general
     
+    def get_dataset_file_general(self):
+
+        return self.dataset_file_general
+    
     def analize_directory_exists(self, directory):
 
         if not os.path.exists(directory):
@@ -69,10 +107,6 @@ class case_logistic_regression():
             self.analize_directory_exists(directory)
 
         return True
-
-    def get_dataset_file_general(self):
-
-        return self.dataset_file_general
     
     def get_data_dataset_general(self):
 
@@ -124,6 +158,62 @@ class case_logistic_regression():
     
     def load_data(self):
 
+        # Leer los datos desde el archivo CSV
+        data = pd.read_csv(self.get_directory_file_general() + self.get_dataset_file_general())
+
+        # Crear un nuevo DataFrame para almacenar las posiciones con las velas embebidas
+        processed_data = pd.DataFrame()
+
+        # Agrupar por cada posición y ordenar por num_candle para mantener las últimas 30 velas
+        grouped = data.groupby('id_entry_id')
+
+        # Iterar sobre cada grupo (posición)
+        for name, group in grouped:
+
+            # Crear un diccionario para la nueva fila
+            row = {
+                'entry_type': group.iloc[0]['entry_type'],
+                'entry_type_account': group.iloc[0]['entry_type_account'],
+                'entry_number_candle': group.iloc[0]['entry_number_candle'],
+                'entry_condition': group.iloc[0]['entry_condition'],
+                'entry_amount': group.iloc[0]['entry_amount'],
+                'entry_registration_date': group.iloc[0]['entry_registration_date'],
+                'sma_30_value': group.iloc[0]['sma_30_value'],
+                'sma_10_value': group.iloc[0]['sma_10_value'],
+                'rsi_value': group.iloc[0]['rsi_value'],
+                'entry_result': group.iloc[0]['entry_result']
+            }
+
+            # Añadir las 30 últimas velas
+            for i in range(30):
+                prefix = f'movement_{i+1}'
+
+                if i < len(group):
+                    row[f'{prefix}_open_candle'] = group.iloc[i]['movement_open_candle']
+                    row[f'{prefix}_close_candle'] = group.iloc[i]['movement_close_candle']
+                    row[f'{prefix}_high_candle'] = group.iloc[i]['movement_high_candle']
+                    row[f'{prefix}_low_candle'] = group.iloc[i]['movement_low_candle']
+                    row[f'{prefix}_volume_candle'] = group.iloc[i]['movement_volume_candle']
+                else:
+                    row[f'{prefix}_open_candle'] = None
+                    row[f'{prefix}_close_candle'] = None
+                    row[f'{prefix}_high_candle'] = None
+                    row[f'{prefix}_low_candle'] = None
+                    row[f'{prefix}_volume_candle'] = None
+
+            # Añadir la fila al DataFrame procesado
+            processed_data = pd.concat([processed_data, pd.DataFrame([row])], ignore_index=True)
+
+        # Separar características y objetivo
+        X = processed_data.drop(columns=['entry_result'])
+        y = processed_data['entry_result']
+
+        return X, y
+
+
+    
+    def load_data_v2(self):
+
         dataset_path = self.get_directory_file_general() + self.get_dataset_file_general()
 
         data = pd.read_csv(dataset_path)
@@ -148,12 +238,19 @@ class case_logistic_regression():
         
         return data
     
-    def preprocess_data(self, data):
+    def preprocess_data_v2(self, data):
 
         X = data.drop(columns=['entry_result'])
 
         y = data['entry_result']
 
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+        
+        return X_train, X_test, y_train, y_test
+    
+    def preprocess_data(self, X, y):
+
+        # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
         
         return X_train, X_test, y_train, y_test
@@ -168,13 +265,15 @@ class case_logistic_regression():
 
     def evaluate_model(self, X_test, y_test):
 
-        self.init
+        self.init_matriz_directory_general()
+
+        self.init_matriz_general()
 
         y_pred = self.model.predict(X_test)
         
         accuracy = accuracy_score(y_test, y_pred)
         
-        report = classification_report(y_test, y_pred)
+        report = classification_report(y_test, y_pred, zero_division=0)
         
         cm = confusion_matrix(y_test, y_pred)
 
@@ -184,9 +283,39 @@ class case_logistic_regression():
 
         cm_display.plot(cmap=plt.cm.Blues, ax=ax)
 
-        plt.savefig('matriz.png')  # Guarda la imagen
+        if self.analize_directory_exists(self.get_matriz_directory_general()):
+
+            plt.savefig(self.get_matriz_directory_general()+self.get_matriz_general())
                 
-        return accuracy, report, cm
+        return accuracy, report
+    
+    def save_model(self):
+
+        self.init_model_general()
+
+        self.init_directory_model_general()
+
+        if not self.analize_directory_exists(self.get_directory_model_general()):
+
+            return False
+
+        model_path = self.get_directory_model_general()+self.get_model_general()
+    
+        try:
+
+            with open(model_path, 'wb') as model_file:
+
+                pickle.dump(self.model, model_file)
+
+            print(f"Modelo guardado correctamente en: {model_path}")
+
+        except Exception as e:
+
+            print(f"Error al guardar el modelo: {str(e)}")
+
+            return False
+        
+        return True
     
     def generate_training(self):
 
@@ -194,15 +323,17 @@ class case_logistic_regression():
 
         self.init_directory_file_general()
         
-        data = self.load_data()
+        data = self.load_data_v2()  
 
-        X_train, X_test, y_train, y_test = self.preprocess_data(data)
+        X_train, X_test, y_train, y_test = self.preprocess_data_v2(data)
         
         self.train_model(X_train, y_train)
         
-        accuracy, report, matrix = self.evaluate_model(X_test, y_test)
+        accuracy, report= self.evaluate_model(X_test, y_test)
+
+        self.save_model()
         
-        return accuracy, report, matrix
+        return accuracy, report
     
     def load_model(self):
         model_path = os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl')

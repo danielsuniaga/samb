@@ -34,7 +34,7 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         print(result)
 
-        # self.assertTrue(result)
+        self.assertTrue(result)
 
     def test_generate_training(self):
 
