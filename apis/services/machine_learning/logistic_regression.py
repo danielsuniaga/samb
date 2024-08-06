@@ -156,7 +156,7 @@ class case_logistic_regression():
 
         return True
     
-    def load_data(self):
+    def load_data_expansive(self):
 
         # Leer los datos desde el archivo CSV
         data = pd.read_csv(self.get_directory_file_general() + self.get_dataset_file_general())
@@ -210,9 +210,7 @@ class case_logistic_regression():
 
         return X, y
 
-
-    
-    def load_data_v2(self):
+    def load_data(self):
 
         dataset_path = self.get_directory_file_general() + self.get_dataset_file_general()
 
@@ -238,7 +236,7 @@ class case_logistic_regression():
         
         return data
     
-    def preprocess_data_v2(self, data):
+    def preprocess_data(self, data):
 
         X = data.drop(columns=['entry_result'])
 
@@ -248,7 +246,7 @@ class case_logistic_regression():
         
         return X_train, X_test, y_train, y_test
     
-    def preprocess_data(self, X, y):
+    def preprocess_data_expansive(self, X, y):
 
         # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -323,9 +321,9 @@ class case_logistic_regression():
 
         self.init_directory_file_general()
         
-        data = self.load_data_v2()  
+        data = self.load_data()  
 
-        X_train, X_test, y_train, y_test = self.preprocess_data_v2(data)
+        X_train, X_test, y_train, y_test = self.preprocess_data(data)
         
         self.train_model(X_train, y_train)
         
