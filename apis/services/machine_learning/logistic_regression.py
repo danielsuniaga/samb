@@ -233,6 +233,8 @@ class case_logistic_regression():
             data['second'] = data['entry_registration_date'].str[12:14].astype(int)
             
             data.drop(columns=['entry_registration_date'], inplace=True)
+
+        data.drop(columns=['id_entry_id'], inplace=True)
         
         return data
     

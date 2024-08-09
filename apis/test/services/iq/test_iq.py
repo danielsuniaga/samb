@@ -16,11 +16,25 @@ from django.db import connection
 
 class TestServicesIq(TestCase):
 
+    cursor = None
+
+    mock_cursor = None
+
+    service = None
+
+    expected_message_general = None
+
+    service_real = None
+
     def setUp(self):
+
+        cursor = connection.cursor()
 
         self.mock_cursor = mock.MagicMock()
         
         self.service = cases_iq(self.mock_cursor)
+
+        self.service_real = cases_iq(cursor)
 
         self.expected_message_general = "TEST"
 
