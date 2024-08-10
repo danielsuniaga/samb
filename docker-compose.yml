@@ -8,6 +8,7 @@ services:
     command: python manage.py runserver 0.0.0.0:${PROJECT_PORT_INTERNAL}
     volumes:
       - .:/code
+      - persistent_models:/machine_learning
     ports:
       - '${PROJECT_PORT_EXTERNAL}:${PROJECT_PORT_INTERNAL}'
     expose:
@@ -40,3 +41,4 @@ networks:
   default:
 volumes:
   persistent:
+  persistent_models:
