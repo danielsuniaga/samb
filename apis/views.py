@@ -329,18 +329,6 @@ class GetDataAnalysisIqOption(APIView):
 
           return True
 
-class AddDatasetHistoric(APIView):
-
-     def __init__(self):
-
-          cursor = connection.cursor()
-
-          self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
-
-     def post(self, request, format=None):
-
-          return Response(self.logistic_regression.add_dataset_historic())
-     
 class AddModelRegressionLogistic(APIView):
 
      def __init__(self):
@@ -351,4 +339,8 @@ class AddModelRegressionLogistic(APIView):
 
      def post(self, request, format=None):
 
-          return Response(self.logistic_regression.train_model())
+          if not self.logistic_regression.add_dataset_historic():
+
+               return Response(False)
+
+          return Response(self.logistic_regression.generate_training())

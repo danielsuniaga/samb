@@ -150,7 +150,11 @@ class case_logistic_regression():
     
     def get_status_dataframe(self,data):
 
+        print("HEAD-----------------------------")
+
         print(data.head())
+
+        print("INFO-----------------------------")
 
         print(data.info())
 
@@ -288,7 +292,11 @@ class case_logistic_regression():
             plt.savefig(self.get_matriz_directory_general()+self.get_matriz_general())
                 
         return accuracy, report
-    
+
+    def get_model_general_path(self):
+
+        return self.get_directory_model_general()+self.get_model_general()
+
     def save_model(self):
 
         self.init_model_general()
@@ -299,7 +307,7 @@ class case_logistic_regression():
 
             return False
 
-        model_path = self.get_directory_model_general()+self.get_model_general()
+        model_path = self.get_model_general_path()
     
         try:
 
@@ -333,12 +341,38 @@ class case_logistic_regression():
 
         self.save_model()
         
-        return accuracy, report
+        return True
     
     def load_model(self):
-        model_path = os.path.join(self.get_directory_file_general(), 'logistic_regression_model.pkl')
+
+        model_path = self.get_model_general_path()
+
         if os.path.exists(model_path):
+            
             with open(model_path, 'rb') as model_file:
+               
                 self.model = pickle.load(model_file)
+            
             return self.model
+        
         return None
+    
+    def generate_position_prediction(self,data):
+
+        df = pd.DataFrame([data])
+
+        self.init_model_general()
+
+        self.init_directory_model_general()
+
+        if not self.analize_directory_exists(self.get_directory_model_general()):
+
+            return False
+        
+        model = self.load_model()
+
+        prediction = model.predict(df)
+
+        return prediction
+
+    

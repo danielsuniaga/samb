@@ -41,5 +41,34 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
         result = self.service_real.generate_training()
 
         print(result)
+
+    def test_generate_position_prediction(self):
+
+        data = {
+            "entry_type": 1,
+            "entry_type_account": 2,
+            "entry_number_candle": 10,
+            "entry_condition": 0,
+            "entry_amount": 1,
+            "sma_30_value": 50.5,
+            "sma_10_value": 45.3,
+            "rsi_value": 70.0,
+            "movement_open_candle": 1.1,
+            "movement_close_candle": 1.2,
+            "movement_high_candle": 1.3,
+            "movement_low_candle": 1.0,
+            "movement_volume_candle": 100,
+            "year": 2024,
+            "month": 8,
+            "day": 10,
+            "hour": 14,
+            "minute": 30,
+            "second": 15
+        }
+
+
+        result = self.service_real.generate_position_prediction(data)
+
+        print(result)
         
 
