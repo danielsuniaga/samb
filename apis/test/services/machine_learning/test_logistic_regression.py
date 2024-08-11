@@ -8,6 +8,8 @@ from django.db import connection
 
 from apis.services.machine_learning.logistic_regression import case_logistic_regression
 
+import apis.services.dates.dates as case_dates
+
 class TestServiceaMachineLearningLogisticRegression(TestCase):
 
     mock_cursor = None
@@ -42,7 +44,9 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         print(result)
 
-    def test_generate_position_prediction(self):
+    def test_get_position_prediction(self):
+
+        dates = case_dates.cases_dates()
 
         data = {
             "entry_type": 1,
@@ -66,8 +70,11 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
             "second": 15
         }
 
+        id_entry = "0118aa5ae1064c5393d1f5c7867622e4"
 
-        result = self.service_real.generate_position_prediction(data)
+        self.service_real.init_object_date(dates)
+
+        result = self.service_real.get_position_prediction(data,id_entry)
 
         print(result)
         

@@ -75,3 +75,17 @@ class repositories_ligistic_regression():
             return {'status':False,'msj':"Incidencia en la lectura de los datos necesarios para crear el dataset  "+str(err)}
                 
         return {'status':True,'data':result_with_columns,'msj':'Success'}
+    
+    def add_models_general(self,data):
+
+        print(data)
+
+        # try:
+
+        #     self.cursor_db.execute("INSERT INTO samb_entrys(samb_entrys.id,samb_entrys.type,samb_entrys.type_account,samb_entrys.number_candle,samb_entrys.condition_entry,samb_entrys.amount,samb_entrys.registration_date,samb_entrys.update_date,samb_entrys.condition,samb_entrys.id_samb_cronjobs_id,samb_entrys.id_entry_platform,samb_entrys.result_platform)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",[self.id_entry,type_operations,self.mode,self.candle_analized,self.condition_entry,self.amount,current_date,current_date,self.condition,id_cronjobs,id_entry_platform,self.result_operation])
+
+        # except Exception as err:
+
+        #     return {'status': False, 'message':'No se realizo la escritura en samb_entrys'+str(err)}
+
+        return {'status':True,'msj':'Success'}

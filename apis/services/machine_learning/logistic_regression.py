@@ -14,7 +14,11 @@ import matplotlib.pyplot as plt
 
 import pickle
 
+import uuid
+
 from decouple import config
+
+import time
 
 class case_logistic_regression():
 
@@ -34,10 +38,40 @@ class case_logistic_regression():
 
     model = None
 
+    object_date = None
+
+    stage_prediction = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+    def init_object_date(self,value):
+
+        self.object_date = value
+
+        return True
+    
+    def init_stage_prediction(self):
+
+        self.stage_prediction = {
+            "start": "",
+            "load": "",
+            "predict": "",
+        }
+
+        return True
+    
+    def get_stage_prediction_field(self,field):
+
+        return self.stage_prediction[field]
+    
+    def set_stage_prediction_field(self,field,value):
+
+        self.stage_prediction[field] = value
+
+        return True
+   
     def init_model_general(self):
 
         self.model_general = config("MODEL_GENERAL_ML_LOGISTIC_REGRESSION")
@@ -359,6 +393,8 @@ class case_logistic_regression():
     
     def generate_position_prediction(self,data):
 
+        self.set_stage_prediction_field("start",self.get_current_date_mil())
+
         df = pd.DataFrame([data])
 
         self.init_model_general()
@@ -371,8 +407,56 @@ class case_logistic_regression():
         
         model = self.load_model()
 
+        self.set_stage_prediction_field("load",self.get_current_date_mil())
+
         prediction = model.predict(df)
 
-        return prediction
+        self.set_stage_prediction_field("predict",self.get_current_date_mil())
 
+        return prediction
     
+    def generate_id(self):
+
+        return uuid.uuid4().hex
+    
+    def get_current_utc5(self):
+
+        return self.object_date.get_current_utc5()
+    
+    def get_current_date(self):
+
+        now = self.get_current_utc5()
+        
+        return self.object_date.get_current_date(now)
+    
+    def get_current_date_mil(self):
+
+        now = self.get_current_utc5()
+
+        return self.object_date.get_current_date_mil(now)
+    
+    def init_data_persistent_model_general(self,data,id_entry):
+
+        self.init_stage_prediction()
+
+        date = self.get_current_date()
+
+        result = self.generate_position_prediction(data)
+
+        return {
+            "id": self.generate_id(),
+            "id_entrys": id_entry,
+            "prediction": result[0],
+            "start": self.get_stage_prediction_field("start"),
+            "load": self.get_stage_prediction_field("load"),
+            "predict": self.get_stage_prediction_field("predict"),
+            "registration_date": date,
+            "update_date": date,
+            "condition": 1
+        }
+
+    def get_position_prediction(self,data,id_entry):
+
+        result = self.init_data_persistent_model_general(data,id_entry)
+
+        return self.logistic_regression.add_models_general(result)
