@@ -57,7 +57,8 @@ class case_logistic_regression():
         self.stage_prediction = {
             "start": "",
             "load": "",
-            "predict": "",
+            "predict_general": "",
+            "predict_proba":""
         }
 
         return True
@@ -409,11 +410,15 @@ class case_logistic_regression():
 
         self.set_stage_prediction_field("load",self.get_current_date_mil())
 
-        prediction = model.predict(df)
+        prediction = model.predict_proba(df)
 
-        self.set_stage_prediction_field("predict",self.get_current_date_mil())
+        self.set_stage_prediction_field("predict_general",self.get_current_date_mil())
 
-        return prediction
+        predition_general = model.predict(df)
+
+        self.set_stage_prediction_field("predict_proba",self.get_current_date_mil())
+
+        return prediction, predition_general
     
     def generate_id(self):
 
@@ -441,15 +446,18 @@ class case_logistic_regression():
 
         date = self.get_current_date()
 
-        result = self.generate_position_prediction(data)
+        result,result_general = self.generate_position_prediction(data)
 
         return {
             "id": self.generate_id(),
             "id_entrys": id_entry,
-            "prediction": result[0],
+            "predition_general":result_general[0],
+            "prediction_false": result[0][0],
+            "prediction_true": result[0][1],
             "start": self.get_stage_prediction_field("start"),
             "load": self.get_stage_prediction_field("load"),
-            "predict": self.get_stage_prediction_field("predict"),
+            "predict_general": self.get_stage_prediction_field("predict_general"),
+            "predict_proba": self.get_stage_prediction_field("predict_proba"),
             "registration_date": date,
             "update_date": date,
             "condition": 1
