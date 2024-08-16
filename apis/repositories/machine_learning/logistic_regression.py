@@ -78,14 +78,12 @@ class repositories_ligistic_regression():
     
     def add_models_general(self,data):
 
-        print(data)
+        try:
 
-        # try:
+            self.cursor_db.execute("INSERT INTO samb_predict_model_general_logistic_regression(samb_predict_model_general_logistic_regression.id,samb_predict_model_general_logistic_regression.id_entry,samb_predict_model_general_logistic_regression.prediction_general,samb_predict_model_general_logistic_regression.prediction_false,samb_predict_model_general_logistic_regression.prediction_true,samb_predict_model_general_logistic_regression.start_date,samb_predict_model_general_logistic_regression.load_date,samb_predict_model_general_logistic_regression.predict_general_date,samb_predict_model_general_logistic_regression.predict_proba_date,samb_predict_model_general_logistic_regression.registration_date,samb_predict_model_general_logistic_regression.update_date,samb_predict_model_general_logistic_regression.state)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",[data['id'],data['id_entrys'],data['predition_general'],data['prediction_false'],data['prediction_true'],data['start_date'],data['load_date'],data['predict_general_date'],data['predict_proba_date'],data['registration_date'],data['update_date'],data['state']])
 
-        #     self.cursor_db.execute("INSERT INTO samb_entrys(samb_entrys.id,samb_entrys.type,samb_entrys.type_account,samb_entrys.number_candle,samb_entrys.condition_entry,samb_entrys.amount,samb_entrys.registration_date,samb_entrys.update_date,samb_entrys.condition,samb_entrys.id_samb_cronjobs_id,samb_entrys.id_entry_platform,samb_entrys.result_platform)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",[self.id_entry,type_operations,self.mode,self.candle_analized,self.condition_entry,self.amount,current_date,current_date,self.condition,id_cronjobs,id_entry_platform,self.result_operation])
+        except Exception as err:
 
-        # except Exception as err:
-
-        #     return {'status': False, 'message':'No se realizo la escritura en samb_entrys'+str(err)}
+            return {'status': False, 'message':'No se realizo la escritura en samb_predict_model_general_logistic_regression'+str(err)}
 
         return {'status':True,'msj':'Success'}

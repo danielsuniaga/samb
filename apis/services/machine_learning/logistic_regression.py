@@ -454,13 +454,13 @@ class case_logistic_regression():
             "predition_general":result_general[0],
             "prediction_false": result[0][0],
             "prediction_true": result[0][1],
-            "start": self.get_stage_prediction_field("start"),
-            "load": self.get_stage_prediction_field("load"),
-            "predict_general": self.get_stage_prediction_field("predict_general"),
-            "predict_proba": self.get_stage_prediction_field("predict_proba"),
+            "start_date": self.get_stage_prediction_field("start"),
+            "load_date": self.get_stage_prediction_field("load"),
+            "predict_general_date": self.get_stage_prediction_field("predict_general"),
+            "predict_proba_date": self.get_stage_prediction_field("predict_proba"),
             "registration_date": date,
             "update_date": date,
-            "condition": 1
+            "state": 1
         }
 
     def get_position_prediction(self,data,id_entry):
