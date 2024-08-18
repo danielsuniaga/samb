@@ -70,11 +70,9 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
             "second": 15
         }
 
-        id_entry = "0118aa5ae1064c5393d1f5c7867622e4"
-
         self.service_real.init_object_date(dates)
 
-        result = self.service_real.get_position_prediction(data,id_entry)
+        result = self.service_real.get_position_prediction(data)
 
         print(result)
         

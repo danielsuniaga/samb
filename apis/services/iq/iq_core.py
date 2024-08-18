@@ -17,23 +17,28 @@ class cases_iq_core(icases_iq_core):
 
     API = None
 
+    regression_logistic_model_general = None
+
+    id_predict_model_general_repository = None
+
+    type=None
+
+    message=None
+
+    rsi=None 
+
+    sma10=None
+
+    sma30=None
+
+    current_date = None
+
+    current_date_general = None
+
+    current_date_manipulated = None
+
     def __init__(self,cursor):
 
-        self.message=None 
-
-        self.API = None
-
-        self.rsi=None
-
-        self.sma10=None
-
-        self.sma30=None
-
-        self.current_date = None
-
-        self.current_date_general = None
-
-        self.current_date_manipulated = None
 
         self.username = config("USERNAME")
 
@@ -54,6 +59,8 @@ class cases_iq_core(icases_iq_core):
         self.type_entry_long = config("TYPE_ENTRY_LONG")
 
         self.mode = config("MODE")
+
+        self.mode_basic = config("MODE")
 
         self.project_name = config("PROJECT_NAME")
 
@@ -80,8 +87,6 @@ class cases_iq_core(icases_iq_core):
         self.candle_sma_long = int(config("CANDLE_SMA_LONG"))
 
         self.candle_last = int(config("CANDLE_LAST"))
-
-        self.type = None
 
         self.end_from_time = time.time()
 
@@ -115,6 +120,38 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def get_candle_analized(self):
+
+        return self.candle_analized
+    
+    def get_mode_basic(self):
+
+        return self.mode_basic
+    
+    def get_type_entry_short(self):
+
+        return self.type_entry_short
+    
+    def set_id_predict_model_general_repository(self,value):
+
+        self.id_predict_model_general_repository = value
+
+        return True
+    
+    def get_id_predict_model_general_repository(self):
+
+        return self.id_predict_model_general_repository
+
+    def get_type(self):
+        
+        return self.type
+
+    def init_regression_logistic_model_general(self,value):
+
+        self.regression_logistic_model_general = value
+
+        return True
+    
     def set_loss(self,valor):
 
         self.loss = int(valor)
@@ -556,3 +593,71 @@ class cases_iq_core(icases_iq_core):
     def get_mode(self):
 
         return self.mode
+    
+    def get_entry_type(self):
+
+        if self.get_type() == self.get_type_entry_short():
+
+            return 0
+
+        return 1
+    
+    def get_entry_type_account(self):
+
+        if self.get_mode() == self.get_mode_basic():
+
+            return 0
+        
+        return 1
+    
+    def get_entry_condition_data(self):
+
+        return 1
+    
+    def init_data_get_regression_logistic_model_general(self):
+
+        return {
+            "entry_type": self.get_entry_type(),
+            "entry_type_account": self.get_entry_type_account(),
+            "entry_number_candle": self.get_candle_analized(),
+            "entry_condition": self.get_entry_condition_data(),
+            "entry_amount": 1,
+            "sma_30_value": 50.5,
+            "sma_10_value": 45.3,
+            "rsi_value": 70.0,
+            "movement_open_candle": 1.1,
+            "movement_close_candle": 1.2,
+            "movement_high_candle": 1.3,
+            "movement_low_candle": 1.0,
+            "movement_volume_candle": 100,
+            "year": 2024,
+            "month": 8,
+            "day": 10,
+            "hour": 14,
+            "minute": 30,
+            "second": 15
+        }
+    
+    def get_position_prediction(self):
+
+        data = self.init_data_get_regression_logistic_model_general()
+
+        print(data)
+        
+        return self.regression_logistic_model_general.get_position_prediction(data)
+    
+    def get_regression_logistic_model_general(self,result):
+        
+        if not result:
+
+            return False
+                
+        id_samb_predict_model_general_logistic_regression = self.get_position_prediction()
+
+        if not id_samb_predict_model_general_logistic_regression:
+
+            return id_samb_predict_model_general_logistic_regression
+        
+        self.set_id_predict_model_general_repository(id_samb_predict_model_general_logistic_regression)
+
+        return True

@@ -12,6 +12,8 @@ import apis.services.dates.dates as case_dates
 
 import apis.services.telegram.telegram as case_telegram
 
+import  apis.services.machine_learning.logistic_regression as case_logistic_regression
+
 from django.db import connection
 
 class TestServicesIq(TestCase):
@@ -28,13 +30,13 @@ class TestServicesIq(TestCase):
 
     def setUp(self):
 
-        cursor = connection.cursor()
+        self.cursor = connection.cursor()
 
         self.mock_cursor = mock.MagicMock()
         
         self.service = cases_iq(self.mock_cursor)
 
-        self.service_real = cases_iq(cursor)
+        self.service_real = cases_iq(self.cursor)
 
         self.expected_message_general = "TEST"
 
@@ -627,4 +629,26 @@ class TestServicesIq(TestCase):
         result = self.service.get_loops(date,smtp,id_cronjobs,telegram)
 
         self.assertTrue(result)
+
+    def test_get_regression_logistic_model_general(self):
+
+        date = case_dates.cases_dates()
+
+        data = True
+
+        logistic_regression = case_logistic_regression.case_logistic_regression(self.cursor)
+
+        logistic_regression.init_object_date(date)
+
+        self.service_real.type = "put"
+
+        self.service_real.mode = "PRACTICE"
+
+        self.service_real.mode_basic = "PRACTICE"
+
+        self.service_real.init_regression_logistic_model_general(logistic_regression)
+
+        result = self.service_real.get_regression_logistic_model_general(data)
+
+        print(result)
 

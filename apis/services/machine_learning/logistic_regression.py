@@ -42,10 +42,22 @@ class case_logistic_regression():
 
     stage_prediction = None
 
+    id_predict_model_general_repository = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+    def set_id_predict_model_general_repository(self,value):
+
+        self.id_predict_model_general_repository = value
+
+        return True
+    
+    def get_id_predict_model_general_repository(self):
+
+        return self.id_predict_model_general_repository
+    
     def init_object_date(self,value):
 
         self.object_date = value
@@ -372,7 +384,7 @@ class case_logistic_regression():
         
         self.train_model(X_train, y_train)
         
-        accuracy, report= self.evaluate_model(X_test, y_test)
+        accuracy, report = self.evaluate_model(X_test, y_test)
 
         self.save_model()
         
@@ -440,7 +452,7 @@ class case_logistic_regression():
 
         return self.object_date.get_current_date_mil(now)
     
-    def init_data_persistent_model_general(self,data,id_entry):
+    def init_data_persistent_model_general(self,data):
 
         self.init_stage_prediction()
 
@@ -448,9 +460,10 @@ class case_logistic_regression():
 
         result,result_general = self.generate_position_prediction(data)
 
+        self.set_id_predict_model_general_repository(self.generate_id())
+
         return {
-            "id": self.generate_id(),
-            "id_entrys": id_entry,
+            "id": self.get_id_predict_model_general_repository(),
             "predition_general":result_general[0],
             "prediction_false": result[0][0],
             "prediction_true": result[0][1],
@@ -463,8 +476,15 @@ class case_logistic_regression():
             "state": 1
         }
 
-    def get_position_prediction(self,data,id_entry):
+    def get_position_prediction(self,data):
 
-        result = self.init_data_persistent_model_general(data,id_entry)
+        result = self.logistic_regression.add_models_general(self.init_data_persistent_model_general(data))
 
-        return self.logistic_regression.add_models_general(result)
+
+        print(result)
+        
+        if not result['status']:
+
+            return False
+
+        return self.get_id_predict_model_general_repository()
