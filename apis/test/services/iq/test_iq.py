@@ -646,6 +646,12 @@ class TestServicesIq(TestCase):
 
         self.service_real.mode_basic = "PRACTICE"
 
+        self.service_real.sma30 = 40.5
+
+        self.service_real.sma10 = 35.5
+
+        self.service_real.rsi = 80
+
         self.service_real.init_regression_logistic_model_general(logistic_regression)
 
         result = self.service_real.get_regression_logistic_model_general(data)

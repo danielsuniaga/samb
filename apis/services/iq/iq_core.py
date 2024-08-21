@@ -200,17 +200,29 @@ class cases_iq_core(icases_iq_core):
 
         return True
     
+    def get_value_rsi(self):
+
+        return self.rsi
+    
     def set_value_sma10(self,valor):
 
         self.sma10 = valor
 
         return True
     
+    def get_value_sma10(self):
+        
+        return self.sma10
+    
     def set_value_sma30(self,valor):
 
         self.sma30 = valor
 
         return True
+    
+    def get_value_sma30(self):
+
+        return self.sma30
     
     def generate_id(self):
 
@@ -621,10 +633,10 @@ class cases_iq_core(icases_iq_core):
             "entry_type_account": self.get_entry_type_account(),
             "entry_number_candle": self.get_candle_analized(),
             "entry_condition": self.get_entry_condition_data(),
-            "entry_amount": 1,
-            "sma_30_value": 50.5,
-            "sma_10_value": 45.3,
-            "rsi_value": 70.0,
+            "entry_amount": self.get_money(),
+            "sma_30_value": self.get_value_sma30(),
+            "sma_10_value": self.get_value_sma10(),
+            "rsi_value": self.get_value_rsi(),
             "movement_open_candle": 1.1,
             "movement_close_candle": 1.2,
             "movement_high_candle": 1.3,
