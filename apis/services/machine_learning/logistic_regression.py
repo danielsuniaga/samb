@@ -479,9 +479,6 @@ class case_logistic_regression():
     def get_position_prediction(self,data):
 
         result = self.logistic_regression.add_models_general(self.init_data_persistent_model_general(data))
-
-
-        print(result)
         
         if not result['status']:
 

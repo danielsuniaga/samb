@@ -229,6 +229,29 @@ class TestServicesIq(TestCase):
         
         self.assertEqual(result, expected_result)
 
+    # def test_get_candles_data_real(self):
+
+    #     expected_result = [
+    #         {"from": 1623693067, "close": 1.23456},
+    #         {"from": 1623693068, "close": 1.23457},
+    #         {"from": 1623693069, "close": 1.23458}
+    #     ]
+
+    #     # mock_instance = mock_iq_option.return_value
+
+    #     # mock_instance.connect.return_value = True
+
+    #     # mock_instance.get_candles.return_value = expected_result
+
+    #     self.service_real.init()
+
+    #     result = self.service_real.get_candles_data()
+
+    #     print(result)
+        
+    #     # self.assertEqual(result, expected_result)
+
+
     def test_removed_candle_last(self):
 
         candles = [
@@ -652,9 +675,13 @@ class TestServicesIq(TestCase):
 
         self.service_real.rsi = 80
 
+        self.service_real.init()
+
+        data_candles = self.service_real.get_candles_data()
+
         self.service_real.init_regression_logistic_model_general(logistic_regression)
 
-        result = self.service_real.get_regression_logistic_model_general(data)
+        result = self.service_real.get_regression_logistic_model_general(data,data_candles,date)
 
-        print(result)
+        # print(result)
 

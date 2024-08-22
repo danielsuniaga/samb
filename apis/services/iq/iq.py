@@ -117,7 +117,7 @@ class cases_iq(cases_iq_core,icases_iq):
 
             result = self.get_monetary_filter(result,smtp)
 
-            result = self.get_regression_logistic_model_general(result)
+            result = self.get_regression_logistic_model_general(result,result_candles,date)
 
             result = self.add_entry_platform(result)
 

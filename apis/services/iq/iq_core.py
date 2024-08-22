@@ -626,7 +626,23 @@ class cases_iq_core(icases_iq_core):
 
         return 1
     
-    def init_data_get_regression_logistic_model_general(self):
+    def generate_candles_sort_reversed(self,candles):
+
+        return sorted(candles,key=lambda x: x['id'],reverse=True)
+    
+    def get_candles_first(self,candles):
+
+        return candles[0]
+    
+    def get_current_date_specific(self,dates,specific):
+
+        now = dates.get_current_utc5()
+
+        return int(dates.get_current_date_specific(now,specific))
+    
+    def init_data_get_regression_logistic_model_general(self,candles,dates):
+
+        candles_sorted = self.get_candles_first(self.generate_candles_sort_reversed(candles))
 
         return {
             "entry_type": self.get_entry_type(),
@@ -637,34 +653,32 @@ class cases_iq_core(icases_iq_core):
             "sma_30_value": self.get_value_sma30(),
             "sma_10_value": self.get_value_sma10(),
             "rsi_value": self.get_value_rsi(),
-            "movement_open_candle": 1.1,
-            "movement_close_candle": 1.2,
-            "movement_high_candle": 1.3,
-            "movement_low_candle": 1.0,
-            "movement_volume_candle": 100,
-            "year": 2024,
-            "month": 8,
-            "day": 10,
-            "hour": 14,
-            "minute": 30,
-            "second": 15
+            "movement_open_candle": candles_sorted['open'],
+            "movement_close_candle": candles_sorted['close'],
+            "movement_high_candle": candles_sorted['max'],
+            "movement_low_candle": candles_sorted['min'],
+            "movement_volume_candle": candles_sorted['volume'],
+            "year": self.get_current_date_specific(dates,'%Y'),
+            "month": self.get_current_date_specific(dates,'%m'),
+            "day": self.get_current_date_specific(dates,'%d'),
+            "hour": self.get_current_date_specific(dates,'%H'),
+            "minute": self.get_current_date_specific(dates,'%M'),
+            "second": self.get_current_date_specific(dates,'%S')
         }
     
-    def get_position_prediction(self):
+    def get_position_prediction(self,candles,date):
 
-        data = self.init_data_get_regression_logistic_model_general()
-
-        print(data)
+        data = self.init_data_get_regression_logistic_model_general(candles,date)
         
         return self.regression_logistic_model_general.get_position_prediction(data)
     
-    def get_regression_logistic_model_general(self,result):
+    def get_regression_logistic_model_general(self,result,candles,date):
         
         if not result:
 
             return False
                 
-        id_samb_predict_model_general_logistic_regression = self.get_position_prediction()
+        id_samb_predict_model_general_logistic_regression = self.get_position_prediction(candles,date)
 
         if not id_samb_predict_model_general_logistic_regression:
 
@@ -672,4 +686,4 @@ class cases_iq_core(icases_iq_core):
         
         self.set_id_predict_model_general_repository(id_samb_predict_model_general_logistic_regression)
 
-        return True
+        return self.get_id_predict_model_general_repository()
