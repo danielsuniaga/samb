@@ -17,6 +17,14 @@ class cases_iq(cases_iq_core,icases_iq):
 
         candles = self.removed_candle_close(candles,self.candle_removed)
 
+        candles[0]=1.05
+
+        candles[1]=1.04
+
+        candles[2]=1.03
+
+        candles[3]=1.02
+
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
             self.set_type(self.type_entry_long)
@@ -119,6 +127,8 @@ class cases_iq(cases_iq_core,icases_iq):
 
             result = self.get_regression_logistic_model_general(result,result_candles,date)
 
+            return result
+            
             result = self.add_entry_platform(result)
 
             result = self.add_entry_traceability(result,id_cronjobs,smtp,result_candles)

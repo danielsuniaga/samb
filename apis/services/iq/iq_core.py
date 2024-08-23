@@ -21,6 +21,8 @@ class cases_iq_core(icases_iq_core):
 
     id_predict_model_general_repository = None
 
+    id_entry_service = None
+
     type=None
 
     message=None
@@ -120,6 +122,16 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def set_id_entry_services(self,value):
+
+        self.id_entry_service = value
+
+        return True
+    
+    def get_id_entry_services(self):
+
+        return self.id_entry_service
+    
     def get_candle_analized(self):
 
         return self.candle_analized
@@ -462,6 +474,8 @@ class cases_iq_core(icases_iq_core):
 
         self.iq.set_id_entry(id_entry)
 
+        self.set_id_entry_services(id_entry)
+
         result_entry = self.add_result_entry_platform_v3(result)
 
         self.iq.set_result_entry(result_entry)
@@ -534,7 +548,11 @@ class cases_iq_core(icases_iq_core):
 
             return False
         
-        return True
+        return self.add_entry_predict_model_general_logistic_regression()
+        
+    def add_entry_predict_model_general_logistic_regression(self):
+
+        return self.regression_logistic_model_general.add_entry_predict_model_general_logistic_regression(self.get_id_predict_model_general_repository(),self.get_id_entry_services())
     
     def send_notification_telegram(self,result,telegram,id_cronjobs):
 
@@ -669,7 +687,7 @@ class cases_iq_core(icases_iq_core):
     def get_position_prediction(self,candles,date):
 
         data = self.init_data_get_regression_logistic_model_general(candles,date)
-        
+            
         return self.regression_logistic_model_general.get_position_prediction(data)
     
     def get_regression_logistic_model_general(self,result,candles,date):
@@ -680,10 +698,12 @@ class cases_iq_core(icases_iq_core):
                 
         id_samb_predict_model_general_logistic_regression = self.get_position_prediction(candles,date)
 
+        return True
+
         if not id_samb_predict_model_general_logistic_regression:
 
             return id_samb_predict_model_general_logistic_regression
-        
+                
         self.set_id_predict_model_general_repository(id_samb_predict_model_general_logistic_regression)
 
         return self.get_id_predict_model_general_repository()

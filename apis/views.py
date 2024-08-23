@@ -191,6 +191,7 @@ class GetDataAnalysisIqOptionClean(APIView):
 
           self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
 
+          self.logistic_regression.init_object_date(self.dates)
 
      def post(self, request, format=None):
 
@@ -242,7 +243,9 @@ class GetDataAnalysisIqOptionClean(APIView):
                     
           self.iq.init_regression_logistic_model_general(self.logistic_regression)
           
-          self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
+          result= self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
+
+          return Response(result)
 
           now = self.dates.get_current_utc5()
 

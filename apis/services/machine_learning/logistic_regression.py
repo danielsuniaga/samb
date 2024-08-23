@@ -485,3 +485,26 @@ class case_logistic_regression():
             return False
 
         return self.get_id_predict_model_general_repository()
+    
+    def init_add_entry_predict_model_general_logistic_regression(self,id_predict,id_entry):
+
+        date = self.get_current_date()
+
+        return {
+            "id": self.generate_id(),
+            "id_entry":id_entry,
+            "id_predict_model_general_logistic_regression":id_predict,
+            "registration_date":date,
+            "update_date":date,
+            "state":1
+        }
+    
+    def add_entry_predict_model_general_logistic_regression(self,id_predict,id_entry):
+
+        result = self.logistic_regression.add_entry_model_general(self.init_add_entry_predict_model_general_logistic_regression(id_predict,id_entry))
+
+        if not result['status']: 
+
+            return False
+
+        return True

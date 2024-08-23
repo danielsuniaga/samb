@@ -683,5 +683,23 @@ class TestServicesIq(TestCase):
 
         result = self.service_real.get_regression_logistic_model_general(data,data_candles,date)
 
-        # print(result)
+        print(result)
+
+    def test_add_entry_predict_model_general_logistic_regression(self):
+
+        date = case_dates.cases_dates()
+
+        logistic_regression = case_logistic_regression.case_logistic_regression(self.cursor)
+
+        logistic_regression.init_object_date(date)
+
+        self.service_real.init_regression_logistic_model_general(logistic_regression)
+
+        self.service_real.id_predict_model_general_repository='052d3241e8244be1a345c793f7ba440c'
+
+        self.service_real.id_entry_service='0118aa5ae1064c5393d1f5c7867622e4'
+        
+        result = self.service_real.add_entry_predict_model_general_logistic_regression()
+
+        print(result)
 
