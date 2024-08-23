@@ -698,8 +698,6 @@ class cases_iq_core(icases_iq_core):
                 
         id_samb_predict_model_general_logistic_regression = self.get_position_prediction(candles,date)
 
-        return True
-
         if not id_samb_predict_model_general_logistic_regression:
 
             return id_samb_predict_model_general_logistic_regression

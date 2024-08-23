@@ -44,10 +44,22 @@ class case_logistic_regression():
 
     id_predict_model_general_repository = None
 
+    message_user = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+    def set_message_user(self,value):
+
+        self.message_user = value
+
+        return True;
+
+    def get_message_user(self):
+
+        return self.message_user
+    
     def set_id_predict_model_general_repository(self,value):
 
         self.id_predict_model_general_repository = value
@@ -460,7 +472,11 @@ class case_logistic_regression():
 
         result,result_general = self.generate_position_prediction(data)
 
+        predictions = {"general":result_general[0],"false":result[0][0],"true":result[0][1]}
+
         self.set_id_predict_model_general_repository(self.generate_id())
+
+        self.set_message_user("Prediction general: "+result_general[0]+" Prediction false: "+result[0][0]+" Prediction true: "+result[0][1])
 
         return {
             "id": self.get_id_predict_model_general_repository(),

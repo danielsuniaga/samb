@@ -243,9 +243,7 @@ class GetDataAnalysisIqOptionClean(APIView):
                     
           self.iq.init_regression_logistic_model_general(self.logistic_regression)
           
-          result= self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
-
-          return Response(result)
+          self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 
           now = self.dates.get_current_utc5()
 
