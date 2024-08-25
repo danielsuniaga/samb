@@ -75,5 +75,13 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
         result = self.service_real.get_position_prediction(data)
 
         print(result)
+
+    def add_flat_data_model_general(self):
+
+        data="TEST"
+
+        result = self.service_real.add_flat_data_model_general(data)
+
+        print(result)
         
 

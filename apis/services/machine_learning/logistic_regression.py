@@ -36,6 +36,12 @@ class case_logistic_regression():
 
     directory_model_general = None
 
+    data_model_general = None
+
+    data_directory_model_general = None
+
+    extension_data_model_general = None
+
     model = None
 
     object_date = None
@@ -50,6 +56,36 @@ class case_logistic_regression():
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+    def init_extension_data_model_general(self):
+        
+        self.extension_data_model_general = config("MODEL_GENERAL_DATA_EXTENSION_ML_LOGISTIC_REGRESSION")
+
+        return True
+    
+    def get_extension_data_model_general(self):
+
+        return self.extension_data_model_general
+    
+    def init_data_model_general(self):
+
+        self.data_model_general = config("MODEL_GENERAL_DATA_ML_LOGISTIC_REGRESSION")
+
+        return True
+
+    def get_data_model_general(self):
+
+        return self.data_model_general
+    
+    def init_data_directory_model_general(self):
+
+        self.data_directory_model_general = config("MODEL_DIRECTORY_DATA_ML_LOGISTIC_REGRESSION")
+
+        return True
+
+    def get_data_directory_model_general(self):
+
+        return self.data_directory_model_general
+    
     def set_message_user(self,value):
 
         self.message_user = value
@@ -415,6 +451,36 @@ class case_logistic_regression():
             return self.model
         
         return None
+    
+    def get_path_flat_data_model_general(self):
+        
+        return self.get_data_directory_model_general()+self.get_data_model_general()+self.get_extension_data_model_general()
+    
+    def add_flat_data_model_general(self,data):
+
+        self.init_data_model_general()
+
+        self.init_data_directory_model_general()
+
+        self.init_extension_data_model_general()
+
+        path = self.get_path_flat_data_model_general()
+
+        try:
+
+            with open(path, 'a') as archivo:  
+
+                archivo.write(data + '\n')
+
+            print(f"Datos escritos exitosamente en {path}")
+
+        except Exception as e:
+
+            print(f"Ocurrió un error al escribir en el archivo: {e}")
+
+            return False
+        
+        return True
     
     def generate_position_prediction(self,data):
 
