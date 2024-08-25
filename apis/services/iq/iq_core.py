@@ -122,6 +122,10 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def get_message(self):
+
+        return self.message
+    
     def set_id_entry_services(self,value):
 
         self.id_entry_service = value
@@ -197,6 +201,12 @@ class cases_iq_core(icases_iq_core):
     def set_message(self,valor):
 
         self.message = valor
+
+        return True
+    
+    def add_message(self,valor):
+
+        self.message = self.message +str(valor)
 
         return True
     
@@ -554,13 +564,17 @@ class cases_iq_core(icases_iq_core):
 
         return self.regression_logistic_model_general.add_entry_predict_model_general_logistic_regression(self.get_id_predict_model_general_repository(),self.get_id_entry_services())
     
+    def get_message_model_general_logistic_regression(self):
+
+        return self.regression_logistic_model_general.get_message_user()
+    
     def send_notification_telegram(self,result,telegram,id_cronjobs):
 
         if not result:
 
             return False
 
-        return telegram.send(self.message,id_cronjobs,self.current_date_general)
+        return telegram.send(self.get_message()+self.get_message_model_general_logistic_regression(),id_cronjobs,self.current_date_general)
             
     def add_result_entry_platform_v3(self,result):
 

@@ -464,6 +464,26 @@ class case_logistic_regression():
 
         return self.object_date.get_current_date_mil(now)
     
+    def init_data_predictions(self,result,result_general):
+
+        return {"general":result_general[0],"false":result[0][0],"true":result[0][1]}
+    
+    def generate_date_to_str(self,field):
+        
+        return self.object_date.generate_date_to_str(field)
+    
+    def get_stage_prediction_field_front(self,field):
+
+        date = self.generate_date_to_str(self.get_stage_prediction_field(field))
+
+        return self.object_date.get_current_date_mil_front(date)
+    
+    def set_message_user_predictions(self,predictions):
+
+        self.set_message_user(" - [Prediction general: "+str(predictions['general'])+" Prediction false: "+str(predictions['false'])+" Prediction true: "+str(predictions['true'])+"] - [Start date:"+self.get_stage_prediction_field_front("start")+" Load date:"+self.get_stage_prediction_field_front("load")+" Predict general date:"+self.get_stage_prediction_field_front("predict_general")+" Predict proba date:"+self.get_stage_prediction_field_front("predict_proba")+"]")
+
+        return True
+    
     def init_data_persistent_model_general(self,data):
 
         self.init_stage_prediction()
@@ -472,17 +492,17 @@ class case_logistic_regression():
 
         result,result_general = self.generate_position_prediction(data)
 
-        predictions = {"general":result_general[0],"false":result[0][0],"true":result[0][1]}
+        predictions = self.init_data_predictions(result,result_general)
 
         self.set_id_predict_model_general_repository(self.generate_id())
 
-        self.set_message_user("Prediction general: "+result_general[0]+" Prediction false: "+result[0][0]+" Prediction true: "+result[0][1])
+        self.set_message_user_predictions(predictions)
 
         return {
             "id": self.get_id_predict_model_general_repository(),
-            "predition_general":result_general[0],
-            "prediction_false": result[0][0],
-            "prediction_true": result[0][1],
+            "predition_general":predictions['general'],
+            "prediction_false": predictions['false'],
+            "prediction_true": predictions['true'],
             "start_date": self.get_stage_prediction_field("start"),
             "load_date": self.get_stage_prediction_field("load"),
             "predict_general_date": self.get_stage_prediction_field("predict_general"),
@@ -499,6 +519,8 @@ class case_logistic_regression():
         if not result['status']:
 
             return False
+        
+        print(self.get_message_user())
 
         return self.get_id_predict_model_general_repository()
     
