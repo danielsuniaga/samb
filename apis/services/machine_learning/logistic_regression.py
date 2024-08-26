@@ -72,6 +72,10 @@ class case_logistic_regression():
 
         return True
 
+    def add_data_model_general(self,value):
+
+        self.data_model_general = self.data_model_general + value
+    
     def get_data_model_general(self):
 
         return self.data_model_general
@@ -460,6 +464,8 @@ class case_logistic_regression():
 
         self.init_data_model_general()
 
+        self.add_data_model_general(self.get_current_date_only())
+
         self.init_data_directory_model_general()
 
         self.init_extension_data_model_general()
@@ -475,8 +481,6 @@ class case_logistic_regression():
                 archivo.write(str(data) + '\n')
 
         except Exception as e:
-
-            print(f"Ocurrió un error al escribir en el archivo: {e}")
 
             return False
         
@@ -523,6 +527,12 @@ class case_logistic_regression():
         now = self.get_current_utc5()
         
         return self.object_date.get_current_date(now)
+    
+    def get_current_date_only(self):
+
+        now = self.get_current_utc5()
+        
+        return self.object_date.get_current_date_only(now)
     
     def get_current_date_mil(self):
 

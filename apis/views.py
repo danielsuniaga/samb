@@ -271,6 +271,10 @@ class GetDataAnalysisIqOptionCleanAnother(APIView):
 
           self.telegram = case_telegram.cases_telegram(cursor)
 
+          self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
+
+          self.logistic_regression.init_object_date(self.dates)
+
      def post(self, request, format=None):
           
           id_cronjobs = self.cronjobs.generate_cronjob_id()
@@ -319,7 +323,9 @@ class GetDataAnalysisIqOptionCleanAnother(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
           
-          result = self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
+          self.iq.init_regression_logistic_model_general(self.logistic_regression)
+          
+          self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 
           now = self.dates.get_current_utc5()
 
