@@ -464,15 +464,15 @@ class case_logistic_regression():
 
         self.init_extension_data_model_general()
 
+        self.analize_directory_exists(self.get_data_directory_model_general())
+
         path = self.get_path_flat_data_model_general()
 
         try:
 
             with open(path, 'a') as archivo:  
 
-                archivo.write(data + '\n')
-
-            print(f"Datos escritos exitosamente en {path}")
+                archivo.write(str(data) + '\n')
 
         except Exception as e:
 
@@ -555,6 +555,8 @@ class case_logistic_regression():
         self.init_stage_prediction()
 
         date = self.get_current_date()
+
+        self.add_flat_data_model_general(data)
 
         result,result_general = self.generate_position_prediction(data)
 

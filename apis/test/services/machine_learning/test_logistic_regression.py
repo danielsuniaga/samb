@@ -76,7 +76,7 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         print(result)
 
-    def add_flat_data_model_general(self):
+    def test_add_flat_data_model_general(self):
 
         data="TEST"
 
