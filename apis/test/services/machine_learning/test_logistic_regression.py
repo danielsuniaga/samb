@@ -80,6 +80,10 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         data="TEST"
 
+        dates = case_dates.cases_dates()
+
+        self.service_real.init_object_date(dates)
+
         result = self.service_real.add_flat_data_model_general(data)
 
         print(result)

@@ -20,7 +20,9 @@ from decouple import config
 
 import time
 
-class case_logistic_regression():
+from apis.services.machine_learning.ilogistic_regression import icase_logistic_regression
+
+class case_logistic_regression(icase_logistic_regression):
 
     dataset_file_general = None
 
@@ -261,16 +263,12 @@ class case_logistic_regression():
     
     def load_data_expansive(self):
 
-        # Leer los datos desde el archivo CSV
         data = pd.read_csv(self.get_directory_file_general() + self.get_dataset_file_general())
 
-        # Crear un nuevo DataFrame para almacenar las posiciones con las velas embebidas
         processed_data = pd.DataFrame()
 
-        # Agrupar por cada posición y ordenar por num_candle para mantener las últimas 30 velas
         grouped = data.groupby('id_entry_id')
 
-        # Iterar sobre cada grupo (posición)
         for name, group in grouped:
 
             # Crear un diccionario para la nueva fila
@@ -307,7 +305,6 @@ class case_logistic_regression():
             # Añadir la fila al DataFrame procesado
             processed_data = pd.concat([processed_data, pd.DataFrame([row])], ignore_index=True)
 
-        # Separar características y objetivo
         X = processed_data.drop(columns=['entry_result'])
         y = processed_data['entry_result']
 
@@ -353,7 +350,6 @@ class case_logistic_regression():
     
     def preprocess_data_expansive(self, X, y):
 
-        # Dividir los datos en conjuntos de entrenamiento y prueba
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
         
         return X_train, X_test, y_train, y_test

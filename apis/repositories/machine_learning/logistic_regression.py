@@ -1,6 +1,8 @@
 from decouple import config
 
-class repositories_ligistic_regression():
+from apis.repositories.machine_learning.ilogistic_regression import irepositories_ligistic_regression
+
+class repositories_ligistic_regression(irepositories_ligistic_regression):
 
     cursor_db = None
 
