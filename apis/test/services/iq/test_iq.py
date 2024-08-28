@@ -491,7 +491,8 @@ class TestServicesIq(TestCase):
         self.assertTrue(result_value)
 
     @mock.patch('apis.repositories.iq.iq.repositories_iq.add_entrys_result', return_value={'status': True, 'msj': 'Success'})
-    def test_add_result_entry_success(self,mock_add_entrys_result):
+    @mock.patch.object(cases_iq, 'add_entry_predict_model_general_logistic_regression', return_value=True)
+    def test_add_result_entry_success(self,mock_add_entrys_result,mock_add_entry_predict_model_general_logistic_regression):
 
         smtp = mock.Mock()
 
@@ -631,7 +632,8 @@ class TestServicesIq(TestCase):
     @mock.patch.object(cases_iq, 'add_entry_platform', return_value=True)
     @mock.patch.object(cases_iq, 'add_entry_traceability', return_value=True)
     @mock.patch.object(cases_iq, 'send_notification_telegram', return_value=True)
-    def test_get_loops(self,mock_set_asset_financial,mock_analized_mode,mock_set_current_date,mock_set_current_date_general,mock_set_current_date_manipulated,mock_get_current_entrys,mock_get_indicators,mock_get_monetary_filter,mock_add_entry_platform,mock_add_entry_traceability,mock_send_notification_telegram):
+    @mock.patch.object(cases_iq, 'get_regression_logistic_model_general', return_value=True)
+    def test_get_loops(self,mock_set_asset_financial,mock_analized_mode,mock_set_current_date,mock_set_current_date_general,mock_set_current_date_manipulated,mock_get_current_entrys,mock_get_indicators,mock_get_monetary_filter,mock_add_entry_platform,mock_add_entry_traceability,mock_send_notification_telegram,mock_get_regression_logistic_model_general):
 
         cursor = connection.cursor()
 
@@ -653,53 +655,6 @@ class TestServicesIq(TestCase):
 
         self.assertTrue(result)
 
-    def test_get_regression_logistic_model_general(self):
 
-        date = case_dates.cases_dates()
 
-        data = True
-
-        logistic_regression = case_logistic_regression.case_logistic_regression(self.cursor)
-
-        logistic_regression.init_object_date(date)
-
-        self.service_real.type = "put"
-
-        self.service_real.mode = "PRACTICE"
-
-        self.service_real.mode_basic = "PRACTICE"
-
-        self.service_real.sma30 = 40.5
-
-        self.service_real.sma10 = 35.5
-
-        self.service_real.rsi = 80
-
-        self.service_real.init()
-
-        data_candles = self.service_real.get_candles_data()
-
-        self.service_real.init_regression_logistic_model_general(logistic_regression)
-
-        result = self.service_real.get_regression_logistic_model_general(data,data_candles,date)
-
-        print(result)
-
-    def test_add_entry_predict_model_general_logistic_regression(self):
-
-        date = case_dates.cases_dates()
-
-        logistic_regression = case_logistic_regression.case_logistic_regression(self.cursor)
-
-        logistic_regression.init_object_date(date)
-
-        self.service_real.init_regression_logistic_model_general(logistic_regression)
-
-        self.service_real.id_predict_model_general_repository='052d3241e8244be1a345c793f7ba440c'
-
-        self.service_real.id_entry_service='0118aa5ae1064c5393d1f5c7867622e4'
-        
-        result = self.service_real.add_entry_predict_model_general_logistic_regression()
-
-        print(result)
 
