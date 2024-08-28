@@ -22,6 +22,10 @@ class icases_dates(ABC):
     @abstractmethod
     def get_current_date(self, date):
         pass
+
+    @abstractmethod
+    def get_current_date_mil(self, date):
+        pass
     
     @abstractmethod
     def get_current_hour(self, hour):

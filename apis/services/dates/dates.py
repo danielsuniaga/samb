@@ -48,6 +48,22 @@ class cases_dates(icases_dates):
 
         return date.strftime("%Y%m%d%H%M%S")
     
+    def get_current_date_specific(self,date,specific):
+
+        return date.strftime(specific)
+    
+    def generate_date_to_str(self,str):
+
+        return datetime.strptime(str, "%Y%m%d%H%M%S%f")
+    
+    def get_current_date_mil(self,date):
+
+        return date.strftime("%Y%m%d%H%M%S%f")[:-3]
+    
+    def get_current_date_mil_front(self,date):
+
+        return date.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    
     def get_current_hour(self,hour):
 
         return hour.strftime("%H%M%S")

@@ -17,23 +17,30 @@ class cases_iq_core(icases_iq_core):
 
     API = None
 
+    regression_logistic_model_general = None
+
+    id_predict_model_general_repository = None
+
+    id_entry_service = None
+
+    type=None
+
+    message=None
+
+    rsi=None 
+
+    sma10=None
+
+    sma30=None
+
+    current_date = None
+
+    current_date_general = None
+
+    current_date_manipulated = None
+
     def __init__(self,cursor):
 
-        self.message=None 
-
-        self.API = None
-
-        self.rsi=None
-
-        self.sma10=None
-
-        self.sma30=None
-
-        self.current_date = None
-
-        self.current_date_general = None
-
-        self.current_date_manipulated = None
 
         self.username = config("USERNAME")
 
@@ -54,6 +61,8 @@ class cases_iq_core(icases_iq_core):
         self.type_entry_long = config("TYPE_ENTRY_LONG")
 
         self.mode = config("MODE")
+
+        self.mode_basic = config("MODE")
 
         self.project_name = config("PROJECT_NAME")
 
@@ -80,8 +89,6 @@ class cases_iq_core(icases_iq_core):
         self.candle_sma_long = int(config("CANDLE_SMA_LONG"))
 
         self.candle_last = int(config("CANDLE_LAST"))
-
-        self.type = None
 
         self.end_from_time = time.time()
 
@@ -115,6 +122,52 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def get_message(self):
+
+        return self.message
+    
+    def set_id_entry_services(self,value):
+
+        self.id_entry_service = value
+
+        return True
+    
+    def get_id_entry_services(self):
+
+        return self.id_entry_service
+    
+    def get_candle_analized(self):
+
+        return self.candle_analized
+    
+    def get_mode_basic(self):
+
+        return self.mode_basic
+    
+    def get_type_entry_short(self):
+
+        return self.type_entry_short
+    
+    def set_id_predict_model_general_repository(self,value):
+
+        self.id_predict_model_general_repository = value
+
+        return True
+    
+    def get_id_predict_model_general_repository(self):
+
+        return self.id_predict_model_general_repository
+
+    def get_type(self):
+        
+        return self.type
+
+    def init_regression_logistic_model_general(self,value):
+
+        self.regression_logistic_model_general = value
+
+        return True
+    
     def set_loss(self,valor):
 
         self.loss = int(valor)
@@ -151,6 +204,12 @@ class cases_iq_core(icases_iq_core):
 
         return True
     
+    def add_message(self,valor):
+
+        self.message = self.message +str(valor)
+
+        return True
+    
     def add_message_text(self,valor):
 
         self.message = self.message + " - "+valor
@@ -163,17 +222,29 @@ class cases_iq_core(icases_iq_core):
 
         return True
     
+    def get_value_rsi(self):
+
+        return self.rsi
+    
     def set_value_sma10(self,valor):
 
         self.sma10 = valor
 
         return True
     
+    def get_value_sma10(self):
+        
+        return self.sma10
+    
     def set_value_sma30(self,valor):
 
         self.sma30 = valor
 
         return True
+    
+    def get_value_sma30(self):
+
+        return self.sma30
     
     def generate_id(self):
 
@@ -413,6 +484,8 @@ class cases_iq_core(icases_iq_core):
 
         self.iq.set_id_entry(id_entry)
 
+        self.set_id_entry_services(id_entry)
+
         result_entry = self.add_result_entry_platform_v3(result)
 
         self.iq.set_result_entry(result_entry)
@@ -485,7 +558,15 @@ class cases_iq_core(icases_iq_core):
 
             return False
         
-        return True
+        return self.add_entry_predict_model_general_logistic_regression()
+        
+    def add_entry_predict_model_general_logistic_regression(self):
+
+        return self.regression_logistic_model_general.add_entry_predict_model_general_logistic_regression(self.get_id_predict_model_general_repository(),self.get_id_entry_services())
+    
+    def get_message_model_general_logistic_regression(self):
+
+        return self.regression_logistic_model_general.get_message_user()
     
     def send_notification_telegram(self,result,telegram,id_cronjobs):
 
@@ -493,7 +574,7 @@ class cases_iq_core(icases_iq_core):
 
             return False
 
-        return telegram.send(self.message,id_cronjobs,self.current_date_general)
+        return telegram.send(self.get_message()+self.get_message_model_general_logistic_regression(),id_cronjobs,self.current_date_general)
             
     def add_result_entry_platform_v3(self,result):
 
@@ -556,3 +637,85 @@ class cases_iq_core(icases_iq_core):
     def get_mode(self):
 
         return self.mode
+    
+    def get_entry_type(self):
+
+        if self.get_type() == self.get_type_entry_short():
+
+            return 0
+
+        return 1
+    
+    def get_entry_type_account(self):
+
+        if self.get_mode() == self.get_mode_basic():
+
+            return 0
+        
+        return 1
+    
+    def get_entry_condition_data(self):
+
+        return 1
+    
+    def generate_candles_sort_reversed(self,candles):
+
+        return sorted(candles,key=lambda x: x['id'],reverse=True)
+    
+    def get_candles_first(self,candles):
+
+        return candles[0]
+    
+    def get_current_date_specific(self,dates,specific):
+
+        now = dates.get_current_utc5()
+
+        return int(dates.get_current_date_specific(now,specific))
+    
+    def init_data_get_regression_logistic_model_general(self,candles,dates):
+
+        candles_sorted = self.get_candles_first(self.generate_candles_sort_reversed(candles))
+
+        return {
+            "entry_type": self.get_entry_type(),
+            "entry_type_account": self.get_entry_type_account(),
+            "entry_number_candle": self.get_candle_analized(),
+            "entry_condition": self.get_entry_condition_data(),
+            "entry_amount": self.get_money(),
+            "sma_30_value": self.get_value_sma30(),
+            "sma_10_value": self.get_value_sma10(),
+            "rsi_value": self.get_value_rsi(),
+            "movement_open_candle": candles_sorted['open'],
+            "movement_close_candle": candles_sorted['close'],
+            "movement_high_candle": candles_sorted['max'],
+            "movement_low_candle": candles_sorted['min'],
+            "movement_volume_candle": candles_sorted['volume'],
+            "year": self.get_current_date_specific(dates,'%Y'),
+            "month": self.get_current_date_specific(dates,'%m'),
+            "day": self.get_current_date_specific(dates,'%d'),
+            "hour": self.get_current_date_specific(dates,'%H'),
+            "minute": self.get_current_date_specific(dates,'%M'),
+            "second": self.get_current_date_specific(dates,'%S')
+        }
+    
+    def get_position_prediction(self,candles,date):
+
+        data = self.init_data_get_regression_logistic_model_general(candles,date)
+            
+        return self.regression_logistic_model_general.get_position_prediction(data)
+    
+    def get_regression_logistic_model_general(self,result,candles,date):
+        
+        if not result:
+
+            return False
+                
+        id_samb_predict_model_general_logistic_regression = self.get_position_prediction(candles,date)
+
+        if not id_samb_predict_model_general_logistic_regression:
+
+            return id_samb_predict_model_general_logistic_regression
+                
+        self.set_id_predict_model_general_repository(id_samb_predict_model_general_logistic_regression)
+
+        return self.get_id_predict_model_general_repository()

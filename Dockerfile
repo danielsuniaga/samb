@@ -8,7 +8,7 @@ RUN chmod +x /usr/local/bin/wait-for-it.sh
 
 # Copia los archivos requeridos y ejecuta las actualizaciones
 COPY requirements.txt /code/
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl tree
 RUN pip install --upgrade pip && pip install -r /code/requirements.txt
 
 # Copia el script de entrada al directorio /code

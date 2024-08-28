@@ -12,15 +12,31 @@ import apis.services.dates.dates as case_dates
 
 import apis.services.telegram.telegram as case_telegram
 
+import  apis.services.machine_learning.logistic_regression as case_logistic_regression
+
 from django.db import connection
 
 class TestServicesIq(TestCase):
 
+    cursor = None
+
+    mock_cursor = None
+
+    service = None
+
+    expected_message_general = None
+
+    service_real = None
+
     def setUp(self):
+
+        self.cursor = connection.cursor()
 
         self.mock_cursor = mock.MagicMock()
         
         self.service = cases_iq(self.mock_cursor)
+
+        self.service_real = cases_iq(self.cursor)
 
         self.expected_message_general = "TEST"
 
@@ -212,6 +228,7 @@ class TestServicesIq(TestCase):
         result = self.service.get_candles_data()
         
         self.assertEqual(result, expected_result)
+
 
     def test_removed_candle_last(self):
 
@@ -452,7 +469,8 @@ class TestServicesIq(TestCase):
         self.assertTrue(result_value)
 
     @mock.patch('apis.repositories.iq.iq.repositories_iq.add_entrys_result', return_value={'status': True, 'msj': 'Success'})
-    def test_add_result_entry_success(self,mock_add_entrys_result):
+    @mock.patch.object(cases_iq, 'add_entry_predict_model_general_logistic_regression', return_value=True)
+    def test_add_result_entry_success(self,mock_add_entrys_result,mock_add_entry_predict_model_general_logistic_regression):
 
         smtp = mock.Mock()
 
@@ -463,7 +481,9 @@ class TestServicesIq(TestCase):
         self.assertTrue(result_value)
 
     @mock.patch('apis.services.telegram.telegram.cases_telegram.send', return_value=True)
-    def test_send_notification_telegram_success(self, mock_telegram_send):
+    @mock.patch.object(cases_iq, 'get_message_model_general_logistic_regression', return_value="TEST")
+    @mock.patch.object(cases_iq, 'get_message', return_value="TEST")
+    def test_send_notification_telegram_success(self, mock_telegram_send,mock_get_message_model_general_logistic_regression,mock_get_message):
 
         result = True
 
@@ -592,7 +612,8 @@ class TestServicesIq(TestCase):
     @mock.patch.object(cases_iq, 'add_entry_platform', return_value=True)
     @mock.patch.object(cases_iq, 'add_entry_traceability', return_value=True)
     @mock.patch.object(cases_iq, 'send_notification_telegram', return_value=True)
-    def test_get_loops(self,mock_set_asset_financial,mock_analized_mode,mock_set_current_date,mock_set_current_date_general,mock_set_current_date_manipulated,mock_get_current_entrys,mock_get_indicators,mock_get_monetary_filter,mock_add_entry_platform,mock_add_entry_traceability,mock_send_notification_telegram):
+    @mock.patch.object(cases_iq, 'get_regression_logistic_model_general', return_value=True)
+    def test_get_loops(self,mock_set_asset_financial,mock_analized_mode,mock_set_current_date,mock_set_current_date_general,mock_set_current_date_manipulated,mock_get_current_entrys,mock_get_indicators,mock_get_monetary_filter,mock_add_entry_platform,mock_add_entry_traceability,mock_send_notification_telegram,mock_get_regression_logistic_model_general):
 
         cursor = connection.cursor()
 
@@ -613,4 +634,7 @@ class TestServicesIq(TestCase):
         result = self.service.get_loops(date,smtp,id_cronjobs,telegram)
 
         self.assertTrue(result)
+
+
+
 
