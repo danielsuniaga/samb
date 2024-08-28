@@ -229,28 +229,6 @@ class TestServicesIq(TestCase):
         
         self.assertEqual(result, expected_result)
 
-    # def test_get_candles_data_real(self):
-
-    #     expected_result = [
-    #         {"from": 1623693067, "close": 1.23456},
-    #         {"from": 1623693068, "close": 1.23457},
-    #         {"from": 1623693069, "close": 1.23458}
-    #     ]
-
-    #     # mock_instance = mock_iq_option.return_value
-
-    #     # mock_instance.connect.return_value = True
-
-    #     # mock_instance.get_candles.return_value = expected_result
-
-    #     self.service_real.init()
-
-    #     result = self.service_real.get_candles_data()
-
-    #     print(result)
-        
-    #     # self.assertEqual(result, expected_result)
-
 
     def test_removed_candle_last(self):
 
@@ -503,7 +481,9 @@ class TestServicesIq(TestCase):
         self.assertTrue(result_value)
 
     @mock.patch('apis.services.telegram.telegram.cases_telegram.send', return_value=True)
-    def test_send_notification_telegram_success(self, mock_telegram_send):
+    @mock.patch.object(cases_iq, 'get_message_model_general_logistic_regression', return_value="TEST")
+    @mock.patch.object(cases_iq, 'get_message', return_value="TEST")
+    def test_send_notification_telegram_success(self, mock_telegram_send,mock_get_message_model_general_logistic_regression,mock_get_message):
 
         result = True
 
