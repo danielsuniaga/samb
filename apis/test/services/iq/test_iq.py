@@ -2,6 +2,8 @@ from unittest import TestCase, mock
 
 from unittest.mock import patch
 
+import unittest
+
 from apis.services.iq.iq import cases_iq
 
 from apis.services.smtp.smtp import cases_smtp
@@ -229,6 +231,24 @@ class TestServicesIq(TestCase):
         
         self.assertEqual(result, expected_result)
 
+    
+    @unittest.skip("Skipping this test")
+    def test_get_candles_data_real(self):
+
+        expected_result = [
+            {"from": 1623693067, "close": 1.23456},
+            {"from": 1623693068, "close": 1.23457},
+            {"from": 1623693069, "close": 1.23458}
+        ]
+
+        self.service_real.init()
+
+        result = self.service_real.get_candles_data()
+
+        print(result)
+        
+        self.assertEqual(result, expected_result)
+
 
     def test_removed_candle_last(self):
 
@@ -266,7 +286,7 @@ class TestServicesIq(TestCase):
         self.assertEqual(result, expected_result)
 
     @mock.patch.object(cases_iq, 'removed_candle_close', return_value=[Decimal("1.03"),Decimal("1.04"), Decimal("1.05"), Decimal("1.06")])
-    def test_analized_candles_long(self,mock_get):
+    def test_analized_candles_short(self,mock_get):
 
         candles = [
             {"close": Decimal("1.06")},
@@ -288,7 +308,7 @@ class TestServicesIq(TestCase):
         
         result = self.service.analized_candles(candles)
         
-        self.assertEqual(result, "LONG")
+        self.assertEqual(result, "SHORT")
 
     @mock.patch('apis.services.iq.iq.cases_iq.iq')
     def test_get_current_entrys_success(self,mock_iq):
@@ -634,6 +654,58 @@ class TestServicesIq(TestCase):
         result = self.service.get_loops(date,smtp,id_cronjobs,telegram)
 
         self.assertTrue(result)
+
+    @unittest.skip("Skipping this test")
+    def test_get_regression_logistic_model_general(self):
+
+        date = case_dates.cases_dates()
+
+        data = True
+
+        logistic_regression = case_logistic_regression.case_logistic_regression(self.cursor)
+
+        logistic_regression.init_object_date(date)
+
+        self.service_real.type = "put"
+
+        self.service_real.mode = "PRACTICE"
+
+        self.service_real.mode_basic = "PRACTICE"
+
+        self.service_real.sma30 = 40.5
+
+        self.service_real.sma10 = 35.5
+
+        self.service_real.rsi = 80
+
+        self.service_real.init()
+
+        data_candles = self.service_real.get_candles_data()
+
+        self.service_real.init_regression_logistic_model_general(logistic_regression)
+
+        result = self.service_real.get_regression_logistic_model_general(data,data_candles,date)
+
+        print(result)
+
+    @unittest.skip("Skipping this test")
+    def test_add_entry_predict_model_general_logistic_regression(self):
+
+        date = case_dates.cases_dates()
+
+        logistic_regression = case_logistic_regression.case_logistic_regression(self.cursor)
+
+        logistic_regression.init_object_date(date)
+
+        self.service_real.init_regression_logistic_model_general(logistic_regression)
+
+        self.service_real.id_predict_model_general_repository='052d3241e8244be1a345c793f7ba440c'
+
+        self.service_real.id_entry_service='0118aa5ae1064c5393d1f5c7867622e4'
+        
+        result = self.service_real.add_entry_predict_model_general_logistic_regression()
+
+        print(result)
 
 
 

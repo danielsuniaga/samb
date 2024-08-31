@@ -50,7 +50,6 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.assertTrue(result)
 
-
     @unittest.skip("Skipping this test")
     def test_add_dataset_historic(self):
 
