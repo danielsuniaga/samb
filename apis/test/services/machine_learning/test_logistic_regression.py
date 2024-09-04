@@ -57,8 +57,12 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.assertTrue(result)
 
-    @unittest.skip("Skipping this test")
+    # @unittest.skip("Skipping this test")
     def test_generate_training(self):
+
+        dates = case_dates.cases_dates()
+
+        self.service_real.init_object_date(dates)
 
         result = self.service_real.generate_training()
 

@@ -164,6 +164,12 @@ class case_logistic_regression(icase_logistic_regression):
         self.matriz_general = config("MATRIZ_GENERAL_ML_LOGISTIC_REGRESSION")
 
         return True
+    
+    def add_matriz_general(self,value):
+
+        self.matriz_general = value + self.matriz_general
+
+        return True
 
     def get_matriz_general(self):
 
@@ -367,6 +373,8 @@ class case_logistic_regression(icase_logistic_regression):
         self.init_matriz_directory_general()
 
         self.init_matriz_general()
+
+        self.add_matriz_general(self.get_current_date_only())
 
         y_pred = self.model.predict(X_test)
         
