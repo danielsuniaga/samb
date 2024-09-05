@@ -54,10 +54,18 @@ class case_logistic_regression(icase_logistic_regression):
 
     message_user = None
 
+    object_telegram = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+    def init_object_telegram(self,value):
+
+        self.object_telegram = value
+
+        return True
+    
     def init_extension_data_model_general(self):
         
         self.extension_data_model_general = config("MODEL_GENERAL_DATA_EXTENSION_ML_LOGISTIC_REGRESSION")
@@ -374,7 +382,7 @@ class case_logistic_regression(icase_logistic_regression):
 
         self.init_matriz_general()
 
-        self.add_matriz_general(self.get_current_date_only())
+        self.add_matriz_general(self.get_current_date_only()+" - ")
 
         y_pred = self.model.predict(X_test)
         

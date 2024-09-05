@@ -347,7 +347,11 @@ class AddModelRegressionLogistic(APIView):
 
           cursor = connection.cursor()
 
+          self.telegram = case_telegram.cases_telegram(cursor)
+
           self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
+
+          self.logistic_regression.init_object_telegram(self.telegram)
 
      def post(self, request, format=None):
 
