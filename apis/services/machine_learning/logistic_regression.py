@@ -436,6 +436,10 @@ class case_logistic_regression(icase_logistic_regression):
         
         return True
     
+    def generate_msj_notification(self):
+
+        return "Se ha generado el entrenamiento del modelo general"
+    
     def generate_training(self):
 
         self.init_dataset_file_general()

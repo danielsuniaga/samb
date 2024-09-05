@@ -64,7 +64,7 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         dates = case_dates.cases_dates()
 
-        telegram = cases_telegram.cases_telegram()
+        telegram = cases_telegram(self.cursor)
 
         self.service_real.init_object_date(dates)
 
