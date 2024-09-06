@@ -6,6 +6,8 @@ import unittest
 
 from apis.services.machine_learning.logistic_regression import case_logistic_regression
 
+from apis.services.telegram.telegram import cases_telegram
+
 from decimal import Decimal
 
 from django.db import connection
@@ -57,12 +59,16 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.assertTrue(result)
 
-    # @unittest.skip("Skipping this test")
+    @unittest.skip("Skipping this test")
     def test_generate_training(self):
 
         dates = case_dates.cases_dates()
 
+        telegram = cases_telegram(self.cursor)
+
         self.service_real.init_object_date(dates)
+
+        self.service_real.init_object_telegram(telegram)
 
         result = self.service_real.generate_training()
 

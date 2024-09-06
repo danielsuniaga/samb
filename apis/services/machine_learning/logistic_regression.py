@@ -54,10 +54,26 @@ class case_logistic_regression(icase_logistic_regression):
 
     message_user = None
 
+    object_telegram = None
+
+    project_name = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
+        self.project_name = config("PROJECT_NAME")
+
+    def get_project_name(self):
+        
+        return self.project_name
+
+    def init_object_telegram(self,value):
+
+        self.object_telegram = value
+
+        return True
+    
     def init_extension_data_model_general(self):
         
         self.extension_data_model_general = config("MODEL_GENERAL_DATA_EXTENSION_ML_LOGISTIC_REGRESSION")
@@ -374,7 +390,7 @@ class case_logistic_regression(icase_logistic_regression):
 
         self.init_matriz_general()
 
-        self.add_matriz_general(self.get_current_date_only())
+        self.add_matriz_general(self.get_current_date_only()+" - ")
 
         y_pred = self.model.predict(X_test)
         
@@ -418,15 +434,23 @@ class case_logistic_regression(icase_logistic_regression):
 
                 pickle.dump(self.model, model_file)
 
-            print(f"Modelo guardado correctamente en: {model_path}")
+            # print(f"Modelo guardado correctamente en: {model_path}")
 
         except Exception as e:
 
-            print(f"Error al guardar el modelo: {str(e)}")
+            # print(f"Error al guardar el modelo: {str(e)}")
 
             return False
         
         return True
+    
+    def generate_msj_notification(self):
+
+        return "General model logistic progression training Project: "+self.get_project_name()
+    
+    def send_msj_telegram_without_persistence(self,msj):
+
+        return self.object_telegram.send_without_persistence(msj)
     
     def generate_training(self):
 
@@ -443,6 +467,8 @@ class case_logistic_regression(icase_logistic_regression):
         accuracy, report = self.evaluate_model(X_test, y_test)
 
         self.save_model()
+
+        self.send_msj_telegram_without_persistence(self.generate_msj_notification())
         
         return True
     
