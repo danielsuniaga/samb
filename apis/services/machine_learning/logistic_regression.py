@@ -434,11 +434,11 @@ class case_logistic_regression(icase_logistic_regression):
 
                 pickle.dump(self.model, model_file)
 
-            print(f"Modelo guardado correctamente en: {model_path}")
+            # print(f"Modelo guardado correctamente en: {model_path}")
 
         except Exception as e:
 
-            print(f"Error al guardar el modelo: {str(e)}")
+            # print(f"Error al guardar el modelo: {str(e)}")
 
             return False
         

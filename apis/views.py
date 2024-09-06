@@ -347,10 +347,14 @@ class AddModelRegressionLogistic(APIView):
 
           cursor = connection.cursor()
 
+          self.dates = case_dates.cases_dates()
+
           self.telegram = case_telegram.cases_telegram(cursor)
 
           self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
 
+          self.logistic_regression.init_object_date(self.dates)
+          
           self.logistic_regression.init_object_telegram(self.telegram)
 
      def post(self, request, format=None):
@@ -358,5 +362,5 @@ class AddModelRegressionLogistic(APIView):
           if not self.logistic_regression.add_dataset_historic():
 
                return Response(False)
-
+          
           return Response(self.logistic_regression.generate_training())
