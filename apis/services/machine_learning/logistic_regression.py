@@ -56,9 +56,17 @@ class case_logistic_regression(icase_logistic_regression):
 
     object_telegram = None
 
+    project_name = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
+
+        self.project_name = config("PROJECT_NAME")
+
+    def get_project_name(self):
+        
+        return self.project_name
 
     def init_object_telegram(self,value):
 
@@ -438,7 +446,11 @@ class case_logistic_regression(icase_logistic_regression):
     
     def generate_msj_notification(self):
 
-        return "Se ha generado el entrenamiento del modelo general"
+        return "General model logistic progression training Project: "+self.get_project_name()
+    
+    def send_msj_telegram_without_persistence(self,msj):
+
+        return self.object_telegram.send_without_persistence(msj)
     
     def generate_training(self):
 
@@ -455,6 +467,8 @@ class case_logistic_regression(icase_logistic_regression):
         accuracy, report = self.evaluate_model(X_test, y_test)
 
         self.save_model()
+
+        self.send_msj_telegram_without_persistence(self.generate_msj_notification())
         
         return True
     
