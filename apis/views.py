@@ -28,6 +28,7 @@ import apis.services.iq.iq_another as case_iq_another
 import apis.services.framework.framework as case_framework
 import apis.services.telegram.telegram as case_telegram
 import apis.services.machine_learning.logistic_regression as case_logistic_regression
+import apis.services.events.events as case_events
 
 import uuid
 import time
@@ -95,6 +96,26 @@ class TestEndPoint(APIView):
           api_key="Test"
 
           return Response(self.framework.add(self.framework.generate_id(),self.dates.get_current_date(now),api_key))
+     
+class TestEndPointEvents(APIView):
+
+     def __init__(self):
+
+          cursor = connection.cursor()
+
+          self.framework = case_framework.cases_framework(cursor)
+
+          self.dates = case_dates.cases_dates()
+
+          self.events = case_events.cases_events()
+
+     def post(self, request, format=None):
+
+          self.events.set_events_field('start_endpoint',self.dates.get_current_date_mil_dynamic())
+
+          self.framework.init_events(self.events)
+
+          return Response(self.framework.test_events())
      
 class NowManager(APIView):
 
@@ -193,7 +214,11 @@ class GetDataAnalysisIqOptionClean(APIView):
 
           self.logistic_regression.init_object_date(self.dates)
 
+          self.events = case_events.cases_events()
+
      def post(self, request, format=None):
+
+          self.events.set_events_field('start_endpoint',self.dates.get_current_date_mil_dynamic())
 
           id_cronjobs = self.cronjobs.generate_cronjob_id()
 

@@ -87,3 +87,9 @@ class cases_dates(icases_dates):
         now = self.get_current_utc5()
 
         return now.weekday()
+    
+    def get_current_date_mil_dynamic(self):
+
+        now = self.get_current_utc5()
+
+        return self.get_current_date_mil(now)
