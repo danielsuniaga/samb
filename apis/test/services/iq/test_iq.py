@@ -16,6 +16,8 @@ import apis.services.telegram.telegram as case_telegram
 
 import  apis.services.machine_learning.logistic_regression as case_logistic_regression
 
+import apis.services.events.events as case_events
+
 from django.db import connection
 
 class TestServicesIq(TestCase):
@@ -641,6 +643,8 @@ class TestServicesIq(TestCase):
 
         telegram = case_telegram.cases_telegram(cursor)
 
+        events = case_events.cases_events()
+
         smtp = "test"
 
         id_cronjobs = "11111111111"
@@ -651,7 +655,11 @@ class TestServicesIq(TestCase):
 
         self.service.init()
 
+        self.service.init_events(events)
+
         result = self.service.get_loops(date,smtp,id_cronjobs,telegram)
+
+        print(result)
 
         self.assertTrue(result)
 

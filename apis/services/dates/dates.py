@@ -92,4 +92,4 @@ class cases_dates(icases_dates):
 
         now = self.get_current_utc5()
 
-        return self.get_current_date_mil(now)
+        return self.get_current_date_mil_front(now)

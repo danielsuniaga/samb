@@ -254,11 +254,15 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
           
+          self.events.set_events_field('init_endpoint',self.dates.get_current_date_mil_dynamic())
+          
           result = self.iq.init()
 
           if not result['status']:
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
+          
+          self.events.set_events_field('init_broker',self.dates.get_current_date_mil_dynamic())
           
           result = self.iq.set_balance(self.dates)
 
@@ -266,7 +270,11 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
                     
+          self.events.set_events_field('config_broker',self.dates.get_current_date_mil_dynamic())
+          
           self.iq.init_regression_logistic_model_general(self.logistic_regression)
+
+          self.iq.init_events(self.events)
           
           self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 

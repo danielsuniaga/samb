@@ -39,6 +39,8 @@ class cases_iq_core(icases_iq_core):
 
     current_date_manipulated = None
 
+    events = None
+
     def __init__(self,cursor):
 
 
@@ -122,6 +124,24 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def init_events(self,value):
+
+        self.events = value
+        
+        return True
+    
+    def set_events_field(self,field,value):
+
+        return self.events.set_events_field(field,value)
+    
+    def get_events(self):
+
+        return self.events.get_events()
+    
+    def generate_msj_events(self):
+
+        return self.events.generate_msj_events()
+    
     def get_message(self):
 
         return self.message
@@ -574,7 +594,7 @@ class cases_iq_core(icases_iq_core):
 
             return False
 
-        return telegram.send(self.get_message()+self.get_message_model_general_logistic_regression(),id_cronjobs,self.current_date_general)
+        return telegram.send(self.get_message()+self.generate_msj_events()+self.get_message_model_general_logistic_regression(),id_cronjobs,self.current_date_general)
             
     def add_result_entry_platform_v3(self,result):
 

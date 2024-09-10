@@ -8,11 +8,11 @@ class cases_events():
 
     def init_events(self):
 
-        self.events = self.init_data_events()
+        self.events = self.init_data_events_empty()
 
         return True
 
-    def init_data_events(self):
+    def init_data_events_empty(self):
 
         return {
             'start_endpoint': '',
@@ -34,6 +34,8 @@ class cases_events():
 
         self.events[field] = value
 
+        return True
+
     def get_events_field(self,field):
 
         return self.events[field]
@@ -41,3 +43,7 @@ class cases_events():
     def get_events(self):
 
         return self.events
+    
+    def generate_msj_events(self):
+
+        return "- ["+str(self.get_events())+"] "
