@@ -46,4 +46,6 @@ class cases_events():
     
     def generate_msj_events(self):
 
-        return "- ["+str(self.get_events())+"] "
+        result = str(self.get_events()).replace("'", '').replace("{", '').replace("}", '')
+
+        return " - ["+result+"] "

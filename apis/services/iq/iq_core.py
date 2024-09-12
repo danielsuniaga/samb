@@ -594,7 +594,7 @@ class cases_iq_core(icases_iq_core):
 
             return False
 
-        return telegram.send(self.get_message()+self.generate_msj_events()+self.get_message_model_general_logistic_regression(),id_cronjobs,self.current_date_general)
+        return telegram.send(self.get_message()+self.get_message_model_general_logistic_regression()+self.generate_msj_events(),id_cronjobs,self.current_date_general)
             
     def add_result_entry_platform_v3(self,result):
 
