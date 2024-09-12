@@ -6,6 +6,8 @@ from apis import views
 
 urlpatterns = [
 
+    path('test-endpoint-events/', views.TestEndPointEvents.as_view()),
+
     path('test-endpoint/', views.TestEndPoint.as_view()),
 
     path('add-model-regression-logistic/',views.AddModelRegressionLogistic.as_view()),
