@@ -9,6 +9,22 @@ The Stock Market Analysis System is a Django application that allows for executi
   - SMA 50 (Simple Moving Average over 50 periods)
   - SMA 10 (Simple Moving Average over 10 periods)
   - RSI (Relative Strength Index)
+- Management of session reports sent by SMTP
+  - Weekly divided into days and session type.
+- Implementation of hexagonal as base architecture.
+  - Handlers (Presentations)
+  - Services (Business Logic)
+  - Entities (Persistence)
+- Implementation of Unitest (TDD)
+  - Services (Business Logic)
+  - Entities (Persistence)
+- Machine model (Logistic regression)
+ - Creation
+ - Training
+ - Evaluation (Implementation of confusion matrices)
+ - Predictions
+ - Persistence in training and persistence
+
 
 ## Usage
 
