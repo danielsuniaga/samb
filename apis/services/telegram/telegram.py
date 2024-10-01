@@ -21,4 +21,8 @@ class cases_telegram(icases_telegram):
     def send(self, mensaje,id_cronjobs,date):
 
         return self.telegram.add(mensaje,self.translate_dictionary_json(self.telegram.send(mensaje)),id_cronjobs,date)
+    
+    def send_without_persistence(self,mensaje):
+        
+        return self.telegram.send(mensaje)
 

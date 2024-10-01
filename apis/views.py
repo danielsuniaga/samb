@@ -28,6 +28,7 @@ import apis.services.iq.iq_another as case_iq_another
 import apis.services.framework.framework as case_framework
 import apis.services.telegram.telegram as case_telegram
 import apis.services.machine_learning.logistic_regression as case_logistic_regression
+import apis.services.events.events as case_events
 
 import uuid
 import time
@@ -95,6 +96,26 @@ class TestEndPoint(APIView):
           api_key="Test"
 
           return Response(self.framework.add(self.framework.generate_id(),self.dates.get_current_date(now),api_key))
+     
+class TestEndPointEvents(APIView):
+
+     def __init__(self):
+
+          cursor = connection.cursor()
+
+          self.framework = case_framework.cases_framework(cursor)
+
+          self.dates = case_dates.cases_dates()
+
+          self.events = case_events.cases_events()
+
+     def post(self, request, format=None):
+
+          self.events.set_events_field('start_endpoint',self.dates.get_current_date_mil_dynamic())
+
+          self.framework.init_events(self.events)
+
+          return Response(self.framework.test_events())
      
 class NowManager(APIView):
 
@@ -193,7 +214,11 @@ class GetDataAnalysisIqOptionClean(APIView):
 
           self.logistic_regression.init_object_date(self.dates)
 
+          self.events = case_events.cases_events()
+
      def post(self, request, format=None):
+
+          self.events.set_events_field('start_endpoint',self.dates.get_current_date_mil_dynamic())
 
           id_cronjobs = self.cronjobs.generate_cronjob_id()
 
@@ -229,11 +254,15 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
           
+          self.events.set_events_field('init_endpoint',self.dates.get_current_date_mil_dynamic())
+          
           result = self.iq.init()
 
           if not result['status']:
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
+          
+          self.events.set_events_field('init_broker',self.dates.get_current_date_mil_dynamic())
           
           result = self.iq.set_balance(self.dates)
 
@@ -241,7 +270,11 @@ class GetDataAnalysisIqOptionClean(APIView):
 
                return Response(self.smtp.send_notification_email(date, result['msj']))
                     
+          self.events.set_events_field('config_broker',self.dates.get_current_date_mil_dynamic())
+          
           self.iq.init_regression_logistic_model_general(self.logistic_regression)
+
+          self.iq.init_events(self.events)
           
           self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 
@@ -347,12 +380,20 @@ class AddModelRegressionLogistic(APIView):
 
           cursor = connection.cursor()
 
+          self.dates = case_dates.cases_dates()
+
+          self.telegram = case_telegram.cases_telegram(cursor)
+
           self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
+
+          self.logistic_regression.init_object_date(self.dates)
+          
+          self.logistic_regression.init_object_telegram(self.telegram)
 
      def post(self, request, format=None):
 
           if not self.logistic_regression.add_dataset_historic():
 
                return Response(False)
-
+          
           return Response(self.logistic_regression.generate_training())

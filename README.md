@@ -1,6 +1,6 @@
 ## Description
 
-The Stock Market Analysis System is a Django application that allows for executing positions based on specific market conditions.
+The Stock Market Analysis System is a Django application that allows you to execute positions based on specific market conditions, using financial asset data, indicators, and machine learning models.
 
 ## Features
 
@@ -25,7 +25,6 @@ The Stock Market Analysis System is a Django application that allows for executi
  - Predictions
  - Persistence in training and persistence
 
-
 ## Usage
 
 To use the system, follow these steps:
@@ -35,6 +34,9 @@ To use the system, follow these steps:
 
 2. **Available Indicators:**
    - Use SMA 50, SMA 10, and RSI indicators to make informed decisions on your positions.
+
+2. **Machine Learning:**
+   - Use General Logístic Regression Model to make informed decisions on your positions.
 
 ## Installation
 

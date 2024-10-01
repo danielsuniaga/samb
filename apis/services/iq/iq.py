@@ -97,6 +97,8 @@ class cases_iq(cases_iq_core,icases_iq):
     
         for _ in range(int(self.number_loops)):
 
+            self.set_events_field('init_loop',date.get_current_date_mil_dynamic())
+
             now = date.get_current_utc5()
 
             current_date_local = date.get_current_date(now)
@@ -109,19 +111,35 @@ class cases_iq(cases_iq_core,icases_iq):
 
             result_candles = self.get_candles_data()
 
+            self.set_events_field('get_candles',date.get_current_date_mil_dynamic())
+
             result = self.analized_candles(result_candles)
+
+            self.set_events_field('analized_candles',date.get_current_date_mil_dynamic())
 
             result = self.get_current_entrys(result,smtp)
 
+            self.set_events_field('filter_current',date.get_current_date_mil_dynamic())
+
             result = self.get_indicators(result,result_candles)
+
+            self.set_events_field('generate_indicators',date.get_current_date_mil_dynamic())
 
             result = self.get_monetary_filter(result,smtp)
 
+            self.set_events_field('get_filter_monetary',date.get_current_date_mil_dynamic())
+
             result = self.get_regression_logistic_model_general(result,result_candles,date)
+
+            self.set_events_field('get_model_general_rl',date.get_current_date_mil_dynamic())
             
             result = self.add_entry_platform(result)
 
+            self.set_events_field('add_positions_brokers',date.get_current_date_mil_dynamic())
+
             result = self.add_entry_traceability(result,id_cronjobs,smtp,result_candles)
+
+            self.set_events_field('add_persistence',date.get_current_date_mil_dynamic())
 
             self.send_notification_telegram(result,telegram,id_cronjobs)
 
