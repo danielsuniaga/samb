@@ -35,8 +35,11 @@ To use the system, follow these steps:
 2. **Available Indicators:**
    - Use SMA 50, SMA 10, and RSI indicators to make informed decisions on your positions.
 
-2. **Machine Learning:**
+3. **Machine Learning:**
    - Use General Logístic Regression Model to make informed decisions on your positions.
+     
+4. **Management Reports:**
+   - Schedule the sending of session reports by email.
 
 ## Installation
 
