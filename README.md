@@ -19,11 +19,11 @@ The Stock Market Analysis System is a Django application that allows you to exec
   - Services (Business Logic)
   - Entities (Persistence)
 - Machine model (Logistic regression)
- - Creation
- - Training
- - Evaluation (Implementation of confusion matrices)
- - Predictions
- - Persistence in training and persistence
+  - Creation
+  - Training
+  - Evaluation (Implementation of confusion matrices)
+  - Predictions
+  - Persistence in training and persistence
 
 ## Usage
 
