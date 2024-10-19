@@ -60,6 +60,8 @@ class case_logistic_regression(icase_logistic_regression):
 
     project_name = None
 
+    message_default_services = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
@@ -67,6 +69,18 @@ class case_logistic_regression(icase_logistic_regression):
         self.project_name = config("PROJECT_NAME")
 
         self.init_active_general()
+    
+        self.init_messsage_default_services()
+
+    def init_messsage_default_services(self):
+
+        self.message_default_services = " MODEL GENERAL DEACTIVATE "
+
+        return True
+    
+    def get_message_default_services(self):
+
+        return self.message_default_services
 
     def init_active_general(self):
 
