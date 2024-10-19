@@ -1,7 +1,5 @@
 *.env
 database/
-dev/__pycache__/
-apis/services/__pycache__/
-apis/__pycache__/
 apis/migrations/
-apis/repositories/__pycache__/
+**/__pycache__/
+
