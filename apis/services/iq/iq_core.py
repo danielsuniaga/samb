@@ -582,9 +582,21 @@ class cases_iq_core(icases_iq_core):
         
     def add_entry_predict_model_general_logistic_regression(self):
 
+        if not self.check_active_model_general():
+
+            return True
+
         return self.regression_logistic_model_general.add_entry_predict_model_general_logistic_regression(self.get_id_predict_model_general_repository(),self.get_id_entry_services())
     
+    def get_messsage_default_services_model_general(self):
+
+        return self.regression_logistic_model_general.get_message_default_services()
+    
     def get_message_model_general_logistic_regression(self):
+
+        if not self.check_active_model_general():
+
+            return self.get_messsage_default_services_model_general()
 
         return self.regression_logistic_model_general.get_message_user()
     
@@ -724,11 +736,19 @@ class cases_iq_core(icases_iq_core):
             
         return self.regression_logistic_model_general.get_position_prediction(data)
     
+    def check_active_model_general(self):
+
+        return self.regression_logistic_model_general.check_active_general()
+    
     def get_regression_logistic_model_general(self,result,candles,date):
         
         if not result:
 
             return False
+        
+        if not self.check_active_model_general():
+
+            return True
                 
         id_samb_predict_model_general_logistic_regression = self.get_position_prediction(candles,date)
 

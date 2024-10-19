@@ -24,6 +24,8 @@ from apis.services.machine_learning.ilogistic_regression import icase_logistic_r
 
 class case_logistic_regression(icase_logistic_regression):
 
+    active_general = None
+
     dataset_file_general = None
 
     matriz_general = None
@@ -58,12 +60,46 @@ class case_logistic_regression(icase_logistic_regression):
 
     project_name = None
 
+    message_default_services = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
 
         self.project_name = config("PROJECT_NAME")
 
+        self.init_active_general()
+    
+        self.init_messsage_default_services()
+
+    def init_messsage_default_services(self):
+
+        self.message_default_services = " MODEL GENERAL DEACTIVATE "
+
+        return True
+    
+    def get_message_default_services(self):
+
+        return self.message_default_services
+
+    def init_active_general(self):
+
+        self.active_general = int(config("ACTIVE_GENERAL_ML_LOGISTIC_REGRESSION"))
+
+        return True
+    
+    def get_active_general(self):
+
+        return self.active_general
+    
+    def check_active_general(self):
+
+        if not self.get_active_general():
+
+            return False
+
+        return True
+    
     def get_project_name(self):
         
         return self.project_name
@@ -244,6 +280,10 @@ class case_logistic_regression(icase_logistic_regression):
         return os.path.exists(self.get_dataset_file_general())
     
     def add_dataset_historic(self):
+
+        if not self.check_active_general():
+
+            return True
 
         self.init_dataset_file_general()
 
@@ -453,6 +493,10 @@ class case_logistic_regression(icase_logistic_regression):
         return self.object_telegram.send_without_persistence(msj)
     
     def generate_training(self):
+
+        if not self.check_active_general():
+
+            return True
 
         self.init_dataset_file_general()
 

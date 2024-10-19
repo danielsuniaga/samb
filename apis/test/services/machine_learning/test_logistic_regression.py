@@ -34,6 +34,12 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.service_real = case_logistic_regression(self.cursor)
 
+    def test_check_active_general(self):
+
+        result = self.service.check_active_general()
+
+        print(result)
+    
     def test_init_extension_data_model_general(self):
 
         result = self.service.init_extension_data_model_general()
