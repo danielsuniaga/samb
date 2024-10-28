@@ -24,6 +24,25 @@ The Stock Market Analysis System is a Django application that allows you to exec
   - Evaluation (Implementation of confusion matrices)
   - Predictions
   - Persistence in training and persistence
+ 
+## Technologies Used
+
+- **Programming Language**: Python
+- **Framework**: Django
+- **Libraries**:
+  - Pandas (for data handling)
+  - Scikit-learn (for Machine Learning models)
+  - NumPy (for numerical operations)
+  - Django Rest Framework (for building APIs)
+  - TestCase (for unit testing the API and machine learning predictions)
+  - Pickle (for saving and loading the machine learning models)
+  - Decouple (for environment variable management)
+  - Seaborn (for data visualization)
+  - Matplotlib (for plotting graphs and charts)
+- **Data Format**: JSON
+- **Database**: Mysql (To give traceability to the positions)
+- **Machine Learning Model**: Stored in `.pkl` file
+- **Containerization**: Docker (used for packaging and deploying the application in a consistent environment)
 
 ## Usage
 
