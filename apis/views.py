@@ -181,14 +181,6 @@ class GetReports(APIView):
 
           self.smtp.send_reporting_email(date)
 
-          self.smtp.set_end_date_repository(self.smtp.get_end_date_another())
-
-          self.smtp.set_start_date_repository(self.smtp.get_start_date_another())   
-
-          self.smtp.set_subject_reports(self.smtp.get_subject_reports_another())
-
-          self.smtp.send_reporting_email(date)  
-
           return Response(True)
 class GetDataAnalysisIqOptionClean(APIView):
 
