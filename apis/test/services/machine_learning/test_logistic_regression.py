@@ -26,6 +26,8 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
     services_real_metrics_evaluation_model = None
 
+    services_date = None
+
     cursor = None
     
     def setUp(self):
@@ -34,11 +36,15 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.cursor = connection.cursor()
 
+        self.services_date = case_dates.cases_dates()
+
         self.service = case_logistic_regression(self.mock_cursor)
 
-        self.services_real_metrics_evaluation_model = case_metrics_evaluation_model()
+        self.services_real_metrics_evaluation_model = case_metrics_evaluation_model(self.cursor)
 
         self.service_real = case_logistic_regression(self.cursor)
+
+        self.service_real.init_object_date(self.services_date)
 
         self.service_real.init_object_object_metrics_evaluation_model(self.services_real_metrics_evaluation_model)
 

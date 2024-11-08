@@ -432,19 +432,29 @@ class case_logistic_regression(icase_logistic_regression):
 
         return self.model
     
+    def get_models_general_logistics(self):
+
+        return self.object_metrics_evaluation_model.get_models_general_logistic()
+    
+    def get_models_metrics_states_default(self):
+
+        return self.object_metrics_evaluation_model.get_state_default()
+
     def init_data_add_metrics_evaluation_model(self,accuracy,precision,recall,f1):
+
+        date = self.get_current_date()
 
         return {
             
-            "id":"TEST",
-            "type_model":"TEST",
+            "id":self.generate_id(),
+            "type_model":self.get_models_general_logistics(),
             "accuracy":accuracy,
             "precision":precision,
             "recall":recall,
             "f1":f1,
-            "registration_date":"TEST",
-            "update_date":"TEST",
-            "state":"1"
+            "registration_date":date,
+            "update_date":date,
+            "state":self.get_models_metrics_states_default()
 
         }
     
