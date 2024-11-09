@@ -6,14 +6,18 @@ class repositories_metrics_evaluation_model():
 
         self.cursor_db = cursor
 
+    def generate_string(self,data):
+
+        return str(data)
+
     def add(self,data):
 
         try:
 
-            self.cursor_db.execute("INSERT INTO samb_entry_predict_model_general_logistic_regression(samb_entry_predict_model_general_logistic_regression.id,samb_entry_predict_model_general_logistic_regression.id_entry,samb_entry_predict_model_general_logistic_regression.id_predict_model_general_logistic_regression,samb_entry_predict_model_general_logistic_regression.registration_date,samb_entry_predict_model_general_logistic_regression.update_date,samb_entry_predict_model_general_logistic_regression.state)VALUES(%s,%s,%s,%s,%s,%s)",[data['id'],data['id_entry'],data['id_predict_model_general_logistic_regression'],data['registration_date'],data['update_date'],data['state']])
+            self.cursor_db.execute( "INSERT INTO samb_metrics_evaluation_model(samb_metrics_evaluation_model.id,samb_metrics_evaluation_model.type_model,samb_metrics_evaluation_model.accuracy,samb_metrics_evaluation_model.precisions,samb_metrics_evaluation_model.recall,samb_metrics_evaluation_model.f1_score,samb_metrics_evaluation_model.registration_date,samb_metrics_evaluation_model.update_date,samb_metrics_evaluation_model.state)VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",[data['id'],data['type_model'],self.generate_string(data['accuracy']),self.generate_string(data['precision']),self.generate_string(data['recall']),self.generate_string(data['f1']),data['registration_date'],data['update_date'],data['state']])
 
         except Exception as err:
 
-            return {'status': False, 'message':'No se realizo la escritura en samb_entry_predict_model_general_logistic_regression: '+str(err)}
+            return {'status': False, 'message':'No se realizo la escritura en samb_metrics_evaluation_model: '+str(err)}
 
         return {'status':True,'msj':'Success'}

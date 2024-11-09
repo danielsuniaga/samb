@@ -42,6 +42,6 @@ class case_metrics_evaluation_model():
 
     def add(self,data):
 
-        print(data)
+        result = self.metrics_evaluation_model.add(data)
 
         return True

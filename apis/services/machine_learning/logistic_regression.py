@@ -484,14 +484,7 @@ class case_logistic_regression(icase_logistic_regression):
 
         f1 = f1_score(y_test, y_pred)
 
-        # Imprimir resultados
-        print(f"Model accuracy: {accuracy:.2f}")
-
-        print(f"Precision: {precision:.2f}")
-
-        print(f"Recall: {recall:.2f}")
-
-        print(f"F1 Score: {f1:.2f}")
+        self.add_metrics_evaluation_model(accuracy,precision,recall,f1)
         
         cm = confusion_matrix(y_test, y_pred)
 
