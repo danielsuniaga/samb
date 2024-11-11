@@ -389,7 +389,7 @@ class AddModelRegressionLogistic(APIView):
 
           self.logistic_regression = case_logistic_regression.case_logistic_regression(cursor)
 
-          self.metrics_evaluation_model = case_metrics_evaluation_model()
+          self.metrics_evaluation_model = case_metrics_evaluation_model.case_metrics_evaluation_model(cursor)
 
           self.logistic_regression.init_object_date(self.dates)
           
@@ -402,5 +402,5 @@ class AddModelRegressionLogistic(APIView):
           if not self.logistic_regression.add_dataset_historic():
 
                return Response(False)
-          
+                    
           return Response(self.logistic_regression.generate_training())

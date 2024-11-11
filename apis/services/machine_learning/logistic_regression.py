@@ -555,6 +555,8 @@ class case_logistic_regression(icase_logistic_regression):
         X_train, X_test, y_train, y_test = self.preprocess_data(data)
         
         self.train_model(X_train, y_train)
+
+        self.evaluate_model(X_test, y_test)
         
         accuracy, report = self.evaluate_model(X_test, y_test)
 
