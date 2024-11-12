@@ -4,7 +4,7 @@ from sklearn.linear_model import LogisticRegression
 
 from sklearn.model_selection import train_test_split
 
-from sklearn.metrics import accuracy_score, classification_report,confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, classification_report,confusion_matrix, ConfusionMatrixDisplay,precision_score,recall_score,f1_score
 
 import pandas as pd
 
@@ -62,6 +62,8 @@ class case_logistic_regression(icase_logistic_regression):
 
     message_default_services = None
 
+    object_metrics_evaluation_model = None
+
     def __init__(self,cursor):
 
         self.logistic_regression = repository_logistic_regression.repositories_ligistic_regression(cursor)
@@ -72,6 +74,12 @@ class case_logistic_regression(icase_logistic_regression):
     
         self.init_messsage_default_services()
 
+    def init_object_object_metrics_evaluation_model(self,value):
+
+        self.object_metrics_evaluation_model = value
+
+        return True
+    
     def init_messsage_default_services(self):
 
         self.message_default_services = " MODEL GENERAL DEACTIVATE "
@@ -423,7 +431,39 @@ class case_logistic_regression(icase_logistic_regression):
         self.model.fit(X_train, y_train)
 
         return self.model
+    
+    def get_models_general_logistics(self):
 
+        return self.object_metrics_evaluation_model.get_models_general_logistic()
+    
+    def get_models_metrics_states_default(self):
+
+        return self.object_metrics_evaluation_model.get_state_default()
+
+    def init_data_add_metrics_evaluation_model(self,accuracy,precision,recall,f1):
+
+        date = self.get_current_date()
+
+        return {
+            
+            "id":self.generate_id(),
+            "type_model":self.get_models_general_logistics(),
+            "accuracy":accuracy,
+            "precision":precision,
+            "recall":recall,
+            "f1":f1,
+            "registration_date":date,
+            "update_date":date,
+            "state":self.get_models_metrics_states_default()
+
+        }
+    
+    def add_metrics_evaluation_model(self,accuracy,precision,recall,f1):
+
+        data = self.init_data_add_metrics_evaluation_model(accuracy,precision,recall,f1)
+
+        return self.object_metrics_evaluation_model.add(data)
+    
     def evaluate_model(self, X_test, y_test):
 
         self.init_matriz_directory_general()
@@ -437,6 +477,14 @@ class case_logistic_regression(icase_logistic_regression):
         accuracy = accuracy_score(y_test, y_pred)
         
         report = classification_report(y_test, y_pred, zero_division=0)
+
+        precision = precision_score(y_test, y_pred)
+
+        recall = recall_score(y_test, y_pred)
+
+        f1 = f1_score(y_test, y_pred)
+
+        self.add_metrics_evaluation_model(accuracy,precision,recall,f1)
         
         cm = confusion_matrix(y_test, y_pred)
 

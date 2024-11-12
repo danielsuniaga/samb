@@ -4,6 +4,8 @@ from unittest.mock import patch
 
 import unittest
 
+from apis.services.metrics_evaluation_model.metrics_evaluation_model import case_metrics_evaluation_model
+
 from apis.services.machine_learning.logistic_regression import case_logistic_regression
 
 from apis.services.telegram.telegram import cases_telegram
@@ -22,6 +24,10 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
     
     service_real = None
 
+    services_real_metrics_evaluation_model = None
+
+    services_date = None
+
     cursor = None
     
     def setUp(self):
@@ -30,9 +36,17 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.cursor = connection.cursor()
 
+        self.services_date = case_dates.cases_dates()
+
         self.service = case_logistic_regression(self.mock_cursor)
 
+        self.services_real_metrics_evaluation_model = case_metrics_evaluation_model(self.cursor)
+
         self.service_real = case_logistic_regression(self.cursor)
+
+        self.service_real.init_object_date(self.services_date)
+
+        self.service_real.init_object_object_metrics_evaluation_model(self.services_real_metrics_evaluation_model)
 
     def test_check_active_general(self):
 
@@ -65,7 +79,8 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
 
         self.assertTrue(result)
 
-    @unittest.skip("Skipping this test")
+    
+    # @unittest.skip("Skipping this test")
     def test_generate_training(self):
 
         dates = case_dates.cases_dates()
@@ -125,4 +140,20 @@ class TestServiceaMachineLearningLogisticRegression(TestCase):
         result = self.service_real.add_flat_data_model_general(data)
 
         print(result)
+
+    def test_add_metrics_evaluation_model(self):
+
+        accuracy = 0.56
+
+        precision = 0.53
+
+        recall = 0.86
+
+        f1 = 0.66
+
+        result = self.service_real.add_metrics_evaluation_model(accuracy,precision,recall,f1)
+
+        print(result)
+
+
 
