@@ -1,6 +1,7 @@
 import apis.repositories.metrics_evaluation_model.metrics_evaluation_model as repositories_metrics_evaluation_model
 
-class case_metrics_evaluation_model():
+from apis.services.metrics_evaluation_model.imetrics_evaluation_model import icase_metrics_evaluation_model
+class case_metrics_evaluation_model(icase_metrics_evaluation_model):
 
     models = None
 
