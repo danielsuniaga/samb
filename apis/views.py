@@ -31,56 +31,17 @@ import apis.services.machine_learning.logistic_regression as case_logistic_regre
 import apis.services.events.events as case_events
 import apis.services.metrics_evaluation_model.metrics_evaluation_model as case_metrics_evaluation_model
 
+import apis.controllers.TestEndPoint as controller_test_end_point
+
 import uuid
 import time
 import pytz
 import os
 import requests
 
-class TestConnectionTelegram(APIView):
-
-    base_url = 'https://api.telegram.org/bot6392837248:AAFDlXxJeTalDKIglpX4B5pVj3SClG9rjRc/sendMessage'
-
-    def enviar_mensaje(self,chat_id, mensaje):
-
-        url = self.base_url + 'sendMessage'
-        
-        params = {
-        
-            'chat_id': chat_id,
-        
-            'text': mensaje
-        
-        }
-        
-        response = requests.post(url, params=params)
-        
-        if response.status_code == 200:
-
-            return True, "True"
-        
-        else:
-
-            return False,"Error al enviar el mensaje. Código de respuesta:", response.status_code
-        
-
-    """ API para tester la conexxion con Telegram"""
-
-    def get(self, request, format=None):
-
-        return Response({self.enviar_mensaje('5226081927', '¡Hola desde Python jugada!')})
-
-class GetDayWeek(APIView):
-
-     def __init__(self):
-
-          self.dates = case_dates.cases_dates()
-
-     def post(self, request, format=None):
-
-          return Response(self.dates.get_day())
-
 class TestEndPoint(APIView):
+
+     controller = None
 
      def __init__(self):
 
