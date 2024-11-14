@@ -1,7 +1,5 @@
 from django.db import connection
 
-from rest_framework.response import Response
-
 import apis.services.dates.dates as case_dates
 
 import apis.services.framework.framework as case_framework
@@ -26,4 +24,4 @@ class controller_test_end_point:
 
         api_key="Test"
 
-        return Response(self.framework.add(self.framework.generate_id(),self.dates.get_current_date(now),api_key))
+        return self.framework.add(self.framework.generate_id(),self.dates.get_current_date(now),api_key)
