@@ -12,8 +12,6 @@ urlpatterns = [
 
     path('get-reports/', views.GetReports.as_view()),
 
-    path('get-data-analysis-iqoption/', views.GetDataAnalysisIqOption.as_view()),
-
     path('get-data-analysis-iqoption-clean/', views.GetDataAnalysisIqOptionClean.as_view()),
 
     path('get-data-analysis-iqoption-clean-another/', views.GetDataAnalysisIqOptionCleanAnother.as_view()),
