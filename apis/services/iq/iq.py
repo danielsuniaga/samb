@@ -94,6 +94,8 @@ class cases_iq(cases_iq_core,icases_iq):
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
         self.set_asset_financial(date)
+
+        self.par="EURUSD-OTC"
     
         for _ in range(int(self.number_loops)):
 
