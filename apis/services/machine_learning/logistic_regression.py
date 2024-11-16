@@ -532,9 +532,25 @@ class case_logistic_regression(icase_logistic_regression):
         
         return True
     
+    def get_metrics_accuracy(self):
+
+        return str(self.object_metrics_evaluation_model.get_accuracy())
+    
+    def get_metrics_precision(self):
+
+        return str(self.object_metrics_evaluation_model.get_precision())
+    
+    def get_metrics_recall(self):
+
+        return str(self.object_metrics_evaluation_model.get_recall())
+    
+    def get_metrics_f1(self):
+
+        return str(self.object_metrics_evaluation_model.get_f1())
+
     def generate_msj_notification(self):
 
-        return "General model logistic progression training Project: "+self.get_project_name()
+        return "General model logistic progression training Project: "+self.get_project_name()+" Accuracy: "+self.get_metrics_accuracy()+" Precision: "+self.get_metrics_precision()+" Recall: "+self.get_metrics_recall()+" f1: "+self.get_metrics_f1()
     
     def send_msj_telegram_without_persistence(self,msj):
 
