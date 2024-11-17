@@ -710,7 +710,6 @@ class cases_iq_core(icases_iq_core):
 
         return {
             "entry_type": self.get_entry_type(),
-            "entry_type_account": self.get_entry_type_account(),
             "entry_number_candle": self.get_candle_analized(),
             "entry_condition": self.get_entry_condition_data(),
             "entry_amount": self.get_money(),
