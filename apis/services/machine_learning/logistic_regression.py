@@ -1,22 +1,22 @@
 import apis.repositories.machine_learning.logistic_regression as repository_logistic_regression
 
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression 
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split 
 
-from sklearn.metrics import accuracy_score, classification_report,confusion_matrix, ConfusionMatrixDisplay,precision_score,recall_score,f1_score
+from sklearn.metrics import accuracy_score, classification_report,confusion_matrix, ConfusionMatrixDisplay,precision_score,recall_score,f1_score 
 
-import pandas as pd
+import pandas as pd 
 
 import os
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 
 import pickle
 
 import uuid
 
-from decouple import config
+from decouple import config 
 
 import time
 
@@ -568,15 +568,18 @@ class case_logistic_regression(icase_logistic_regression):
         
         data = self.load_data()  
 
-        X_train, X_test, y_train, y_test = self.preprocess_data(data)
-        
-        self.train_model(X_train, y_train)
-        
-        accuracy, report = self.evaluate_model(X_test, y_test)
+        print(data.columns.tolist())
 
-        self.save_model()
+        # X_train, X_test, y_train, y_test = self.preprocess_data(data)
 
-        self.send_msj_telegram_without_persistence(self.generate_msj_notification())
+        
+        # self.train_model(X_train, y_train)
+        
+        # accuracy, report = self.evaluate_model(X_test, y_test)
+
+        # self.save_model()
+
+        # self.send_msj_telegram_without_persistence(self.generate_msj_notification())
         
         return True
     
