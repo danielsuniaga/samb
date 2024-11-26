@@ -16,6 +16,9 @@ urlpatterns = [
 
     path('get-data-analysis-iqoption-clean-another/', views.GetDataAnalysisIqOptionCleanAnother.as_view()),
 
-    path('get-now-manager/', views.NowManager.as_view())
+    path('get-now-manager/', views.NowManager.as_view()), 
+
+    path('get-status-asset/', views.GetStatusAsset.as_view()),
+
 
 ]

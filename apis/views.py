@@ -8,6 +8,19 @@ import apis.controllers.GetReports.GetReports as controller_get_reports
 import apis.controllers.GetDataAnalysisIqOptionClean.GetDataAnalysisIqOptionClean as controller_get_data_analysis_iq_option_clean
 import apis.controllers.GetDataAnalysisIqOptionCleanAnother.GetDataAnalysisIqOptionCleanAnother as controller_get_data_analysis_iq_option_clean_another
 import apis.controllers.AddModelRegressionLogistic.AddModelRegressionLogistic as controller_add_model_regression_logistic
+import apis.controllers.GetStatusAsset.GetStatusAsset as controller_get_status_asset
+
+class GetStatusAsset(APIView):
+
+     controller = None
+
+     def __init__(self):
+
+          self.controller = controller_get_status_asset.controller_get_status_asset()
+
+     def post(self, request, format=None):
+
+          return Response(self.controller.get_status_asset())
 
 class TestEndPoint(APIView):
 
