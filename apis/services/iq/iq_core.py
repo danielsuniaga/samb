@@ -1,4 +1,3 @@
-
 from decouple import config
 
 from iqoptionapi.stable_api import IQ_Option
@@ -124,6 +123,10 @@ class cases_iq_core(icases_iq_core):
 
         self.loss = int(config("LOSS"))
 
+    def get_project_name(self):
+
+        return self.project_name
+    
     def init_events(self,value):
 
         self.events = value
@@ -303,6 +306,42 @@ class cases_iq_core(icases_iq_core):
         except Exception as err:
 
             return {'status': False, 'message':'Se genero una excepcion al chequear sincronizcion con iq'+str(err)}
+        
+    def check_active_access(self):
+
+        par = self.get_par()
+
+        all_open_time = self.API.get_all_open_time()
+        
+        if 'binary' in all_open_time:
+
+            binary_pairs = all_open_time['binary']
+
+            possible_formats = [
+
+                par,
+
+                par.upper(),
+
+                par.replace('/', ''),
+
+                par.upper().replace('/', '')
+
+            ]
+
+            for format_par in possible_formats:
+
+                if format_par in binary_pairs:
+
+                    if binary_pairs[format_par]["open"]:
+
+                        return "El activo financiero "+par+" está activo."
+                    
+                    else:
+
+                        return "El activo financiero "+par+" no está activo."
+
+        return "El activo financiero "+par+" no se encuentra en ningún formato conocido."
         
     def init(self):
 
@@ -491,7 +530,7 @@ class cases_iq_core(icases_iq_core):
             return False
 
         check,id_entry=self.API.buy(self.money,self.par,self.type,self.expirations_mode)
-
+        
         return id_entry if check else check
     
     def add_entry_traceability(self, result,id_cronjobs,smtp,result_candles):
@@ -599,6 +638,12 @@ class cases_iq_core(icases_iq_core):
             return self.get_messsage_default_services_model_general()
 
         return self.regression_logistic_model_general.get_message_user()
+    
+    def send_msj_telegram(self,msj):
+        
+        self.telegram.send_without_persistence(msj)
+
+        return True
     
     def send_notification_telegram(self,result,telegram,id_cronjobs):
 

@@ -120,7 +120,7 @@ class cases_iq(cases_iq_core,icases_iq):
             result = self.get_current_entrys(result,smtp)
 
             self.set_events_field('filter_current',date.get_current_date_mil_dynamic())
-
+            
             result = self.get_indicators(result,result_candles)
 
             self.set_events_field('generate_indicators',date.get_current_date_mil_dynamic())
@@ -132,7 +132,7 @@ class cases_iq(cases_iq_core,icases_iq):
             result = self.get_regression_logistic_model_general(result,result_candles,date)
 
             self.set_events_field('get_model_general_rl',date.get_current_date_mil_dynamic())
-            
+
             result = self.add_entry_platform(result)
 
             self.set_events_field('add_positions_brokers',date.get_current_date_mil_dynamic())
