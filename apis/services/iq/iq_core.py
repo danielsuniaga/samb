@@ -9,7 +9,6 @@ from apis.services.iq.iiq_core import icases_iq_core
 import uuid
 
 import time
-
 class cases_iq_core(icases_iq_core):
 
     iq = None
@@ -40,6 +39,12 @@ class cases_iq_core(icases_iq_core):
 
     events = None
 
+    config = None
+
+    nomenclature_par_otc = None
+
+    nomenclature_par_op = None
+
     def __init__(self,cursor):
 
 
@@ -47,7 +52,7 @@ class cases_iq_core(icases_iq_core):
 
         self.password = config("PASSWORD")
 
-        self.par=config("PAR")
+        self.par=config("PAR").strip()
 
         self.interval=config("INTERVAL")
 
@@ -122,6 +127,24 @@ class cases_iq_core(icases_iq_core):
         self.profit = int(config("PROFIT"))
 
         self.loss = int(config("LOSS"))
+
+        self.nomenclature_par_otc = config("NOMENCLATURE_PAR_OTC")
+
+        self.nomenclature_par_op = config("NOMENCLATURE_PAR_OP")
+
+    def init_config(self,value):
+
+        self.config = value
+
+        return True
+    
+    def get_nomenclature_par_otc(self):
+
+        return self.nomenclature_par_otc
+    
+    def get_nomenclature_par_op(self):
+
+        return self.nomenclature_par_op
 
     def get_project_name(self):
 
@@ -307,41 +330,89 @@ class cases_iq_core(icases_iq_core):
 
             return {'status': False, 'message':'Se genero una excepcion al chequear sincronizcion con iq'+str(err)}
         
+    def set_config_open_otc(self,value):
+
+        return self.config.set_config_open_otc(value)
+    
     def check_active_access(self):
 
-        par = self.get_par()
+        par_services = self.get_par()
 
         all_open_time = self.API.get_all_open_time()
         
-        if 'binary' in all_open_time:
+        if 'binary' not in all_open_time:
 
-            binary_pairs = all_open_time['binary']
+            return par_services+" no se encuentra en ningún formato conocido. "
 
-            possible_formats = [
+        binary_pairs = all_open_time['binary']
 
-                par,
+        if not par_services in binary_pairs:
+            
+            return par_services+" no se encuentra el activo financiero enlistado. "
+            
+        return self.check_market_status(binary_pairs, par_services)
 
-                par.upper(),
+    def check_market_status(self, binary_pairs, par_services):
 
-                par.replace('/', ''),
+        nominal_status = self.check_nominal_market(binary_pairs, par_services)
 
-                par.upper().replace('/', '')
+        otc_status = self.check_otc_market(binary_pairs, par_services)
 
-            ]
+        op_status = self.check_op_market(binary_pairs, par_services)
 
-            for format_par in possible_formats:
+        return nominal_status+otc_status+op_status
+    
+    def set_config_open_nom(self,value):
 
-                if format_par in binary_pairs:
+        return self.config.set_config_open_nom(value)
+    
+    def set_config_open_otc(self,value):
 
-                    if binary_pairs[format_par]["open"]:
+        return self.config.set_config_open_otc(value)
+    
+    def set_config_open_ope(self,value):
 
-                        return "El activo financiero "+par+" está activo."
-                    
-                    else:
+        return self.config.set_config_open_ope(value)
 
-                        return "El activo financiero "+par+" no está activo."
+    def check_nominal_market(self, binary_pairs, par):
 
-        return "El activo financiero "+par+" no se encuentra en ningún formato conocido."
+        if par in binary_pairs and binary_pairs[par]["open"]:
+
+            self.set_config_open_nom(1)
+
+            return par+" está activo en nominal. "
+        
+        self.set_config_open_nom(0)
+
+        return par+" está no activo en nominal. "
+
+    def check_otc_market(self, binary_pairs, par):
+
+        otc_format = par + self.get_nomenclature_par_otc()
+
+        if otc_format in binary_pairs and binary_pairs[otc_format]["open"]:
+
+            self.set_config_open_otc(1)
+
+            return par+" está activo en OTC. "
+        
+        self.set_config_open_otc(0)
+
+        return par+" está no activo en OTC. "
+
+    def check_op_market(self, binary_pairs, par):
+
+        op_format = par + self.get_nomenclature_par_op()
+
+        if op_format in binary_pairs and binary_pairs[op_format]["open"]:
+            
+            self.set_config_open_ope(1)
+
+            return par+" está activo en OP. "
+        
+        self.set_config_open_ope(0)
+
+        return par+" está no activo en OP. "
         
     def init(self):
 
