@@ -2,7 +2,6 @@ from unittest import TestCase, mock
 
 import apis.controllers.GetStatusAsset.GetStatusAsset as controller_get_status_asset
 
-
 from django.db import connection
 
 class TestGetStatusAsset(TestCase):

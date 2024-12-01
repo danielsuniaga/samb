@@ -16,6 +16,8 @@ import apis.services.telegram.telegram as case_telegram
 
 import apis.services.machine_learning.logistic_regression as case_logistic_regression
 
+import apis.services.config.config as case_config
+
 import apis.services.events.events as case_events
 
 class controller_get_data_analysis_iq_option_clean:
@@ -40,6 +42,8 @@ class controller_get_data_analysis_iq_option_clean:
 
     event = None
 
+    config = None
+
     def __init__(self):
 
         cursor = connection.cursor()
@@ -63,6 +67,10 @@ class controller_get_data_analysis_iq_option_clean:
         self.logistic_regression.init_object_date(self.dates)
 
         self.events = case_events.cases_events()
+
+        self.config = case_config.cases_config(cursor)
+
+        self.iq.init_config(self.config)
 
     def get_data_analysis_iq_option_clean(self,request):
 
@@ -131,4 +139,3 @@ class controller_get_data_analysis_iq_option_clean:
         self.dates.set_end_date()
 
         return self.cronjobs.set_fields(self.dates.get_current_date(now),self.dates.get_time_execution(),id_cronjobs)
-

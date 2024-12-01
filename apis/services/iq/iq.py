@@ -83,17 +83,29 @@ class cases_iq(cases_iq_core,icases_iq):
         
         return True
     
-    def set_asset_financial(self,date):
+    def check_market_type(self):
 
-        if self.analized_day(date):
+        return self.config.check_market()
+    
+    def check_par(self,value):
 
-            return self.set_par(self.get_par()+'-OTC')
+        return value.strip()
+    
+    def set_asset_financial(self):
 
-        return True
+        market_type = self.check_market_type()
+
+        if not market_type:
+
+            return False
+        
+        result = self.get_par()+market_type
+
+        return self.set_par(self.check_par(result))
 
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
-        self.set_asset_financial(date)
+        self.set_asset_financial()
     
         for _ in range(int(self.number_loops)):
 

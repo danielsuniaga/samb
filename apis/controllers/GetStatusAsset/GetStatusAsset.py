@@ -4,6 +4,8 @@ from decouple import config
 
 import apis.services.iq.iq as case_iq
 
+import apis.services.config.config as case_config
+
 import apis.services.telegram.telegram as case_telegram
 
 import apis.services.dates.dates as case_dates
@@ -11,6 +13,8 @@ import apis.services.dates.dates as case_dates
 class controller_get_status_asset:
     
     iq = None
+
+    config = None
 
     telegram = None
 
@@ -24,7 +28,11 @@ class controller_get_status_asset:
 
         self.dates = case_dates.cases_dates()
 
+        self.config = case_config.cases_config(cursor)
+
         self.iq = case_iq.cases_iq(cursor)
+
+        self.iq.init_config(self.config)
 
         self.telegram = case_telegram.cases_telegram(cursor)
 
@@ -52,34 +60,35 @@ class controller_get_status_asset:
     
     def iq_set_asset_financial(self):
 
-        return self.iq.set_asset_financial(self.dates)
+        return self.iq.set_asset_financial()
 
     def telegram_send(self,msj):
 
         mensaje = self.get_project_name()+" = "+msj
 
         return self.telegram.send_without_persistence(mensaje)
+    
+    def init_operaciones(self):
+
+        return [
+
+            self.iq_init,
+
+            lambda: self.iq.set_balance(self.dates),
+            
+            self.iq_check
+        ]
 
     def get_status_asset(self):
 
-        result = self.iq_init()
+        operaciones = self.init_operaciones()
 
-        if not result['status']:
+        for operacion in operaciones:
 
-            return self.telegram_send(result['message'])
-        
-        result = self.iq.set_balance(self.dates)
+            result = operacion()
 
-        if not result['status']:
-
-            return self.telegram_send(result['message'])
-        
-        result = self.iq_check()
-
-        if not result['status']:
-
-            return self.telegram_send(result['message'])
-        
-        self.iq_set_asset_financial()
+            if not result['status']:
+                
+                return self.telegram_send(result['message'])
         
         return self.telegram_send(self.iq_check_active_access())
