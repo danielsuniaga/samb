@@ -17,6 +17,14 @@ class cases_iq(cases_iq_core,icases_iq):
 
         candles = self.removed_candle_close(candles,self.candle_removed)
 
+        candles[0]=1.05
+
+        candles[1]=1.04
+
+        candles[2]=1.03
+
+        candles[3]=1.02
+
         if all(candles[i] < candles[i+1] for i in range(self.candle_analized - 1)):
 
             self.set_type(self.type_entry_long)
@@ -101,7 +109,9 @@ class cases_iq(cases_iq_core,icases_iq):
         
         result = self.get_par()+market_type
 
-        return self.set_par(self.check_par(result))
+        self.set_par(self.check_par(result))
+
+        return True
 
     def get_loops(self,date,smtp,id_cronjobs,telegram):
 
@@ -141,11 +151,14 @@ class cases_iq(cases_iq_core,icases_iq):
 
             self.set_events_field('get_filter_monetary',date.get_current_date_mil_dynamic())
 
-            result = self.get_regression_logistic_model_general(result,result_candles,date)
+            # result = self.get_regression_logistic_model_general(result,result_candles,date)
 
-            self.set_events_field('get_model_general_rl',date.get_current_date_mil_dynamic())
+            # self.set_events_field('get_model_general_rl',date.get_current_date_mil_dynamic())
 
             result = self.add_entry_platform(result)
+
+            return result
+
 
             self.set_events_field('add_positions_brokers',date.get_current_date_mil_dynamic())
 

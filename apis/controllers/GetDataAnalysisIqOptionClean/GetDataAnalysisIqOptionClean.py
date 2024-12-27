@@ -132,7 +132,7 @@ class controller_get_data_analysis_iq_option_clean:
 
         self.iq.init_events(self.events)
         
-        self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
+        return self.iq.get_loops(self.dates,self.smtp,id_cronjobs,self.telegram)
 
         now = self.dates.get_current_utc5()
 

@@ -1,4 +1,4 @@
-FROM python:3.8.18
+FROM python:3.9.6
 
 # Copia primero el archivo de espera wait-for-it.sh
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it.sh

@@ -360,6 +360,8 @@ class cases_iq_core(icases_iq_core):
 
         op_status = self.check_op_market(binary_pairs, par_services)
 
+        # print(nominal_status+otc_status+op_status)
+
         return nominal_status+otc_status+op_status
     
     def set_config_open_nom(self,value):
@@ -601,6 +603,8 @@ class cases_iq_core(icases_iq_core):
             return False
 
         check,id_entry=self.API.buy(self.money,self.par,self.type,self.expirations_mode)
+
+        return check,id_entry
         
         return id_entry if check else check
     
