@@ -210,7 +210,6 @@ class de_core():
                 "symbol": symbol
             }
 
-
     async def generate_proposal(self, symbol, amount, contract_type, duration, duration_unit, barrier=None, payout=None):
 
         if self.api is None:
@@ -250,7 +249,6 @@ class de_core():
 
             return {'status': False, 'message': f'Error al generar la propuesta: {err}'}
         
-
     async def execute_proposal(self, proposal_id):
 
         if self.api is None:
@@ -286,6 +284,68 @@ class de_core():
         except Exception as err:
             
             return {'status': False, 'message': f'Error al ejecutar la posición: {err}'}
+        
+    async def check_position_result(self, contract_id):
+
+        if self.api is None:
+            
+            return {'status': False, 'message': 'API no inicializada'}
+
+        try:
+
+            response = await self.api.proposal_open_contract(
+                {"proposal_open_contract": 1, "contract_id": contract_id}
+            )
+            if not response or 'proposal_open_contract' not in response:
+
+                return {'status': False, 'message': 'La respuesta no contiene información válida sobre el contrato'}
+
+            contract_info = response['proposal_open_contract']
+
+            if not contract_info.get('is_sold'):
+
+                return {'status': False, 'message': 'El contrato aún no ha sido vendido o completado'}
+
+            status = contract_info.get('status', 'unknown')
+
+            profit_or_loss = contract_info.get('profit', 0)
+
+            if status == 'won':
+                
+                return self.get_won_contract(profit_or_loss, contract_info)
+            
+            elif status == 'lost':
+
+                return self.get_lost_contract(profit_or_loss, contract_info)
+            
+            else:
+
+                return {'status': False, 'message': f'Estado desconocido: {status}'}
+
+        except Exception as err:
+
+            return {'status': False, 'message': f'Error al consultar contrato: {err}'}
+
+    def get_won_contract(self, profit, contract_info):
+
+        return {
+            'status': True,
+            'message': 'La posición fue exitosa',
+            'profit': profit,
+            'contract_details': contract_info,
+        }
+
+    def get_lost_contract(self, loss, contract_info):
+
+        return {
+            'status': False,
+            'message': 'La posición fue perdedora',
+            'loss': loss,
+            'contract_details': contract_info,
+        }
+
+
+
 
 
 
