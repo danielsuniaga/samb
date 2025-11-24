@@ -73,3 +73,6 @@ Make sure you have Python and Django installed in your development environment.
    ```bash
    git clone https://github.com/danielsuniaga/samb.git
    cd your-repository
+
+
+<!-- Security scan triggered at 2025-11-24 23:33:01 -->
